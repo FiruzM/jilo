@@ -74,29 +74,6 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
           </Button>
         </div>
       </div>
-
-      <div class="mt-10">
-        <Carousel
-          class="relative mt-10 w-full"
-          :opts="{
-            align: 'center',
-
-          }"
-        >
-          <CarouselContent class="ml-5 w-[1158px]">
-            <CarouselItem v-for="(_, index) in 4" :key="index" class="">
-              <div class="rounded-3xl bg-[#4A5759] py-32 pl-16">
-                <h3 class="text-4xl font-semibold text-[#FFDCCD]">
-                  Скидка при заказе на сайте
-                </h3>
-                <p class="mt-3 max-w-[527px] text-xl text-[#FFDCCD]">
-                  Мы дарим Вам постоянную скидку при оформлении заказа на сайте
-                </p>
-              </div>
-            </CarouselItem>
-          </CarouselContent>
-        </Carousel>
-      </div>
     </header>
     <main class="shrink grow basis-auto px-10">
       <slot />

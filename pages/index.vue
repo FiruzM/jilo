@@ -3,6 +3,28 @@ import { Heart, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
 </script>
 
 <template>
+  <div class="mt-10">
+    <Carousel
+      class="relative mt-10 w-full"
+      :opts="{
+        align: 'center',
+
+      }"
+    >
+      <CarouselContent class="ml-5 w-[1158px]">
+        <CarouselItem v-for="(_, index) in 4" :key="index" class="">
+          <div class="rounded-3xl bg-[#4A5759] py-32 pl-16">
+            <h3 class="text-4xl font-semibold text-[#FFDCCD]">
+              Скидка при заказе на сайте
+            </h3>
+            <p class="mt-3 max-w-[527px] text-xl text-[#FFDCCD]">
+              Мы дарим Вам постоянную скидку при оформлении заказа на сайте
+            </p>
+          </div>
+        </CarouselItem>
+      </CarouselContent>
+    </Carousel>
+  </div>
   <div class="mt-[100px]">
     <div class="flex gap-11">
       <h2 class="text-3xl font-semibold">
@@ -27,23 +49,9 @@ import { Heart, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
       <span class="self-end text-lg text-[#7A7A7A]">Все товары</span>
     </div>
 
-    <ul class="mt-10 grid grid-cols-5">
-      <li v-for="(_, index) in 5" :key="index" class="overflow-hidden rounded-3xl border-[10px] border-white transition-all ease-in hover:border-[#CCE3DE] hover:bg-[#CCE3DE]">
-        <div class="relative flex items-center justify-center rounded-3xl bg-[#F1F4FA] p-9 ">
-          <img src="/assets/img/item.png" class="size-[182px]" alt="Item">
-          <span class="py2.5 absolute left-5 top-5 rounded-md bg-[#4A5759] px-1 text-xs text-[#FFDCCD]">-20%</span>
-          <span class="py2.5 absolute left-5 top-10 rounded-md bg-primary px-1 text-xs text-[#4A5759]">+30 Б</span>
-          <Heart class="absolute right-5 top-5 stroke-[#4A5759]" />
-        </div>
-        <div class="flex flex-col gap-2">
-          <p class="font-semibold">
-            Краситель гелевый MIXIE Бирюзовый 20 гр
-          </p>
-          <span class="text-[10px] text-[#8CA9AE]">На складе 200 шт.</span>
-          <span class="text-[#809A9E]">12.00 с..</span>
-        </div>
-      </li>
-    </ul>
+    <div class="mt-10 grid grid-cols-5">
+      <CardsItemCard v-for="(_, index) in 5" :key="index" />
+    </div>
   </div>
 
   <div class="mt-[100px]">

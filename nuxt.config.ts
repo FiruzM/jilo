@@ -90,7 +90,7 @@ export default defineNuxtConfig({
 
   site: {
     url: process.env.NUXT_PUBLIC_WEBSITE_URL,
-    name: 'Choikhona Startup',
+    name: 'Jilo',
     description: 'Place where you can get your startup ideas',
   },
 

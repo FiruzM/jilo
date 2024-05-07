@@ -1,39 +1,29 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from 'vue'
 import {
   RadioGroupIndicator,
   RadioGroupItem,
   type RadioGroupItemProps,
-  useForwardProps,
 } from 'radix-vue'
 import { Circle } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 
-const props = defineProps<RadioGroupItemProps & { class?: HTMLAttributes['class'] }>()
-
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
-
-  return delegated
-})
-
-const forwardedProps = useForwardProps(delegatedProps)
+const props = defineProps<RadioGroupItemProps & { class?: string }>()
 </script>
 
 <template>
   <RadioGroupItem
-    v-bind="forwardedProps"
+    v-bind="props"
     :class="
       cn(
-        'aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+        'aspect-square h-4 w-4 rounded-full cursor-pointer flex justify-center items-center border border-input disabled:cursor-not-allowed disabled:opacity-50',
         props.class,
       )
     "
   >
     <RadioGroupIndicator
-      class="flex items-center justify-center"
+      :class="cn('flex items-center justify-center', props.class)"
     >
-      <Circle class="h-2.5 w-2.5 fill-current text-current" />
+      <Circle class="size-full stroke-[5px] text-primary" />
     </RadioGroupIndicator>
   </RadioGroupItem>
 </template>
