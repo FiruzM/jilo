@@ -58,7 +58,7 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
                 </NuxtLink>
               </li>
               <li>
-                <NuxtLink class="flex flex-col items-center text-sm text-black">
+                <NuxtLink to="/cart" class="flex flex-col items-center text-sm text-black">
                   <div class="relative">
                     <ShoppingCart />
                     <span class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">2</span>
