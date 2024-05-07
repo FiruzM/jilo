@@ -1,0 +1,27 @@
+<script setup lang="ts">
+import { LogOut } from 'lucide-vue-next'
+
+const route = useRoute()
+</script>
+
+<template>
+  <div
+    class="flex grow items-center justify-between bg-gradient-to-r from-sky-500 to-indigo-500 px-12 pb-44 pt-10"
+  >
+    <h2 class="shadow-el text-5xl font-bold text-white">
+      {{ route.meta.title }}
+    </h2>
+    <div class="flex items-center gap-5 pt-3">
+      <Avatar class="size-14 border-2 border-white">
+        <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
+
+      <Button
+        class="size-14 rounded-xl bg-[#000C15] hover:bg-[#01192b]"
+      >
+        <LogOut class="stroke-[#0ae8c2]" />
+      </Button>
+    </div>
+  </div>
+</template>

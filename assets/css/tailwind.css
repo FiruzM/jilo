@@ -17,11 +17,11 @@
     --card-foreground: 222.2 84% 4.9%;
  
     --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --input: 351.29 63.27% 80.78%;
  
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
- 
+    --primary: 351.29 63.27% 80.78%;
+    --primary-foreground: 188 9.2% 31.96%;
+
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
  
@@ -73,6 +73,6 @@
     @apply border-border font-inter;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white h-full text-base;
   }
 }

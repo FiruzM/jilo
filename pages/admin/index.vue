@@ -1,9 +1,12 @@
 <script setup lang="ts">
-
+definePageMeta({
+  layout: 'admin-dashboard',
+  title: 'Админка',
+})
 </script>
 
 <template>
-  <h1 class="size-10 border text-3xl font-semibold text-red-300">
-    admin
-  </h1>
+  <div>
+    <h1>hello</h1>
+  </div>
 </template>
