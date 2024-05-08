@@ -77,7 +77,7 @@ import { Minus, Plus, Trash2 } from 'lucide-vue-next'
         <span class="text-xl font-semibold">48.00 с.</span>
       </div>
 
-      <Button class="mt-6 rounded-xl font-semibold">
+      <Button class="mt-6 rounded-xl font-semibold" @click="$router.push('/order')">
         Перейти к оформлению
       </Button>
     </div>
