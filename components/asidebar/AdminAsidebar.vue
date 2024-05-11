@@ -24,7 +24,7 @@ const links = [
   },
   {
     title: 'Товары',
-    url: '/admin/items',
+    url: '/admin/products',
     icon: ShoppingBasket,
   },
   {
