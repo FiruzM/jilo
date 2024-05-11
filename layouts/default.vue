@@ -16,22 +16,145 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
                 Категории
               </Button>
             </PopoverTrigger>
-            <PopoverContent class="mt-5 flex w-screen border-none p-0">
-              <div class="bg-[#f9f9f9] py-10 pl-10 pr-5">
-                <ul class="flex flex-col gap-2">
-                  <li>Красители</li>
-                  <li>Спецодежда</li>
-                  <li>Коробки и упаковка</li>
-                  <li>Шоколады</li>
-                  <li>Подложки/подставки</li>
-                </ul>
-              </div>
+            <PopoverContent class="mt-5 w-screen border-none p-0">
+              <NavigationMenu>
+                <NavigationMenuList class="flex-col bg-[#F2F2F2] py-10 pl-10 pr-5">
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
+                      Красители
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <NavigationMenuLink>
+                        <h4 class="text-3xl font-bold">
+                          Красители
+                        </h4>
+                        <div class="mt-9">
+                          <h4 class="text-base font-semibold">
+                            Жирорастворимые  красители
+                          </h4>
+                          <ul>
+                            <li>
+                              <NyxtLink to="/category/slug">
+                                Guzman
+                              </NyxtLink>
+                            </li>
+                            <li>TopDecor</li>
+                            <li>Kreda</li>
+                          </ul>
+                        </div>
+                      </NavigationMenuLink>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
 
-              <div class="grow p-10">
-                <h4 class="text-3xl font-bold">
-                  Красители
-                </h4>
-              </div>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
+                      Красители
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <NavigationMenuLink>
+                        <h4 class="text-3xl font-bold">
+                          Красители
+                        </h4>
+                        <div class="mt-9">
+                          <h4 class="text-base font-semibold">
+                            Жирорастворимые  красители
+                          </h4>
+                          <ul>
+                            <li>
+                              <NyxtLink to="/category/slug">
+                                Guzman
+                              </NyxtLink>
+                            </li>
+                            <li>TopDecor</li>
+                            <li>Kreda</li>
+                          </ul>
+                        </div>
+                      </NavigationMenuLink>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
+                      Красители
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <NavigationMenuLink>
+                        <h4 class="text-3xl font-bold">
+                          Красители
+                        </h4>
+                        <div class="mt-9">
+                          <h4 class="text-base font-semibold">
+                            Жирорастворимые  красители
+                          </h4>
+                          <ul>
+                            <li>
+                              <NyxtLink to="/category/slug">
+                                Guzman
+                              </NyxtLink>
+                            </li>
+                            <li>TopDecor</li>
+                            <li>Kreda</li>
+                          </ul>
+                        </div>
+                      </NavigationMenuLink>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
+                      Красители
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <NavigationMenuLink>
+                        <h4 class="text-3xl font-bold">
+                          Красители
+                        </h4>
+                        <div class="mt-9">
+                          <h4 class="text-base font-semibold">
+                            Жирорастворимые  красители
+                          </h4>
+                          <ul>
+                            <li>
+                              <NyxtLink to="/category/slug">
+                                Guzman
+                              </NyxtLink>
+                            </li>
+                            <li>TopDecor</li>
+                            <li>Kreda</li>
+                          </ul>
+                        </div>
+                      </NavigationMenuLink>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
+                      Красители
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <NavigationMenuLink>
+                        <h4 class="text-3xl font-bold">
+                          Красители
+                        </h4>
+                        <div class="mt-9">
+                          <h4 class="text-base font-semibold">
+                            Жирорастворимые  красители
+                          </h4>
+                          <ul>
+                            <li>
+                              <NyxtLink to="/category/slug">
+                                Guzman
+                              </NyxtLink>
+                            </li>
+                            <li>TopDecor</li>
+                            <li>Kreda</li>
+                          </ul>
+                        </div>
+                      </NavigationMenuLink>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
             </PopoverContent>
           </Popover>
 
@@ -49,7 +172,7 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
                 </NuxtLink>
               </li>
               <li>
-                <NuxtLink class="flex flex-col items-center text-sm text-black">
+                <NuxtLink to="/favorites" class="flex flex-col items-center text-sm text-black">
                   <div class="relative">
                     <Heart />
                     <span class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">2</span>
