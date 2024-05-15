@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-10 pb-16 pt-[100px]">
+  <div class="mx-auto flex max-w-[1360px] flex-col gap-10 pb-16 pt-[100px]">
     <h3 class="text-3xl font-semibold">
       Заказ №0001
     </h3>

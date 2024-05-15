@@ -51,7 +51,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <div class="pb-44 pt-[100px]">
+  <div class="mx-auto max-w-[1360px] pb-44 pt-[100px]">
     <h3 class="text-3xl font-semibold">
       Оформление заказа
     </h3>

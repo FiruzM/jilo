@@ -9,9 +9,9 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: '2rem',
+      padding: '40px',
       screens: {
-        '4xl': '1200px',
+        xl: '1360px',
       },
     },
     extend: {

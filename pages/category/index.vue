@@ -2,13 +2,10 @@
 import { ChevronRight, Minus } from 'lucide-vue-next'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-
-const selected = ref('')
-const isOpen = ref(false)
 </script>
 
 <template>
-  <div class="pb-16 pt-11">
+  <div class="mx-auto max-w-[1360px] pb-16 pt-11">
     <div class="grow">
       <div class="flex items-center justify-between">
         <div class="flex gap-5">
@@ -43,8 +40,10 @@ const isOpen = ref(false)
 
       <ul class="mt-10 grid grid-cols-4 gap-6 [&>*:nth-child(2)]:col-span-2">
         <li v-for="(_, index) in 6" :key="index" class="relative h-[253px] overflow-hidden rounded-3xl bg-[#F1F4FA] p-5 first:col-span-2 ">
-          <p>Подложки/подставки для торта</p>
-          <img src="/assets/img/catalog-item.png" class="absolute bottom-0 right-0 size-[220px]" alt="Item">
+          <p class="text-[18px] font-semibold text-[#4A5759]">
+            Подложки/подставки для торта
+          </p>
+          <img src="/assets/img/catalog-item.png" class="absolute -bottom-8 right-0 size-[220px]" alt="Item">
         </li>
       </ul>
     </div>

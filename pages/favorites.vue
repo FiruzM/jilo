@@ -1,14 +1,5 @@
-<script setup lang="ts">
-import { ChevronRight, Minus } from 'lucide-vue-next'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-
-const selected = ref('')
-const isOpen = ref(false)
-</script>
-
 <template>
-  <div class="pb-16 pt-11">
+  <div class="mx-auto max-w-[1360px] pb-16 pt-11">
     <div class="grow">
       <div class="flex items-center justify-between">
         <div class="flex gap-5">

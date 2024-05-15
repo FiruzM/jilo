@@ -5,13 +5,14 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
 <template>
   <div class="flex min-h-screen flex-col">
     <header>
-      <div class="flex items-center justify-between px-10 py-4">
-        <img src="/assets/img/logo.png" alt="Logo" class="ml-[33px]">
-
+      <div class="mx-auto flex max-w-[1360px] items-center justify-between px-10 py-4">
+        <NuxtLink to="/">
+          <img src="/assets/img/logo.png" alt="Logo">
+        </NuxtLink>
         <div class="flex items-center gap-8">
           <Popover>
             <PopoverTrigger as-child>
-              <Button class="rounded- px-3 py-6 text-sm font-semibold">
+              <Button class="px-3 py-6 text-sm font-semibold">
                 <Menu class="mr-2" />
                 Категории
               </Button>
@@ -159,7 +160,7 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
           </Popover>
 
           <div class="relative w-[560px]">
-            <Input class="h-12 w-full rounded-3xl" placeholder="Найдите товар здесь" />
+            <Input class="h-12 w-full rounded-[12px]" placeholder="Найдите товар здесь" />
             <Search class="absolute right-3 top-3 rounded-full bg-primary p-1" />
           </div>
 
@@ -192,7 +193,7 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
             </ul>
           </nav>
 
-          <Button variant="outline" class="rounded-3xl  py-6 text-sm font-medium ">
+          <Button variant="outline" class="py-6 text-sm font-medium ">
             Войти
           </Button>
         </div>
@@ -203,7 +204,7 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
     </main>
 
     <footer class="bg-[#4A5759]">
-      <div class="flex items-center justify-between px-10 py-[99px]">
+      <div class="mx-auto flex max-w-[1360px] items-center justify-between px-10 py-[99px]">
         <h2 class="text-3xl font-medium text-[#FFDCCD]">
           Ҷило Эксклюзив
         </h2>
