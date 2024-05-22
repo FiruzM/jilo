@@ -1,9 +1,9 @@
 <template>
-  <div class="mx-auto max-w-[1360px] pb-16 pt-11">
+  <div class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:px-10 lg:pb-16 lg:pt-11">
     <div class="grow">
-      <div class="flex items-center justify-between">
-        <div class="flex gap-5">
-          <h2 class="text-3xl font-semibold">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
             Избранное
           </h2>
         </div>
@@ -17,13 +17,25 @@
 
           <div>
             <Select>
-              <SelectTrigger class="w-44 rounded-xl text-black">
+              <SelectTrigger class="h-9 w-[180px] rounded-[12px] border-[#D5D5D5] text-black">
                 <SelectValue placeholder="Выберите параметр" />
               </SelectTrigger>
-              <SelectContent class="w-44">
+              <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
                 <SelectGroup>
-                  <SelectItem value="apple">
-                    Apple
+                  <SelectItem value="popular">
+                    Популярные
+                  </SelectItem>
+
+                  <SelectItem value="cheap">
+                    Сначала дешевле
+                  </SelectItem>
+
+                  <SelectItem value="expensive">
+                    Сначала дороже
+                  </SelectItem>
+
+                  <SelectItem value="new">
+                    Новинки
                   </SelectItem>
                 </SelectGroup>
               </SelectContent>
@@ -32,7 +44,7 @@
         </div>
       </div>
 
-      <div class="mt-14 grid grid-cols-5 gap-y-10">
+      <div class="mt-6 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-5 xl:gap-x-0 xl:gap-y-5">
         <CardsItemCard v-for="(_, index) in 8" :key="index" />
       </div>
     </div>
