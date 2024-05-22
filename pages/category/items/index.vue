@@ -50,11 +50,11 @@ import { Box, LucideAlertCircle, Minus, Plus, ShoppingCart, Truck } from 'lucide
           <div class="flex gap-6">
             <div class="flex items-center gap-2">
               <div class="rounded-full bg-[#F7F8F9] p-1">
-                <Minus class="size-4 sm:size-6" />
+                <Minus class="size-4 stroke-[#64748B] sm:size-6" />
               </div>
               <span class="font-semibold">1</span>
               <div class="rounded-full bg-[#F7F8F9] p-1">
-                <Plus class="size-4 sm:size-6" />
+                <Plus class="size-4 stroke-[#64748B] sm:size-6" />
               </div>
             </div>
             <Button class="grow text-sm sm:text-base">
