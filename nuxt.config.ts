@@ -45,21 +45,15 @@ export default defineNuxtConfig({
     locales: [
       {
         code: 'tg',
-        name: 'Tajik',
+        name: 'Тҷ',
         file: 'tg.json',
         iso: 'tg-TJ',
       },
       {
         code: 'ru',
-        name: 'Russian',
+        name: 'Ру',
         file: 'ru.json',
         iso: 'ru-RU',
-      },
-      {
-        code: 'en',
-        name: 'English',
-        file: 'en.json',
-        iso: 'en-US',
       },
     ],
 

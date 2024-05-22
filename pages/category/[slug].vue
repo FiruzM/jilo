@@ -142,21 +142,21 @@ const isOpen = ref(false)
         <RadioGroup v-model="selected" default-value="option-one" class="mt-8 flex gap-4">
           <div class="flex items-center space-x-2">
             <RadioGroupItem id="option-one" value="option-one" class="hidden" />
-            <Label for="option-one" :class="selected === 'option-one' ? 'transition ease-in rounded-xl border border-[#4A5759] bg-[#4A5759] px-5 py-2.5' : 'transition ease-in rounded-xl border border-[#4A5759] bg-white px-5 py-2.5'">
+            <Label for="option-one" :class="selected === 'option-one' ? 'transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-5 py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white px-5 py-2.5'">
               <img src="/assets/img/guzman.png" alt="Logo">
             </Label>
           </div>
 
           <div class="flex items-center space-x-2">
             <RadioGroupItem id="option-two" value="option-two" class="hidden" />
-            <Label for="option-two" :class="selected === 'option-two' ? 'transition ease-in rounded-xl border border-[#4A5759] bg-[#4A5759] px-5 py-2.5' : 'transition ease-in rounded-xl border border-[#4A5759] bg-white px-5 py-2.5'">
+            <Label for="option-two" :class="selected === 'option-two' ? 'transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-5 py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white px-5 py-2.5'">
               <img src="/assets/img/guzman.png" alt="Logo">
             </Label>
           </div>
 
           <div class="flex items-center space-x-2">
             <RadioGroupItem id="option-three" value="option-three" class="hidden" />
-            <Label for="option-three" :class="selected === 'option-three' ? 'transition ease-in rounded-xl border border-[#4A5759] bg-[#4A5759] px-5 py-2.5' : 'transition ease-in rounded-xl border border-[#4A5759] bg-white px-5 py-2.5'">
+            <Label for="option-three" :class="selected === 'option-three' ? 'transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-5 py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white px-5 py-2.5'">
               <img src="/assets/img/guzman.png" alt="Logo">
             </Label>
           </div>

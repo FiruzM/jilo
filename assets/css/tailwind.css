@@ -73,6 +73,9 @@
     @apply border-border font-inter;
   }
   body {
-    @apply bg-white h-full text-base text-[#242424];
+    @apply bg-white text-base text-[#242424] h-screen;
+  }
+  html {
+    @apply h-screen
   }
 }

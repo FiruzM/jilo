@@ -31,7 +31,7 @@ import { Minus, Plus, Trash2 } from 'lucide-vue-next'
                 <p class="max-w-[371px] text-xl font-semibold">
                   Коробка для торта с окном Гофрокартон 30х40х20 см
                 </p>
-                <span class="self-start text-xl font-semibold text-[#4A5759]">12.00 с.</span>
+                <span class="self-start text-xl font-semibold text-primary-foreground">12.00 с.</span>
               </div>
 
               <div class="flex justify-between">

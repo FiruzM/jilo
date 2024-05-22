@@ -1,20 +1,64 @@
 <script setup lang="ts">
-import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
+import { Box, Heart, Home, Menu, Package, Search, ShoppingCart, User } from 'lucide-vue-next'
+
+const { locales, locale, setLocale } = useI18n()
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col">
+  <div class="flex min-h-screen flex-col pb-[72px] xl:pb-0">
+    <nav class="fixed bottom-0 z-10 w-full overflow-hidden border-t-2 border-[#D5D5D5] bg-white py-2.5 xl:hidden">
+      <ul class="flex justify-evenly">
+        <li>
+          <NuxtLink to="/" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <Home />
+            <span class="pt-1 text-[10px]">Главная</span>
+          </NuxtLink>
+        </li>
+
+        <li>
+          <NuxtLink to="/order" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <Box />
+            <span class="pt-1 text-[10px]">Заказы</span>
+          </NuxtLink>
+        </li>
+
+        <li>
+          <NuxtLink to="/favorites" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <Heart />
+            <span class="pt-1 text-[10px]">Избранное</span>
+            <span class="absolute -top-1 right-0 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">3</span>
+          </NuxtLink>
+        </li>
+
+        <li>
+          <NuxtLink to="/cart" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <ShoppingCart />
+            <span class="pt-1 text-[10px]">Корзина</span>
+            <span class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">3</span>
+          </NuxtLink>
+        </li>
+
+        <li>
+          <NuxtLink to="/profile" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <User />
+            <span class="pt-1 text-[10px]">Корзина</span>
+          </NuxtLink>
+        </li>
+      </ul>
+    </nav>
+
     <header>
-      <div class="mx-auto flex max-w-[1360px] items-center justify-between px-10 py-4">
+      <div class="mx-auto flex max-w-[1360px] items-center gap-2.5 px-2 py-4 sm:gap-5 lg:px-10 xl:gap-8">
         <NuxtLink to="/">
-          <img src="/assets/img/logo.png" alt="Logo">
+          <img src="/assets/img/logo.png" alt="Logo" class="w-20">
         </NuxtLink>
-        <div class="flex items-center gap-8">
+
+        <div class="flex grow items-center gap-2.5 sm:gap-5 lg:gap-8">
           <Popover>
-            <PopoverTrigger as-child>
+            <PopoverTrigger as-child class="hidden xl:flex">
               <Button class="px-3 py-6 text-sm font-semibold">
                 <Menu class="mr-2" />
-                Категории
+                <span>Категории</span>
               </Button>
             </PopoverTrigger>
             <PopoverContent class="mt-5 w-screen border-none p-0">
@@ -159,12 +203,57 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
             </PopoverContent>
           </Popover>
 
-          <div class="relative w-[560px]">
-            <Input class="h-12 w-full rounded-[12px]" placeholder="Найдите товар здесь" />
-            <Search class="absolute right-3 top-3 rounded-full bg-primary p-1" />
+          <Sheet>
+            <SheetTrigger class="xl:hidden">
+              <Button class="rounded-[8px] p-[5px]">
+                <Menu />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader class="text-left">
+                <NuxtLink to="/category" class="mt-10">
+                  Все категории
+                </NuxtLink>
+
+                <ul class="mt-10 flex flex-col gap-5">
+                  <li>
+                    <NuxtLink to="/category/:slug()">
+                      Подложки/подставки для торта
+                    </NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="/category/:slug()">
+                      Подложки/подставки для торта
+                    </NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="/category/:slug()">
+                      Подложки/подставки для торта
+                    </NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="/category/:slug()">
+                      Подложки/подставки для торта
+                    </NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink to="/category/:slug()">
+                      Подложки/подставки для торта
+                    </NuxtLink>
+                  </li>
+                </ul>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+
+          <div class="relative min-w-[208px] shrink-0 grow xl:shrink">
+            <Input class="h-11 w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" placeholder="Найдите товар здесь" />
+            <span class="absolute right-1 top-1 rounded-[6px] bg-primary p-[6px] xl:right-[5px] xl:top-[5px]">
+              <Search />
+            </span>
           </div>
 
-          <nav>
+          <nav class="hidden xl:block">
             <ul class="flex gap-10">
               <li>
                 <NuxtLink class="flex flex-col items-center text-sm text-black">
@@ -193,24 +282,38 @@ import { Heart, Menu, Package, Search, ShoppingCart } from 'lucide-vue-next'
             </ul>
           </nav>
 
-          <Button variant="outline" class="py-6 text-sm font-medium ">
+          <Select :model-value="locale" class="p-0" @update:model-value="(code) => setLocale(code)">
+            <SelectTrigger class="flex w-fit gap-1 border-0 bg-transparent p-0 text-[10px] font-semibold text-black md:text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent align="center" class="p-0">
+              <SelectGroup>
+                <SelectItem v-for="localeItem in locales" :key="localeItem.code" class="text-primary" :value="localeItem.code">
+                  {{ localeItem.name }}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          <Button variant="outline" class="hidden py-6 text-sm font-medium xl:flex">
             Войти
           </Button>
         </div>
       </div>
     </header>
-    <main class="shrink grow basis-auto px-10">
+
+    <main class="shrink grow basis-auto">
       <slot />
     </main>
 
-    <footer class="bg-[#4A5759]">
-      <div class="mx-auto flex max-w-[1360px] items-center justify-between px-10 py-[99px]">
+    <footer class="bg-primary-foreground">
+      <div class="mx-auto flex max-w-[1360px] flex-col gap-5 px-4 py-5 md:items-center lg:flex-row lg:items-center lg:justify-between lg:px-10 lg:py-[99px]">
         <h2 class="text-3xl font-medium text-[#FFDCCD]">
           Ҷило Эксклюзив
         </h2>
 
         <nav>
-          <ul class="flex gap-14">
+          <ul class="flex flex-col gap-[5px] md:flex-row md:gap-10">
             <li v-for="(_, index) in 4" :key="index" class="text-[#FFDCCD]">
               About
             </li>

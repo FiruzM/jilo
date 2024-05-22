@@ -30,7 +30,7 @@ import { Box, LucideAlertCircle, Minus, Plus, Truck } from 'lucide-vue-next'
       </div>
 
       <div class="flex flex-col gap-6">
-        <p class="self-start rounded-full bg-[#4A5759] px-2 py-1 text-sm font-semibold text-[#FFDCCD]">
+        <p class="self-start rounded-full bg-primary-foreground px-2 py-1 text-sm font-semibold text-[#FFDCCD]">
           New!
         </p>
         <div>

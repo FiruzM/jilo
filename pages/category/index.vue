@@ -40,7 +40,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
       <ul class="mt-10 grid grid-cols-4 gap-6 [&>*:nth-child(2)]:col-span-2">
         <li v-for="(_, index) in 6" :key="index" class="relative h-[253px] overflow-hidden rounded-3xl bg-[#F1F4FA] p-5 first:col-span-2 ">
-          <p class="text-[18px] font-semibold text-[#4A5759]">
+          <p class="text-[18px] font-semibold text-primary-foreground">
             Подложки/подставки для торта
           </p>
           <img src="/assets/img/catalog-item.png" class="absolute -bottom-8 right-0 size-[220px]" alt="Item">
