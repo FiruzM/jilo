@@ -48,7 +48,7 @@ const { locales, locale, setLocale } = useI18n()
     </nav>
 
     <header>
-      <div class="mx-auto flex max-w-[1360px] items-center gap-2.5 px-2 py-4 sm:gap-5 lg:px-10 xl:gap-8">
+      <div class="mx-auto flex max-w-[1360px] items-center gap-2.5 px-3 py-4 sm:gap-5 lg:px-10 xl:gap-8">
         <NuxtLink to="/">
           <img src="/assets/img/logo.png" alt="Logo" class="w-20">
         </NuxtLink>
