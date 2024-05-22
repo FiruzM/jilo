@@ -1,10 +1,10 @@
 <script setup>
-import { Box, LucideAlertCircle, Minus, Plus, Truck } from 'lucide-vue-next'
+import { Box, LucideAlertCircle, Minus, Plus, ShoppingCart, Truck } from 'lucide-vue-next'
 </script>
 
 <template>
-  <div class="mx-auto mt-10 max-w-[1360px]">
-    <Breadcrumb>
+  <div class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:px-10 lg:pb-16 lg:pt-11">
+    <Breadcrumb class="hidden lg:flex">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/category">
@@ -24,9 +24,9 @@ import { Box, LucideAlertCircle, Minus, Plus, Truck } from 'lucide-vue-next'
       </BreadcrumbList>
     </Breadcrumb>
 
-    <div class="flex gap-16 pb-36 pt-4">
-      <div class="rounded-3xl bg-[#F1F4FA] px-[135px] py-12">
-        <img src="/assets/img/glazur.png" alt="Logo" class="size-[450px]">
+    <div class="mt-4 flex flex-col gap-5 lg:flex-row lg:gap-16">
+      <div class="flex items-center justify-center rounded-3xl bg-[#F1F4FA] px-16 py-12 lg:px-[135px]">
+        <img src="/assets/img/glazur.png" alt="Logo" class="size-[203px] md:size-[303px] xl:size-[450px]">
       </div>
 
       <div class="flex flex-col gap-6">
@@ -34,15 +34,15 @@ import { Box, LucideAlertCircle, Minus, Plus, Truck } from 'lucide-vue-next'
           New!
         </p>
         <div>
-          <h2 class="max-w-[574px] text-4xl font-semibold">
+          <h2 class="max-w-[574px] text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl">
             Глазурь темная Master Martini 200 гр
           </h2>
-          <p class="mt-2 text-4xl font-semibold text-[#9AA6AC]">
+          <p class="mt-2 font-semibold text-[#9AA6AC] sm:text-2xl md:text-3xl lg:text-4xl">
             12,00 с/шт
           </p>
         </div>
 
-        <p class="text-sm text-[#6E7C87]">
+        <p class="text-xs text-[#6E7C87] sm:text-sm">
           Артикул 107293
         </p>
 
@@ -50,19 +50,20 @@ import { Box, LucideAlertCircle, Minus, Plus, Truck } from 'lucide-vue-next'
           <div class="flex gap-6">
             <div class="flex items-center gap-2">
               <div class="rounded-full bg-[#F7F8F9] p-1">
-                <Minus />
+                <Minus class="size-4 sm:size-6" />
               </div>
               <span class="font-semibold">1</span>
               <div class="rounded-full bg-[#F7F8F9] p-1">
-                <Plus />
+                <Plus class="size-4 sm:size-6" />
               </div>
             </div>
-            <Button class="grow rounded-xl">
+            <Button class="grow text-sm sm:text-base">
+              <ShoppingCart class="mr-2.5" />
               Добавить в корзину
             </Button>
           </div>
 
-          <Button class="rounded-xl border border-primary bg-transparent">
+          <Button class="border border-primary bg-transparent text-sm sm:text-base">
             Купить в один клик
           </Button>
         </div>

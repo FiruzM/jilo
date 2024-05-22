@@ -284,7 +284,7 @@ const isOpen = ref(false)
         </RadioGroup>
 
         <div class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
-          <CardsItemCard v-for="(_, index) in 8" :key="index" />
+          <CardsItemCard v-for="(_, index) in 8" :key="index" @click="() => $router.push('/category/items')" />
         </div>
         <div class="flex justify-center">
           <Button class="mt-16 rounded-xl border border-primary bg-transparent">
