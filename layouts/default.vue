@@ -242,7 +242,7 @@ const { locales, locale, setLocale } = useI18n()
           </nav>
 
           <Select :model-value="locale" @update:model-value="(code) => setLocale(code)">
-            <SelectTrigger class="border-0 bg-transparent p-0 text-[10px] font-semibold text-black md:text-xs">
+            <SelectTrigger class="max-w-[40px] border-0 bg-transparent p-0 text-[10px] font-semibold text-black md:text-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent class="w-fit border-[#D5D5D5] p-0">
