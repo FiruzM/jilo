@@ -284,7 +284,7 @@ const { locales, locale, setLocale } = useI18n()
       </div>
     </footer>
 
-    <nav class="sticky bottom-0 z-10 w-full overflow-hidden border-t-2 border-[#D5D5D5] bg-white py-2.5 xl:hidden">
+    <!-- <nav class="sticky bottom-0 z-10 w-full overflow-hidden border-t-2 border-[#D5D5D5] bg-white py-2.5 xl:hidden">
       <ul class="flex justify-between px-4">
         <li>
           <NuxtLink to="/" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
@@ -323,6 +323,6 @@ const { locales, locale, setLocale } = useI18n()
           </NuxtLink>
         </li>
       </ul>
-    </nav>
+    </nav> -->
   </div>
 </template>
