@@ -5,48 +5,7 @@ const { locales, locale, setLocale } = useI18n()
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col pb-[72px] xl:pb-0">
-    <nav class="fixed bottom-0 z-10 w-full overflow-hidden border-t-2 border-[#D5D5D5] bg-white py-2.5 xl:hidden">
-      <ul class="flex justify-evenly">
-        <li>
-          <NuxtLink to="/" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
-            <Home />
-            <span class="pt-1 text-[10px]">Главная</span>
-          </NuxtLink>
-        </li>
-
-        <li>
-          <NuxtLink to="/order" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
-            <Box />
-            <span class="pt-1 text-[10px]">Заказы</span>
-          </NuxtLink>
-        </li>
-
-        <li>
-          <NuxtLink to="/favorites" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
-            <Heart />
-            <span class="pt-1 text-[10px]">Избранное</span>
-            <span class="absolute -top-1 right-0 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">3</span>
-          </NuxtLink>
-        </li>
-
-        <li>
-          <NuxtLink to="/cart" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
-            <ShoppingCart />
-            <span class="pt-1 text-[10px]">Корзина</span>
-            <span class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">3</span>
-          </NuxtLink>
-        </li>
-
-        <li>
-          <NuxtLink to="/profile" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
-            <User />
-            <span class="pt-1 text-[10px]">Корзина</span>
-          </NuxtLink>
-        </li>
-      </ul>
-    </nav>
-
+  <div class="flex min-h-screen flex-col  xl:pb-0">
     <header>
       <div class="mx-auto flex max-w-[1360px] items-center gap-2.5 px-3 py-4 sm:gap-5 lg:px-10 xl:gap-8">
         <NuxtLink to="/">
@@ -324,5 +283,46 @@ const { locales, locale, setLocale } = useI18n()
         </p>
       </div>
     </footer>
+
+    <nav class="sticky bottom-0 z-10 w-full overflow-hidden border-t-2 border-[#D5D5D5] bg-white py-2.5 xl:hidden">
+      <ul class="flex justify-between px-4">
+        <li>
+          <NuxtLink to="/" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <Home />
+            <span class="pt-1 text-[10px]">Главная</span>
+          </NuxtLink>
+        </li>
+
+        <li>
+          <NuxtLink to="/order" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <Box />
+            <span class="pt-1 text-[10px]">Заказы</span>
+          </NuxtLink>
+        </li>
+
+        <li>
+          <NuxtLink to="/favorites" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <Heart />
+            <span class="pt-1 text-[10px]">Избранное</span>
+            <span class="absolute -top-1 right-0 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">3</span>
+          </NuxtLink>
+        </li>
+
+        <li>
+          <NuxtLink to="/cart" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <ShoppingCart />
+            <span class="pt-1 text-[10px]">Корзина</span>
+            <span class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">3</span>
+          </NuxtLink>
+        </li>
+
+        <li>
+          <NuxtLink to="/profile" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+            <User />
+            <span class="pt-1 text-[10px]">Профиль</span>
+          </NuxtLink>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
