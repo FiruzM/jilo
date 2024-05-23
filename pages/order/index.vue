@@ -179,7 +179,7 @@ const onSubmit = handleSubmit((values) => {
             </FormItem>
           </FormField>
 
-          <Button type="submit" class="w-full rounded-xl">
+          <Button type="submit" class="w-full">
             Оформить заказ
           </Button>
         </form>
