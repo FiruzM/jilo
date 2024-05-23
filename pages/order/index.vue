@@ -51,24 +51,24 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-[1360px] pb-44 pt-[100px]">
-    <h3 class="text-3xl font-semibold">
+  <div class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:px-10 lg:pb-16 lg:pt-[100px]">
+    <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
       Оформление заказа
     </h3>
 
-    <div class="mt-10 flex justify-between">
-      <div class="w-[803px] shrink-0 border-r pr-8">
+    <div class="mt-8 flex flex-col gap-7 lg:mt-10 lg:flex-row lg:justify-between">
+      <div class="shrink-0 lg:w-[503px] lg:border-r lg:pr-8 xl:w-[803px]">
         <div class="flex items-center gap-2">
-          <Avatar class="size-16">
+          <Avatar class="size-10 xl:size-16">
             <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
 
           <div>
-            <p class="font-semibold">
+            <p class="text-sm font-semibold sm:text-base">
               Фарида Рустамова
             </p>
-            <span class="text-sm opacity-30">+992 900 98 76 54</span>
+            <span class="text-xs opacity-30 sm:text-sm">+992 900 98 76 54</span>
           </div>
         </div>
 
@@ -185,43 +185,43 @@ const onSubmit = handleSubmit((values) => {
         </form>
       </div>
 
-      <div class="grow pl-6">
-        <ScrollArea class="h-[388px]">
+      <div class="grow lg:pl-6">
+        <ScrollArea class="h-[290px] rounded-[12px] border py-2.5 pl-2.5 pr-11 lg:h-[388px] lg:border-none lg:p-0">
           <div class="flex flex-col gap-8 ">
             <div v-for="i in 4" :key="i" class="flex gap-6">
-              <div class="rounded-3xl bg-[#F1F4FA] p-6">
-                <img src="/assets/img/box.png" alt="Logo" class="size-[60px]">
+              <div class="rounded-[12px] bg-[#F1F4FA] p-2.5 lg:rounded-3xl lg:p-6">
+                <img src="/assets/img/box.png" alt="Logo" class="size-11 lg:size-[60px]">
               </div>
-              <div class="flex flex-col justify-between">
-                <h3 class="max-w-[315px] font-semibold">
+              <div class="flex flex-col gap-4 lg:justify-between">
+                <h3 class="max-w-[315px] text-xs font-semibold sm:text-base">
                   Коробка для торта с окном Гофрокартон 30х40х20 см
                 </h3>
-                <span>1 х 12.00 с.</span>
+                <span class="text-sm">1 х 12.00 с.</span>
               </div>
             </div>
           </div>
         </ScrollArea>
 
-        <div class="mt-8 flex flex-col gap-4 border-y py-8">
+        <div class="mt-4 flex flex-col gap-4 border-b py-4 lg:mt-8 lg:border-y lg:py-8">
           <div class="flex justify-between">
-            <p class="text-xl">
+            <p class="text-sm md:text-base lg:text-xl">
               Сумма по товарам
             </p>
-            <span class="text-xl font-semibold">108.00 с.</span>
+            <span class="text-sm font-semibold md:text-base lg:text-xl">108.00 с.</span>
           </div>
           <div class="flex justify-between">
-            <p class="text-xl">
+            <p class="text-sm md:text-base lg:text-xl">
               Стоимость доставки
             </p>
-            <span class="text-xl font-semibold">0.00 с.</span>
+            <span class="text-sm font-semibold md:text-base lg:text-xl">0.00 с.</span>
           </div>
         </div>
 
-        <div class="flex justify-between py-8">
-          <p class="text-xl">
+        <div class="flex justify-between py-4 lg:py-8">
+          <p class="text-base md:text-base lg:text-xl">
             Итого
           </p>
-          <span class="text-xl font-semibold">108.00 с.</span>
+          <span class="text-sm font-semibold md:text-base lg:text-xl">108.00 с.</span>
         </div>
       </div>
     </div>

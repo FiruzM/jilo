@@ -207,7 +207,7 @@ const { locales, locale, setLocale } = useI18n()
 
           <div class="relative min-w-[208px] shrink-0 grow xl:shrink">
             <Input class="h-[34px] w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" placeholder="Найдите товар здесь" />
-            <span class="absolute right-[3px] top-[2px] rounded-[6px] bg-primary p-[3px] xl:right-[5px] xl:top-[5px]">
+            <span class="absolute right-[3px] top-[2px] rounded-[6px] bg-primary p-[3px] xl:right-[5px] xl:top-[4px] xl:p-[8px]">
               <Search />
             </span>
           </div>
