@@ -5,11 +5,11 @@ const { locales, locale, setLocale } = useI18n()
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col  xl:pb-0">
+  <div class="flex min-h-screen flex-col xl:pb-0">
     <header>
-      <div class="mx-auto flex max-w-[1360px] items-center gap-2.5 px-3 py-4 sm:gap-5 lg:px-10 xl:gap-8">
-        <NuxtLink to="/">
-          <img src="/assets/img/logo.png" alt="Logo" class="w-20">
+      <div class="mx-auto flex max-w-[1360px] items-center gap-2.5 px-2 py-4 sm:gap-5 lg:px-10 xl:gap-8">
+        <NuxtLink to="/" class="w-[50px]">
+          <img src="/assets/img/logo.png" alt="Logo" class="w-[50px] lg:w-20">
         </NuxtLink>
 
         <div class="flex grow items-center gap-2.5 sm:gap-5 lg:gap-8">
@@ -164,7 +164,7 @@ const { locales, locale, setLocale } = useI18n()
 
           <Sheet>
             <SheetTrigger class="xl:hidden">
-              <Button class="rounded-[8px] p-[5px]">
+              <Button class="h-[34px] rounded-[8px] p-[5px]">
                 <Menu />
               </Button>
             </SheetTrigger>
@@ -206,8 +206,8 @@ const { locales, locale, setLocale } = useI18n()
           </Sheet>
 
           <div class="relative min-w-[208px] shrink-0 grow xl:shrink">
-            <Input class="h-11 w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" placeholder="Найдите товар здесь" />
-            <span class="absolute right-1 top-1 rounded-[6px] bg-primary p-[6px] xl:right-[5px] xl:top-[5px]">
+            <Input class="h-[34px] w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" placeholder="Найдите товар здесь" />
+            <span class="absolute right-[3px] top-[2px] rounded-[6px] bg-primary p-[3px] xl:right-[5px] xl:top-[5px]">
               <Search />
             </span>
           </div>
@@ -240,19 +240,19 @@ const { locales, locale, setLocale } = useI18n()
               </li>
             </ul>
           </nav>
-          <!--
-          <Select :model-value="locale" class="p-0" @update:model-value="(code) => setLocale(code)">
-            <SelectTrigger class="flex w-fit gap-1 border-0 bg-transparent p-0 text-[10px] font-semibold text-black md:text-xs">
+
+          <Select :model-value="locale" @update:model-value="(code) => setLocale(code)">
+            <SelectTrigger class="border-0 bg-transparent p-0 text-[10px] font-semibold text-black md:text-xs">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent align="center" class="p-0">
+            <SelectContent class="w-fit border-[#D5D5D5] p-0">
               <SelectGroup>
-                <SelectItem v-for="localeItem in locales" :key="localeItem.code" class="text-primary" :value="localeItem.code">
+                <SelectItem v-for="localeItem in locales" :key="localeItem.code" :value="localeItem.code">
                   {{ localeItem.name }}
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
-          </Select> -->
+          </Select>
 
           <Button variant="outline" class="hidden py-6 text-sm font-medium xl:flex">
             Войти
