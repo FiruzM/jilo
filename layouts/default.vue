@@ -240,7 +240,7 @@ const { locales, locale, setLocale } = useI18n()
               </li>
             </ul>
           </nav>
-
+          <!--
           <Select :model-value="locale" class="p-0" @update:model-value="(code) => setLocale(code)">
             <SelectTrigger class="flex w-fit gap-1 border-0 bg-transparent p-0 text-[10px] font-semibold text-black md:text-xs">
               <SelectValue />
@@ -252,7 +252,7 @@ const { locales, locale, setLocale } = useI18n()
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
-          </Select>
+          </Select> -->
 
           <Button variant="outline" class="hidden py-6 text-sm font-medium xl:flex">
             Войти
@@ -284,7 +284,7 @@ const { locales, locale, setLocale } = useI18n()
       </div>
     </footer>
 
-    <!-- <nav class="sticky bottom-0 z-10 w-full overflow-hidden border-t-2 border-[#D5D5D5] bg-white py-2.5 xl:hidden">
+    <nav class="sticky bottom-0 z-10 w-full overflow-hidden border-t-2 border-[#D5D5D5] bg-white py-2.5 xl:hidden">
       <ul class="flex justify-between px-4">
         <li>
           <NuxtLink to="/" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
@@ -323,6 +323,6 @@ const { locales, locale, setLocale } = useI18n()
           </NuxtLink>
         </li>
       </ul>
-    </nav> -->
+    </nav>
   </div>
 </template>
