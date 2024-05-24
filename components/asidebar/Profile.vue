@@ -26,21 +26,21 @@ import { Box, Heart, LogOut, SquarePen } from 'lucide-vue-next'
 
     <ul>
       <li class="rounded-[8px] p-4 [&.router-link-active]:bg-primary-foreground">
-        <NuxtLink class="flex items-center gap-2 [&.router-link-active]:text-[#FFDCCD]">
+        <NuxtLink to="/formalization" class="flex items-center gap-2 [&.router-link-active]:text-[#FFDCCD]">
           <Box class="[&.router-link-active]:stroke-[#FFDCCD]" />
           Заказы
         </NuxtLink>
       </li>
 
-      <li class="rounded-[8px] p-4 [&.router-link-active]:bg-primary-foreground">
-        <NuxtLink to="/favorites" class="flex items-center gap-2 [&.router-link-active]:text-[#FFDCCD]">
+      <li class=" ">
+        <NuxtLink to="/favorites" class="flex items-center gap-2 rounded-[8px] p-4 [&.router-link-active]:bg-primary-foreground [&.router-link-active]:text-[#FFDCCD]">
           <Heart class="[&.router-link-active]:stroke-[#FFDCCD]" />
           Избранное
         </NuxtLink>
       </li>
     </ul>
 
-    <Button class="flex gap-3 self-start bg-transparent p-0 pl-4 text-[#F76659] hover:bg-transparent">
+    <Button class="mt-[34px] flex gap-3 self-start bg-transparent pl-4 text-[#F76659] hover:bg-transparent">
       <LogOut class="stroke-[#FFB5AE]" />
 
       Выйти

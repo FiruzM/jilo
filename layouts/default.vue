@@ -8,8 +8,8 @@ const { locales, locale, setLocale } = useI18n()
   <div class="flex min-h-screen flex-col xl:pb-0">
     <header>
       <div class="mx-auto flex max-w-[1360px] items-center gap-2.5 px-2 py-4 sm:gap-5 lg:px-10 xl:gap-8">
-        <NuxtLink to="/">
-          <img src="/assets/img/logo.png" alt="Logo" class="w-20">
+        <NuxtLink to="/" class="w-[50px] lg:w-20">
+          <img src="/assets/img/logo.png" alt="Logo" class="w-[50px] lg:w-20">
         </NuxtLink>
 
         <div class="flex grow items-center gap-2.5 sm:gap-5 lg:gap-8">
@@ -215,7 +215,7 @@ const { locales, locale, setLocale } = useI18n()
           <nav class="hidden xl:block">
             <ul class="flex gap-10">
               <li>
-                <NuxtLink class="flex flex-col items-center text-sm text-black">
+                <NuxtLink to="/order" class="flex flex-col items-center text-sm text-black">
                   <Package />
                   Заказы
                 </NuxtLink>

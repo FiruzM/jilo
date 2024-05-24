@@ -77,11 +77,11 @@ import { Minus, Plus, Trash2 } from 'lucide-vue-next'
           </p>
           <span class="text-xl font-semibold">48.00 с.</span>
         </div>
-        <Button class="mt-6 hidden font-semibold lg:flex" @click="$router.push('/order')">
+        <Button class="mt-6 hidden font-semibold lg:flex" @click="$router.push('/formalization')">
           Перейти к оформлению
         </Button>
       </div>
-      <Button class="sticky bottom-24 mx-auto -mt-28 w-[296px] font-semibold sm:w-[90%] lg:hidden" @click="$router.push('/order')">
+      <Button class="sticky bottom-24 mx-auto -mt-28 w-[296px] font-semibold sm:w-[90%] lg:hidden" @click="$router.push('/formalization')">
         Перейти к оформлению
       </Button>
     </div>

@@ -1,6 +1,8 @@
 <template>
-  <div class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:px-10 lg:pb-16 lg:pt-11">
-    <div class="grow">
+  <div class="mx-auto max-w-[1360px] gap-6 px-4 pb-10 pt-8 lg:flex lg:px-10 lg:pb-16 lg:pt-11">
+    <AsidebarProfile class="hidden shrink-0 grow self-start lg:block" />
+
+    <div>
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
@@ -44,7 +46,7 @@
         </div>
       </div>
 
-      <div class="mt-6 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-5 xl:gap-x-0 xl:gap-y-5">
+      <div class="mt-6 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
         <CardsItemCard v-for="(_, index) in 8" :key="index" />
       </div>
     </div>
