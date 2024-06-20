@@ -1,101 +1,83 @@
 <script setup lang="ts">
-import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import { useForm } from 'vee-validate'
-import { Loader } from 'lucide-vue-next'
-import type { HTTPError } from 'ky'
-import type { LoginProps } from '~/api/auth/login'
+import { toTypedSchema } from '@vee-validate/zod'
+import type { definitions } from '~/api/v1'
 import { useToast } from '~/components/ui/toast'
-import { getRoleLink } from '~/lib/utils'
 
-definePageMeta({
-  layout: false,
-  middleware: 'guest-only',
-})
-
-const router = useRouter()
-const { login, me } = useAuth()
 const { toast } = useToast()
-const user = useAuthUser()
+const router = useRouter()
+const { me, login } = useAuth()
 
-const formSchema = toTypedSchema(z.object({
-  email: z.string().email(),
-  password: z.string().min(1),
+const formLoginSchema = toTypedSchema(z.object({
+  login: z.string({
+    required_error: 'Укажите email',
+  }).email(),
+  password: z.string({
+    required_error: 'Укажите пароль',
+  }),
 }))
-
-const form = useForm({
-  validationSchema: formSchema,
+const formLogin = useForm({
+  validationSchema: formLoginSchema,
+  keepValuesOnUnmount: true,
 })
 
-const { mutate, isPending } = useMutation({
-  mutationFn: (data: LoginProps) => login(data),
-
-  onError: async (error: HTTPError) => {
-    const errorData = await error.response.json()
-
-    toast({
-      title: 'Произошла ошибка',
-      description: errorData.message,
-      variant: 'destructive',
-    })
-
-    form.setErrors({ email: undefined, password: errorData.message })
-  },
-
+const { mutate } = useMutation({
+  mutationFn: (data: definitions['models.UserLogin']) => login(data),
   onSuccess: async () => {
     await me()
-
-    router.push(getRoleLink(user.value?.role.name))
+    router.push('/profile')
+    toast({
+      title: 'Авторизация прошла успешно',
+    })
   },
 })
 
-const onSubmit = form.handleSubmit((values) => {
+const formLoginSubmit = formLogin.handleSubmit((values) => {
   mutate(values)
 })
 </script>
 
 <template>
-  <div
-    class="gradient absolute top-0 left-0 -z-10 w-full h-full"
-  />
-  <div class="flex justify-center items-center min-h-[80vh]">
-    <form class="sm:min-w-[562px] flex flex-col items-center gap-4 p-5 md:p-10 border rounded-3xl lg:rounded-[44px] bg-white" @submit="onSubmit">
-      <div>
-        <h2 class="text-2xl md:text-5xl lg:text-7xl text-green font-bold text-center md:mb-5 lg:mb-10">
-          {{ $t('login') }}
-        </h2>
+  <div class="my-20 flex flex-col items-center">
+    <div class="w-[500px]">
+      <div class="flex flex-col items-center gap-2">
+        <p class="font-semibold text-black">
+          Введите номер телефона
+        </p>
+        <p class=" text-xs text-black">
+          Мы отправим вам СМС с кодом подтверждения
+        </p>
       </div>
 
-      <FormField v-slot="{ componentField }" name="email">
-        <FormItem class="w-full">
-          <FormControl>
-            <Input type="email" :placeholder="$t('enter_your_email')" v-bind="componentField" class="rounded-none border-t-0 border-l-0 border-r-0 border-green bg-white" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
+      <form class="mt-6 flex flex-col gap-6" @submit="formLoginSubmit">
+        <FormField v-slot="{ componentField }" name="login">
+          <FormItem class="w-full">
+            <Label>Логин</Label>
+            <FormControl>
+              <Input v-bind="componentField" class="h-[48px] rounded-[12px] border-[#ADADAD] font-semibold" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
 
-      <FormField v-slot="{ componentField }" name="password">
-        <FormItem class="w-full">
-          <FormControl>
-            <PasswordInput :placeholder="$t('enter_your_password')" v-bind="componentField" class="rounded-none border-t-0 border-l-0 border-r-0 !border-green bg-white" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
+        <FormField v-slot="{ componentField }" name="password">
+          <FormItem class="w-full">
+            <Label>Пароль</Label>
+            <FormControl>
+              <Input v-bind="componentField" class="h-[48px] rounded-[12px] border-[#ADADAD] font-semibold" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
 
-      <Button class="w-full rounded-full bg-green md:mt-5 lg:mt-10 hover:bg-green transition-all ease-in hover:shadow-xl" type="submit">
-        <Loader v-if="isPending" class="animate-spin w-5 h-5" />
-        <p v-else class="text-base font-semibold">
-          {{ $t('log_in') }}
-        </p>
-      </Button>
-
-      <p class="text-green text-xs md:text-sm md:mt-5 text-center">
-        {{ $t('no_account') }} <NuxtLink to="/register" class="text-primary font-bold">
-          {{ $t('account_registration') }}
-        </NuxtLink>
-      </p>
-    </form>
+        <Button class="text-sm" type="submit">
+          Получить код
+        </Button>
+      </form>
+      <NuxtLink to="/register" class="mt-10 flex h-[48px] items-center justify-center rounded-[12px] border border-primary text-sm font-semibold">
+        Регистрация
+      </NuxtLink>
+    </div>
   </div>
 </template>

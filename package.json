@@ -11,7 +11,8 @@
     "start:generate": "npx serve .output/public",
     "lint": "eslint .",
     "typecheck": "vue-tsc --noEmit",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "swagger:generate": "pnpm openapi-typescript https://f8f726d3171d.vps.myjino.ru/api/marketplace/v0/swagger/doc.json -o ./api/v1.d.ts"
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.1",
@@ -25,26 +26,24 @@
     "embla-carousel-vue": "^8.0.0",
     "ky": "^1.2.0",
     "lucide-vue-next": "^0.309.0",
-    "qalendar": "^3.7.0",
     "radix-vue": "^1.3.1",
-    "v-calendar": "^3.1.2",
     "vee-validate": "^4.12.4",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.4.6",
-    "@commitlint/cli": "^18.4.3",
-    "@commitlint/config-conventional": "^18.4.3",
+    "@antfu/eslint-config": "^2.6.2",
+    "@commitlint/cli": "^18.4.4",
+    "@commitlint/config-conventional": "^18.4.4",
     "@nuxtjs/google-fonts": "^3.1.3",
     "@nuxtjs/i18n": "^8.1.1",
     "@nuxtjs/seo": "2.0.0-rc.8",
-    "@nuxtjs/tailwindcss": "^6.10.1",
+    "@nuxtjs/tailwindcss": "^6.10.4",
     "@pinia/nuxt": "^0.5.1",
     "@tailwindcss/typography": "^0.5.10",
     "@types/qs": "^6.9.14",
     "@vueuse/nuxt": "^10.7.2",
     "class-variance-authority": "^0.7.0",
-    "clsx": "^2.0.0",
+    "clsx": "^2.1.0",
     "consola": "^3.2.3",
     "dayjs-nuxt": "^2.1.9",
     "eslint": "^8.56.0",
@@ -53,15 +52,16 @@
     "husky": "^8.0.3",
     "laravel-echo": "^1.16.0",
     "lint-staged": "^15.2.0",
-    "nuxt": "^3.9.1",
+    "nuxt": "^3.12.2",
+    "openapi-typescript": "^5.4.0",
     "pinia": "^2.1.7",
     "pusher-js": "8.4.0-rc2",
     "qs": "^6.12.0",
     "shadcn-nuxt": "^0.8.7",
-    "tailwind-merge": "^2.1.0",
+    "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.3.3",
-    "vue-tsc": "^1.8.25"
+    "vue-tsc": "^1.8.27"
   },
   "lint-staged": {
     "*.{vue, ts}": "eslint --fix"

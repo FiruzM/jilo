@@ -1,13 +1,8 @@
-export interface LoginProps {
-  email: string
-  password: string
-}
+import { client } from '../client'
+import type { definitions } from '../v1'
 
-export function login(data: LoginProps) {
-  const client = useApiClient()
-
-  return client.post('login', { json: data }).json<{
-    error: boolean
-    token: string
-  }>()
+export function login(data: definitions['models.UserLogin']) {
+  return client.post('auth/sign-in', {
+    json: data,
+  }).json()
 }

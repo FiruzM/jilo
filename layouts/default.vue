@@ -2,6 +2,7 @@
 import { Box, Heart, Home, Menu, Package, Search, ShoppingCart, User } from 'lucide-vue-next'
 
 const { locales, locale, setLocale } = useI18n()
+const user = useAuthUser()
 </script>
 
 <template>
@@ -38,9 +39,9 @@ const { locales, locale, setLocale } = useI18n()
                           </h4>
                           <ul>
                             <li>
-                              <NyxtLink to="/category/slug">
+                              <NuxtLink to="/category/slug">
                                 Guzman
-                              </NyxtLink>
+                              </NuxtLink>
                             </li>
                             <li>TopDecor</li>
                             <li>Kreda</li>
@@ -254,9 +255,21 @@ const { locales, locale, setLocale } = useI18n()
             </SelectContent>
           </Select>
 
-          <Button variant="outline" class="hidden py-6 text-sm font-medium xl:flex">
-            Войти
-          </Button>
+          <ClientOnly>
+            <div v-if="user" class="hidden items-center gap-3 xl:flex">
+              <Avatar>
+                <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
+                <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
+              </Avatar>
+              <p class="line-clamp-1 max-w-[57px] text-xs">
+                {{ user?.full_name }}
+              </p>
+            </div>
+
+            <Button v-else variant="outline" class="hidden py-6 text-sm font-medium xl:flex" @click="$router.push('/login')">
+              Войти
+            </Button>
+          </ClientOnly>
         </div>
       </div>
     </header>
@@ -317,7 +330,7 @@ const { locales, locale, setLocale } = useI18n()
         </li>
 
         <li>
-          <NuxtLink to="/profile" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+          <NuxtLink :to="user ? '/profile' : '/login'" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
             <User />
             <span class="pt-1 text-[10px]">Профиль</span>
           </NuxtLink>

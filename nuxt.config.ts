@@ -23,7 +23,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       wsHost: process.env.NUXT_PUBLIC_WS_HOST,
-      apiBase: process.env.NUXT_PUBLIC_API_URL,
+      apiUrl: process.env.NUXT_PUBLIC_API_URL,
     },
   },
 

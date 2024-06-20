@@ -1,15 +1,15 @@
 import { useAuthUser } from './useAuthUser'
-import { type LoginProps, login as loginFunc } from '~/api/auth/login'
+import { login as loginFunc } from '~/api/auth/login'
 import { logout as logoutFunc } from '~/api/auth/logout'
 import { currentUser } from '~/api/auth/current-user'
-import type { User } from '~/api/types'
-import { type CreateRegisterProps, sendRegisterForm } from '~/api/auth/register'
+import { sendRegisterForm } from '~/api/auth/register'
+import type { definitions } from '~/api/v1'
 
 export function useAuth() {
   const authUser = useAuthUser()
-  const token = useCookie('token')
+  const token = useLocalStorage('token', null)
 
-  const setUser = (user: User | null) => {
+  const setUser = (user: definitions['models.AddUserParams'] | null) => {
     authUser.value = user
   }
 
@@ -17,8 +17,7 @@ export function useAuth() {
     if (!authUser.value) {
       try {
         const data = await currentUser()
-
-        setUser(data.item)
+        setUser(data?.payload[0])
       }
       catch (error) {
         setUser(null)
@@ -28,18 +27,17 @@ export function useAuth() {
     return authUser.value
   }
 
-  const register = async (registerData: CreateRegisterProps) => {
+  const register = async (registerData: definitions['models.UserParams']) => {
     const data = await sendRegisterForm(registerData)
-
-    token.value = data.token
+    token.value = data?.payload?.token
 
     return data
   }
 
-  const login = async (loginData: LoginProps) => {
+  const login = async (loginData: definitions['models.UserLogin']) => {
     const data = await loginFunc(loginData)
 
-    token.value = data.token
+    token.value = data?.payload?.token
 
     return data
   }

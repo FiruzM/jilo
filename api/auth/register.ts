@@ -1,25 +1,17 @@
-export interface CreateRegisterProps {
-  role_name: string
-  first_name: string
-  last_name: string
-  phone: string
-  email: string
-  password: string
-  password_confirmation: string
-}
+import { client } from '../client'
+import type { definitions } from '../v1'
 
-export function sendRegisterForm(data: CreateRegisterProps) {
-  const client = useApiClient()
-
+export function sendRegisterForm(data: definitions['models.UserParams']) {
   const form = {
-    role_name: data.role_name,
-    first_name: data.first_name,
-    last_name: data.last_name,
-    phone: Number(data.phone),
     email: data.email,
+    full_name: data.full_name,
     password: data.password,
-    password_confirmation: data.password_confirmation,
+    repeat_password: data.repeat_password,
+    number_phone: data.number_phone,
   }
 
-  return client.post('register', { json: form }).json<{ error: boolean, token: string }>()
+  return client.post('/auth/sign-up', {
+    
+    json: form ,
+  }).json()
 }

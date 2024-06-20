@@ -1,12 +1,6 @@
-import type { User } from '../types'
-
-export interface JSONSchema {
-  error: boolean
-  item: User
-}
+import { client } from '../client'
+import type { definitions } from '../v1'
 
 export function currentUser() {
-  const client = useApiClient()
-
-  return client.get('user').json<JSONSchema>()
+  return client.get('admin/users').json<definitions['models.AddUserParams']>()
 }
