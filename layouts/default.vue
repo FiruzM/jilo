@@ -66,9 +66,9 @@ const user = useAuthUser()
                           </h4>
                           <ul>
                             <li>
-                              <NyxtLink to="/category/slug">
+                              <NuxtLink to="/category/slug">
                                 Guzman
-                              </NyxtLink>
+                              </NuxtLink>
                             </li>
                             <li>TopDecor</li>
                             <li>Kreda</li>
@@ -93,9 +93,9 @@ const user = useAuthUser()
                           </h4>
                           <ul>
                             <li>
-                              <NyxtLink to="/category/slug">
+                              <NuxtLink to="/category/slug">
                                 Guzman
-                              </NyxtLink>
+                              </NuxtLink>
                             </li>
                             <li>TopDecor</li>
                             <li>Kreda</li>
@@ -120,9 +120,9 @@ const user = useAuthUser()
                           </h4>
                           <ul>
                             <li>
-                              <NyxtLink to="/category/slug">
+                              <NuxtLink to="/category/slug">
                                 Guzman
-                              </NyxtLink>
+                              </NuxtLink>
                             </li>
                             <li>TopDecor</li>
                             <li>Kreda</li>
@@ -147,9 +147,9 @@ const user = useAuthUser()
                           </h4>
                           <ul>
                             <li>
-                              <NyxtLink to="/category/slug">
+                              <NuxtLink to="/category/slug">
                                 Guzman
-                              </NyxtLink>
+                              </NuxtLink>
                             </li>
                             <li>TopDecor</li>
                             <li>Kreda</li>
@@ -258,7 +258,7 @@ const user = useAuthUser()
           <ClientOnly>
             <div v-if="user" class="hidden items-center gap-3 xl:flex">
               <Avatar>
-                <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
+                <AvatarImage :src="`https://f8f726d3171d.vps.myjino.ru/${user.file_path}`" alt="@radix-vue" />
                 <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
               </Avatar>
               <p class="line-clamp-1 max-w-[57px] text-xs">
