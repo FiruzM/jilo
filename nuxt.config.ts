@@ -15,9 +15,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/admin/**': { ssr: false },
-    '/ecosystem/**': { ssr: false },
-    '/investor/**': { ssr: false },
-    '/startupper/**': { ssr: false },
+
   },
 
   runtimeConfig: {

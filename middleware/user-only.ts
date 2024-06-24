@@ -1,7 +1,7 @@
 import { getRoleLink } from '~/lib/utils'
 
 export default defineNuxtRouteMiddleware(async () => {
-  const isAdmin = useAdmin()
+  const isUser = useUser()
   const user = useAuthUser()
 
   if (!user.value)
@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(async () => {
 
   const roleName = user.value.role?.name
 
-  if (!isAdmin.value) {
+  if (!isUser.value) {
     return showError({
       statusCode: 404,
       statusMessage: 'Page not found',

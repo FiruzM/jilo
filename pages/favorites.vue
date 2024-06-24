@@ -1,7 +1,12 @@
+<script setup lang="ts">
+const user = useAuthUser()
+</script>
+
 <template>
   <div class="mx-auto max-w-[1360px] gap-6 px-4 pb-10 pt-8 lg:flex lg:px-10 lg:pb-16 lg:pt-11">
-    <AsidebarProfile class="hidden shrink-0 grow self-start lg:block" />
-
+    <ClientOnly v-if="user">
+      <AsidebarProfile class="hidden shrink-0 grow self-start lg:block" />
+    </ClientOnly>
     <div>
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <div>

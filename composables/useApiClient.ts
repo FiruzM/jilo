@@ -24,7 +24,7 @@ export function useApiClient() {
               statusCode: 404,
               statusMessage: 'Not Found',
               data: {
-                homeLink: getRoleLink(user.value?.role.name),
+                homeLink: getRoleLink(user.value?.role?.name),
               },
             })
           }

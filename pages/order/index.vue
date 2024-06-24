@@ -1,10 +1,16 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['user-only'],
+})
+
 const selected = ref('')
 </script>
 
 <template>
   <div class="mx-auto max-w-[1360px] gap-6 px-4 pb-10 pt-8 lg:flex lg:px-10 lg:pb-16 lg:pt-11">
-    <AsidebarProfile class="hidden lg:block" />
+    <ClientOnly>
+      <AsidebarProfile class="hidden lg:block" />
+    </ClientOnly>
 
     <div>
       <RadioGroup v-model="selected" default-value="option-one" class="mt-5 flex gap-2 lg:mt-8 lg:gap-4">

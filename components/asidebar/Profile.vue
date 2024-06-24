@@ -1,28 +1,32 @@
 <script setup lang="ts">
 import { Box, Heart, LogOut, SquarePen } from 'lucide-vue-next'
+
+const user = useAuthUser()
 </script>
 
 <template>
   <div class="flex flex-col gap-6 rounded-3xl border border-[#D5D5D5] p-4">
-    <div class="flex flex-col items-center gap-4 rounded-[8px] bg-[#EBF7F4] px-8 py-4">
-      <Avatar class="size-20">
-        <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
+    <ClientOnly>
+      <div class="flex flex-col items-center gap-4 rounded-[8px] bg-[#EBF7F4] px-8 py-4">
+        <Avatar class="size-20">
+          <AvatarImage :src="`https://f8f726d3171d.vps.myjino.ru/${user?.file_path}`" alt="Avatar" />
+          <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
+        </Avatar>
 
-      <div class="flex flex-col items-center">
-        <p class="font-semibold">
-          Фарида Рустамова
-        </p>
+        <div class="flex flex-col items-center">
+          <p class="font-semibold">
+            {{ user?.full_name }}
+          </p>
 
-        <span class="mt-[6px] text-xs text-[#8CA9AE]">+992 900 98 76 54</span>
+          <span class="mt-[6px] text-xs text-[#8CA9AE]">{{ user?.number_phone }}</span>
 
-        <NuxtLink class="mt-2 flex items-center gap-1 text-[10px] text-[#8CA9AE]">
-          <SquarePen class="size-3" />
-          Редактировать профиль
-        </NuxtLink>
+          <NuxtLink class="mt-2 flex items-center gap-1 text-[10px] text-[#8CA9AE]">
+            <SquarePen class="size-3" />
+            Редактировать профиль
+          </NuxtLink>
+        </div>
       </div>
-    </div>
+    </ClientOnly>
 
     <ul>
       <li class="rounded-[8px] p-4 [&.router-link-active]:bg-primary-foreground">

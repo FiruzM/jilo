@@ -4,10 +4,12 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import type { definitions } from '~/api/v1'
 import { useToast } from '~/components/ui/toast'
+import { getRoleLink } from '~/lib/utils'
 
 const { toast } = useToast()
 const router = useRouter()
 const { me, login } = useAuth()
+const user = useAuthUser()
 
 const formLoginSchema = toTypedSchema(z.object({
   login: z.string({
@@ -24,9 +26,14 @@ const formLogin = useForm({
 
 const { mutate } = useMutation({
   mutationFn: (data: definitions['models.UserLogin']) => login(data),
+  onError: async () => {
+    formLogin.setErrors({ login: undefined, password: 'Неверный логин или пароль' })
+  },
+
   onSuccess: async () => {
     await me()
-    router.push('/profile')
+    router.push(getRoleLink(user.value?.role?.name))
+
     toast({
       title: 'Авторизация прошла успешно',
     })
@@ -65,7 +72,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
           <FormItem class="w-full">
             <Label>Пароль</Label>
             <FormControl>
-              <Input v-bind="componentField" class="h-[48px] rounded-[12px] border-[#ADADAD] font-semibold" />
+              <PasswordInput v-bind="componentField" />
             </FormControl>
             <FormMessage />
           </FormItem>

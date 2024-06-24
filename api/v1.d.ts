@@ -29,9 +29,17 @@ export interface paths {
     /** UpdateUsers */
     put: {
       parameters: {
-        body: {
-          /** auth */
-          auth: definitions["models.AddUserParams"];
+        formData: {
+          email?: string;
+          file_path?: string;
+          full_name?: string;
+          id?: number;
+          number_phone?: string;
+          password?: string;
+          repeat_password?: string;
+          role?: number;
+          /** User avatar */
+          avatar?: unknown;
         };
       };
       responses: {
@@ -111,12 +119,6 @@ export interface paths {
   "/app/categories/all": {
     /** GetAllCategories */
     get: {
-      parameters: {
-        body: {
-          /** auth */
-          auth: definitions["models.Categories"];
-        };
-      };
       responses: {
         /** OK */
         200: {
@@ -177,18 +179,38 @@ export interface paths {
     };
   };
   "/app/products": {
-    /** AddProducts */
+    /** models.Products */
     post: {
       parameters: {
-        body: {
-          /** auth */
-          auth: definitions["models.Products"];
+        formData: {
+          /** Product Name */
+          name: string;
+          /** Product Price */
+          price: number;
+          /** Old Price */
+          old_price?: number;
+          /** Inventory Number */
+          inventory_number: string;
+          /** Color ID */
+          color_id: number;
+          /** Size ID */
+          size_id: number;
+          /** Brand ID */
+          brands_id: number;
+          /** Status ID */
+          status_id: number;
+          /** Product Files */
+          files: unknown;
         };
       };
       responses: {
         /** OK */
         200: {
           schema: definitions["models.Response"];
+        };
+        /** Created */
+        201: {
+          schema: definitions["models.Products"];
         };
       };
     };
@@ -216,6 +238,67 @@ export interface paths {
           max_price?: number;
         };
       };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["models.Response"];
+        };
+      };
+    };
+  };
+  "/app/products/{id}": {
+    /** UpdateProduct */
+    put: {
+      parameters: {
+        formData: {
+          /** Product ID */
+          id: number;
+          /** Product Name */
+          name?: string;
+          /** Product Price */
+          price?: number;
+          /** Old Price */
+          old_price?: number;
+          /** Inventory Number */
+          inventory_number?: string;
+          /** Color ID */
+          color_id?: number;
+          /** Size ID */
+          size_id?: number;
+          /** Brand ID */
+          brands_id?: number;
+          /** Status ID */
+          status_id?: number;
+          /** Product Files */
+          files?: unknown;
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["models.Response"];
+        };
+      };
+    };
+    /** DeleteProduct */
+    delete: {
+      parameters: {
+        path: {
+          /** Product ID */
+          id: number;
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["models.Response"];
+        };
+      };
+    };
+  };
+  "/app/roles": {
+    /** GetRoles */
+    get: {
       responses: {
         /** OK */
         200: {
@@ -312,12 +395,6 @@ export interface paths {
   "/app/subcategories/all": {
     /** GetAllSubcategories */
     get: {
-      parameters: {
-        body: {
-          /** auth */
-          auth: definitions["models.Subcategories"];
-        };
-      };
       responses: {
         /** OK */
         200: {
@@ -369,11 +446,23 @@ export interface paths {
       };
     };
   };
+  "/profile/users": {
+    /** GetCurrentUsers */
+    get: {
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["models.Response"];
+        };
+      };
+    };
+  };
 }
 
 export interface definitions {
   "models.AddUserParams": {
     email?: string;
+    file_path?: string;
     full_name?: string;
     id?: number;
     number_phone?: string;
@@ -407,17 +496,29 @@ export interface definitions {
     updated_at?: string;
   };
   "models.Products": {
+    /** @description The brand ID of the product */
     brands_id?: number;
+    /** @description The color ID of the product */
     color_id?: number;
+    /** @description The creation time of the product */
     created_at?: string;
-    file_path?: string;
+    /** @description A list of file paths associated with the product */
+    file_paths?: string[];
+    /** @description The unique ID of the product */
     id?: number;
+    /** @description The inventory number of the product */
     inventory_number?: string;
+    /** @description The name of the product */
     name?: string;
+    /** @description The old price of the product */
     old_price?: number;
+    /** @description The price of the product */
     price?: number;
+    /** @description The size ID of the product */
     size_id?: number;
+    /** @description The status ID of the product */
     status_id?: number;
+    /** @description The last update time of the product */
     updated_at?: string;
   };
   "models.Response": {

@@ -123,7 +123,7 @@ const registerSubmit = formRegister.handleSubmit((values) => {
           <FormItem class="w-full">
             <Label>Введите пароль</Label>
             <FormControl>
-              <Input v-bind="componentField" class="h-[48px] rounded-[12px] border-[#ADADAD] font-semibold" />
+              <PasswordInput v-bind="componentField" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -133,7 +133,7 @@ const registerSubmit = formRegister.handleSubmit((values) => {
           <FormItem class="w-full">
             <Label>Повторите пароль</Label>
             <FormControl>
-              <Input v-bind="componentField" class="h-[48px] rounded-[12px] border-[#ADADAD] font-semibold" />
+              <PasswordInput v-bind="componentField" />
             </FormControl>
             <FormMessage />
           </FormItem>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Box, Heart, Home, Menu, Package, Search, ShoppingCart, User } from 'lucide-vue-next'
+import { getRoleLink } from '~/lib/utils'
 
 const { locales, locale, setLocale } = useI18n()
 const user = useAuthUser()
@@ -256,15 +257,28 @@ const user = useAuthUser()
           </Select>
 
           <ClientOnly>
-            <div v-if="user" class="hidden items-center gap-3 xl:flex">
-              <Avatar>
-                <AvatarImage :src="`https://f8f726d3171d.vps.myjino.ru/${user.file_path}`" alt="@radix-vue" />
-                <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
-              </Avatar>
-              <p class="line-clamp-1 max-w-[57px] text-xs">
-                {{ user?.full_name }}
-              </p>
-            </div>
+            <DropdownMenu v-if="user">
+              <DropdownMenuTrigger class="hidden items-center xl:flex">
+                <Avatar>
+                  <AvatarImage :src="`https://f8f726d3171d.vps.myjino.ru/${user?.file_path}`" alt="Avatar" />
+                  <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
+                </Avatar>
+                <p class="line-clamp-1 max-w-[57px] text-xs">
+                  {{ user?.full_name }}
+                </p>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>
+                  <NuxtLink :to="getRoleLink(user.role?.name)">
+                    Личный кабинет
+                  </NuxtLink>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  Выход
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <Button v-else variant="outline" class="hidden py-6 text-sm font-medium xl:flex" @click="$router.push('/login')">
               Войти
@@ -330,7 +344,25 @@ const user = useAuthUser()
         </li>
 
         <li>
-          <NuxtLink :to="user ? '/profile' : '/login'" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+          <DropdownMenu v-if="user">
+            <DropdownMenuTrigger class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
+              <User />
+              <span class="pt-1 text-[10px]">Профиль</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <NuxtLink :to="getRoleLink(user?.role?.name)">
+                  Личный кабинет
+                </NuxtLink>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                Выход
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <NuxtLink v-else to="/login" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
             <User />
             <span class="pt-1 text-[10px]">Профиль</span>
           </NuxtLink>

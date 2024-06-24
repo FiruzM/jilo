@@ -5,6 +5,6 @@ export function useAdmin() {
     if (!authUser.value)
       return false
 
-    return authUser.value?.role.name === 'admin'
+    return authUser.value?.role?.name === 'super-admin'
   })
 }

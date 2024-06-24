@@ -7,7 +7,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getRoleLink(role?: string) {
-  if (role === 'admin')
+  if (role === 'user')
+    return '/profile'
+  if (role === 'super-admin')
     return '/admin'
 
   return '/'

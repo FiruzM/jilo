@@ -4,6 +4,17 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import { UserRound } from 'lucide-vue-next'
 
+definePageMeta({
+  middleware: ['user-only'],
+})
+
+// const { refetch } = useQuery({
+//   queryKey: ['user'],
+//   queryFn: () => currentUser(),
+// })
+
+const user = useAuthUser()
+
 const MAX_IMAGE_SIZE = 100000 // 100KB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
@@ -17,7 +28,23 @@ const formSchema = computed(() => toTypedSchema(z.object({
     )
     .refine(file => file?.size <= MAX_IMAGE_SIZE, `Max image size is 100KB.`)
     .optional(),
-
+  full_name: z
+    .string({
+      required_error: 'Укажите имя',
+    })
+    .min(2, {
+      message: 'Минимум 2 символа',
+    })
+    .max(50, {
+      message: 'Максимум 50 символов',
+    }),
+  number_phone: z
+    .string({
+      required_error: 'Укажите телефон',
+    })
+    .min(9, {
+      message: 'Минимум 9 символа',
+    }),
 })))
 
 const form = useForm({
@@ -25,15 +52,20 @@ const form = useForm({
   keepValuesOnUnmount: true,
 })
 
+form.setValues({
+  full_name: user.value?.full_name,
+  number_phone: user.value?.number_phone,
+})
+
 const avatarPreview = computed(() => {
   const avatar: File = form.values?.avatar
-  //   const avatarPost = user.value?.avatarUrl
+  const avatarPost = user.value?.file_path
 
   if (avatar)
     return URL.createObjectURL(avatar)
 
-  //   if (avatarPost)
-  //     return avatarPost
+  if (avatarPost)
+    return avatarPost
 
   return avatar ? window.URL.createObjectURL(avatar) : null
 })
@@ -54,7 +86,7 @@ const onSubmit = form.handleSubmit((values) => {
           <UserRound class="size-10" />
         </div>
         <div v-else class="size-20 overflow-hidden rounded-full">
-          <img :src="avatarPreview" alt="Avatar" class="">
+          <img :src="`https://f8f726d3171d.vps.myjino.ru/${avatarPreview}`" alt="Avatar" class="size-20 rounded-full">
         </div>
         <FormField
           v-slot="{ handleChange, handleBlur, value }"
@@ -63,16 +95,16 @@ const onSubmit = form.handleSubmit((values) => {
           <FormItem>
             <FormControl>
               <div class="flex  w-full max-w-3xl items-center justify-between p-1">
-                <div class="relative flex h-10 items-center rounded-full focus-within:outline-1 focus-within:outline-offset-2">
+                <div class="relative flex items-center rounded-full focus-within:outline-1 focus-within:outline-offset-2">
                   <Input
                     :key="value"
                     accept="image/jpeg, image/jpg, image/png, image/webp"
-                    type="file" class="absolute inset-0 h-full opacity-0"
+                    type="file" class="absolute inset-0 -z-10 h-full opacity-0"
                     @change="handleChange"
                     @blur="handleBlur"
                   />
-                  <div class="flex flex-col gap-2">
-                    <p class="flex gap-3 text-center text-[18px] text-[#EDAFB8] sm:text-base">
+                  <div class="flex flex-col gap-2 ">
+                    <p class="flex gap-3 text-center text-[18px] text-[#EDAFB8] hover:cursor-pointer sm:text-base">
                       Загрузить фото
                     </p>
 
@@ -95,7 +127,7 @@ const onSubmit = form.handleSubmit((values) => {
       </h3>
 
       <div class="mt-9 flex flex-col gap-4">
-        <FormField v-slot="{ componentField }" name="name">
+        <FormField v-slot="{ componentField }" name="full_name">
           <FormItem>
             <FormLabel class="text-sm font-medium text-[#8CA9AE]">
               Полное имя
@@ -107,7 +139,7 @@ const onSubmit = form.handleSubmit((values) => {
           </FormItem>
         </FormField>
 
-        <FormField v-slot="{ componentField }" name="phone">
+        <FormField v-slot="{ componentField }" name="number_phone">
           <FormItem>
             <FormLabel class="text-sm font-medium text-[#8CA9AE]">
               Номер телефона
