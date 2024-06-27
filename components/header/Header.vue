@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { LogOut } from 'lucide-vue-next'
 
+const user = useAuthUser()
+
 const route = useRoute()
 </script>
 
@@ -13,8 +15,8 @@ const route = useRoute()
     </h2>
     <div class="flex items-center gap-5 pt-3">
       <Avatar class="size-14 border-2 border-white">
-        <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
-        <AvatarFallback>CN</AvatarFallback>
+        <AvatarImage :src="user?.file_path!" alt="Avatar" />
+        <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
       </Avatar>
 
       <Button

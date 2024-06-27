@@ -12,7 +12,7 @@ definePageMeta({
 
 const { toast } = useToast()
 
-const { data: products, refetch } = useQuery({
+const { data: products, refetch, isPending } = useQuery({
   queryKey: ['products'],
   queryFn: getProducts,
 })
@@ -48,6 +48,8 @@ const { mutate } = useMutation({
         <FileX class="opacity-60. size-14 stroke-[#D5D5D5]" />
       </TableEmpty>
 
+      <TableLoading v-if="isPending" :cells="5" />
+
       <TableRow v-for="(product, index) in products?.payload" :key="product.id">
         <TableCell class="font-medium">
           {{ index + 1 }}
@@ -61,7 +63,7 @@ const { mutate } = useMutation({
         </TableCell>
         <TableCell>
           <div class="flex gap-4">
-            <NuxtLink>
+            <NuxtLink :to="`/admin/products/${product.id}`">
               <Eye class="cursor-pointer stroke-[#3c83ed]" />
             </NuxtLink>
 

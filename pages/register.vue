@@ -5,6 +5,10 @@ import { toTypedSchema } from '@vee-validate/zod'
 import type { definitions } from '~/api/v1'
 import { useToast } from '~/components/ui/toast'
 
+definePageMeta({
+  middleware: ['guest-only'],
+})
+
 const { me, register } = useAuth()
 const { toast } = useToast()
 const router = useRouter()

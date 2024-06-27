@@ -6,6 +6,10 @@ import type { definitions } from '~/api/v1'
 import { useToast } from '~/components/ui/toast'
 import { getRoleLink } from '~/lib/utils'
 
+definePageMeta({
+  middleware: ['guest-only'],
+})
+
 const { toast } = useToast()
 const router = useRouter()
 const { me, login } = useAuth()
@@ -24,7 +28,7 @@ const formLogin = useForm({
   keepValuesOnUnmount: true,
 })
 
-const { mutate } = useMutation({
+const { mutate, isPending } = useMutation({
   mutationFn: (data: definitions['models.UserLogin']) => login(data),
   onError: async () => {
     formLogin.setErrors({ login: undefined, password: 'Неверный логин или пароль' })
@@ -78,7 +82,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
           </FormItem>
         </FormField>
 
-        <Button class="text-sm" type="submit">
+        <Button class="text-sm" type="submit" :is-loading="isPending">
           Получить код
         </Button>
       </form>

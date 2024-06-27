@@ -5,8 +5,14 @@ export function createProduct(data: definitions['models.Products']) {
   const formData = new FormData()
 
   for (const [key, value] of Object.entries(data)) {
-    formData.append(key, value as any)
+    if (key !== 'file_paths') {
+      formData.append(key, value as any)
+    }
   }
+
+  data.file_paths!.forEach((data) => {
+    formData.append('files', data)
+  })
 
   return client.post('app/products', {
     body: formData,

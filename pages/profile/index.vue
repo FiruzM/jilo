@@ -3,19 +3,25 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import { UserRound } from 'lucide-vue-next'
+import type { definitions } from '~/api/v1'
+import { updateProfile } from '~/api/auth/update-user'
+import { currentUser } from '~/api/auth/current-user'
+import { useToast } from '~/components/ui/toast'
 
 definePageMeta({
   middleware: ['user-only'],
 })
 
-// const { refetch } = useQuery({
-//   queryKey: ['user'],
-//   queryFn: () => currentUser(),
-// })
-
 const user = useAuthUser()
+const authStor = useAuth()
+const { toast } = useToast()
 
-const MAX_IMAGE_SIZE = 100000 // 100KB
+const { refetch } = useQuery({
+  queryKey: ['user'],
+  queryFn: () => currentUser(),
+})
+
+const MAX_IMAGE_SIZE = 1000000 // 100KB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 const formSchema = computed(() => toTypedSchema(z.object({
@@ -70,7 +76,20 @@ const avatarPreview = computed(() => {
   return avatar ? window.URL.createObjectURL(avatar) : null
 })
 
+const { mutate, isPending } = useMutation({
+  mutationFn: (data: definitions['models.AddUserParams']) => updateProfile(data),
+
+  onSuccess: async () => {
+    const userData = await refetch()
+    authStor.setUser(userData.data.payload[0])
+    toast({
+      title: 'Профиль успешно изменен',
+    })
+  },
+})
+
 const onSubmit = form.handleSubmit((values) => {
+  mutate(values)
   // eslint-disable-next-line no-console
   console.log('Form submitted!', values)
 })
@@ -78,7 +97,9 @@ const onSubmit = form.handleSubmit((values) => {
 
 <template>
   <div class="mx-auto max-w-[1360px] gap-6 px-4 pb-10 pt-8 lg:flex lg:gap-10 lg:px-10 lg:pb-16 lg:pt-10 ">
-    <AsidebarProfile class="hidden lg:block" />
+    <ClientOnly>
+      <AsidebarProfile class="hidden lg:block" />
+    </ClientOnly>
 
     <form @submit="onSubmit">
       <div class="flex items-center gap-4">
@@ -99,7 +120,7 @@ const onSubmit = form.handleSubmit((values) => {
                   <Input
                     :key="value"
                     accept="image/jpeg, image/jpg, image/png, image/webp"
-                    type="file" class="absolute inset-0 -z-10 h-full opacity-0"
+                    type="file" class="absolute inset-0 h-full opacity-0"
                     @change="handleChange"
                     @blur="handleBlur"
                   />
@@ -152,7 +173,7 @@ const onSubmit = form.handleSubmit((values) => {
         </FormField>
       </div>
 
-      <Button type="submit" class="mt-9 w-full max-w-[529px] rounded-xl">
+      <Button type="submit" class="mt-9 w-full max-w-[529px] rounded-xl" :is-loading="isPending">
         Сохранить
       </Button>
     </form>

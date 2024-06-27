@@ -1,5 +1,5 @@
 <script setup>
-import { BadgePercent, Image, ListPlus, ShoppingBasket, UserRoundCheck, Users, WalletCards } from 'lucide-vue-next'
+import { BookmarkPlus, Image, ListEnd, ListPlus, ShoppingBasket, Users } from 'lucide-vue-next'
 
 const links = [
   {
@@ -8,19 +8,14 @@ const links = [
     icon: ListPlus,
   },
   {
-    title: 'Баннеры',
-    url: '/admin/banners',
-    icon: Image,
+    title: 'Подкатегории',
+    url: '/admin/subcategories',
+    icon: ListEnd,
   },
   {
-    title: 'Платежи',
-    url: '/admin/payments',
-    icon: WalletCards,
-  },
-  {
-    title: 'Роли и права',
-    url: '/admin/roles',
-    icon: UserRoundCheck,
+    title: 'Бренды',
+    url: '/admin/brands',
+    icon: BookmarkPlus,
   },
   {
     title: 'Товары',
@@ -28,15 +23,30 @@ const links = [
     icon: ShoppingBasket,
   },
   {
+    title: 'Баннеры',
+    url: '/admin/banners',
+    icon: Image,
+  },
+  // {
+  //   title: 'Платежи',
+  //   url: '/admin/payments',
+  //   icon: WalletCards,
+  // },
+  // {
+  //   title: 'Роли и права',
+  //   url: '/admin/roles',
+  //   icon: UserRoundCheck,
+  // },
+  {
     title: 'Пользователи',
     url: '/admin/users',
     icon: Users,
   },
-  {
-    title: 'Скидки',
-    url: '/admin/discounts',
-    icon: BadgePercent,
-  },
+  // {
+  //   title: 'Скидки',
+  //   url: '/admin/discounts',
+  //   icon: BadgePercent,
+  // },
 ]
 </script>
 
