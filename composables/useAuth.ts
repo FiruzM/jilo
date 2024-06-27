@@ -43,7 +43,6 @@ export function useAuth() {
   }
 
   const logout = async () => {
-    await logoutFunc()
     setUser(null)
     token.value = null
   }

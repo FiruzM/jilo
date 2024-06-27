@@ -4,6 +4,17 @@ import { getRoleLink } from '~/lib/utils'
 
 const { locales, locale, setLocale } = useI18n()
 const user = useAuthUser()
+const { logout, me } = useAuth()
+const router = useRouter()
+
+const { mutate } = useMutation({
+  mutationFn: () => logout(),
+
+  onSuccess: async () => {
+    await me()
+    router.push('/login')
+  },
+})
 </script>
 
 <template>
@@ -274,7 +285,7 @@ const user = useAuthUser()
                   </NuxtLink>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem @click="mutate()">
                   Выход
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -356,7 +367,7 @@ const user = useAuthUser()
                 </NuxtLink>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem @click="mutate()">
                 Выход
               </DropdownMenuItem>
             </DropdownMenuContent>

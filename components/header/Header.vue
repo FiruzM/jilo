@@ -4,6 +4,18 @@ import { LogOut } from 'lucide-vue-next'
 const user = useAuthUser()
 
 const route = useRoute()
+
+const router = useRouter()
+const { logout, me } = useAuth()
+
+const { mutate } = useMutation({
+  mutationFn: () => logout(),
+
+  onSuccess: async () => {
+    await me()
+    router.push('/login')
+  },
+})
 </script>
 
 <template>
@@ -21,6 +33,7 @@ const route = useRoute()
 
       <Button
         class="size-14 rounded-xl bg-[#000C15] hover:bg-[#01192b]"
+        @click="mutate()"
       >
         <LogOut class="stroke-[#0ae8c2]" />
       </Button>

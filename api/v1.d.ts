@@ -468,7 +468,10 @@ export interface definitions {
     number_phone?: string;
     password?: string;
     repeat_password?: string;
-    role?: number;
+    role?: {
+      id?: number;
+      name?: string
+    }
   };
   "models.Brands": {
     categories_id?: number;

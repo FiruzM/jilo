@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Eye, FileX, Trash } from 'lucide-vue-next'
-import { deleteProduct } from '~/api/admin/products/delete-product'
+import { deleteUser } from '~/api/admin/users/delete-user'
 import { getUsers } from '~/api/admin/users/get-users'
 import { useToast } from '~/components/ui/toast'
 
@@ -18,7 +18,7 @@ const { data: users, refetch, isPending } = useQuery({
 })
 
 const { mutate } = useMutation({
-  mutationFn: (data: number | undefined) => deleteProduct(data),
+  mutationFn: (data: number | undefined) => deleteUser(data),
 
   onSuccess: () => {
     refetch()
@@ -74,7 +74,7 @@ const { mutate } = useMutation({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Нет</AlertDialogCancel>
-                  <AlertDialogAction @click="mutate(category.id)">
+                  <AlertDialogAction @click="mutate(user.id)">
                     Да
                   </AlertDialogAction>
                 </AlertDialogFooter>

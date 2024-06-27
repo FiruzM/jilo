@@ -56,7 +56,7 @@ const { mutate } = useMutation({
 
         <TableCell>
           <div class="flex gap-4">
-            <NuxtLink>
+            <NuxtLink :to="`/admin/categories/${category.id}`">
               <Eye class="cursor-pointer stroke-[#3c83ed]" />
             </NuxtLink>
 

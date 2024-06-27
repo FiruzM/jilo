@@ -12,9 +12,9 @@ definePageMeta({
 
 const { toast } = useToast()
 
-const { data: subcategories, refetch, isPending } = useQuery({
+const { data: subcategories, isPending, refetch } = useQuery({
   queryKey: ['subcategories'],
-  queryFn: getSubcategories,
+  queryFn: () => getSubcategories(),
 })
 
 const { mutate } = useMutation({
@@ -57,7 +57,7 @@ const { mutate } = useMutation({
         <TableCell>
           <div class="flex gap-4">
             <NuxtLink>
-              <Eye class="cursor-pointer stroke-[#3c83ed]" />
+              <Eye :to="`/admin/subcategories/${subcategory.id}`" class="cursor-pointer stroke-[#3c83ed]" />
             </NuxtLink>
 
             <AlertDialog>
@@ -83,8 +83,8 @@ const { mutate } = useMutation({
   </Table>
 
   <div class="mt-10 flex justify-end">
-    <Button class="bg-[#3c83ed] text-white hover:bg-[#10a4e9]" @click="$router.push('/admin/subcategories/create')">
-      Добавить подкатегорию
+    <Button class="bg-[#3c83ed] text-white hover:bg-[#10a4e9]" @click="$router.push('/admin/categories/create')">
+      Добавить категорию
     </Button>
   </div>
 </template>
