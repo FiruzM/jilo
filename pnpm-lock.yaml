@@ -27,7 +27,7 @@ dependencies:
     specifier: ^8.0.0
     version: 8.1.5
   embla-carousel-autoplay:
-    specifier: ^8.0.0
+    specifier: ^8.1.5
     version: 8.1.5(embla-carousel@8.1.5)
   embla-carousel-vue:
     specifier: ^8.0.0

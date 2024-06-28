@@ -8,5 +8,5 @@ export { default as NavigationMenuContent } from './NavigationMenuContent.vue'
 export { default as NavigationMenuLink } from './NavigationMenuLink.vue'
 
 export const navigationMenuTriggerStyle = cva(
-  'group inline-flex h-10 w-[190px] items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-primary-foreground hover:text-[#FFDCCD] focus:bg-primary-foreground focus:text-[#FFDCCD] focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary-foreground data-[state=open]:bg-primary-foreground',
+  'group inline-flex h-10 w-[190px] items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-[#E6E6E6] hover:text-[#4A5759] focus:bg-transparent focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-transparent data-[state=open]:bg-[#E6E6E6]',
 )

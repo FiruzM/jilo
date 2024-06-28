@@ -51,7 +51,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:px-10 lg:pb-16 lg:pt-[100px]">
+  <div class="relative mx-auto max-w-[1360px] px-4 pb-28 pt-8 lg:px-10 lg:pb-16 lg:pt-[100px]">
     <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
       Оформление заказа
     </h3>
@@ -179,7 +179,7 @@ const onSubmit = handleSubmit((values) => {
             </FormItem>
           </FormField>
 
-          <Button type="submit" class="w-full">
+          <Button type="submit" class="absolute bottom-8 left-4 w-[92%] lg:static lg:w-full">
             Оформить заказ
           </Button>
         </form>

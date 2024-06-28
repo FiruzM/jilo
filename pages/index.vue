@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import { ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
+import Autoplay from 'embla-carousel-autoplay'
 </script>
 
 <template>
-  <div class="mt-5 px-4 lg:mt-10 lg:px-10 xl:pr-0">
+  <div class="mx-auto mt-5 max-w-[1360px] px-4 lg:mt-10 lg:px-10">
     <Carousel
       class="relative w-full"
       :opts="{
         align: 'center',
 
       }"
+      :plugins="[Autoplay({
+        delay: 3000,
+      })]"
     >
-      <CarouselContent class="xl:w-[1158px]">
+      <CarouselContent>
         <CarouselItem v-for="(_, index) in 4" :key="index">
           <div class="flex h-[200px] flex-col items-center rounded-3xl bg-primary-foreground px-[14px] py-5 lg:h-auto lg:items-start lg:py-32 lg:pl-16">
             <h3 class="text-2xl font-semibold text-[#FFDCCD] sm:text-3xl">
@@ -23,6 +27,13 @@ import { ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
           </div>
         </CarouselItem>
       </CarouselContent>
+      <div class="absolute right-20 top-10 flex lg:hidden">
+        <CarouselPrevious class="-left-10 border-none bg-primary-foreground stroke-[#FFDCCD]" />
+        <CarouselNext class="border-none bg-primary-foreground " />
+      </div>
+
+      <CarouselPrevious class="left-5 hidden border-none bg-primary-foreground stroke-[#FFDCCD] lg:flex" />
+      <CarouselNext class="right-5 hidden border-none bg-primary-foreground lg:flex" />
     </Carousel>
   </div>
 
@@ -62,7 +73,7 @@ import { ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
         >
           <CarouselContent>
             <CarouselItem v-for="(_, index) in 5" :key="index" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-              <CardsItemCard @click="() => $router.push('/category/items')" />
+              <CardsItemCard @click="() => $router.push('/products/:id()')" />
             </CarouselItem>
           </CarouselContent>
         </Carousel>

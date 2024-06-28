@@ -19,7 +19,7 @@ const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>
-  <div class="flex justify-center pl-10">
+  <div class="flex justify-center">
     <NavigationMenuViewport
       v-bind="forwardedProps"
       :class="

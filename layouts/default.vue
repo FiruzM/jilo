@@ -37,27 +37,29 @@ const { mutate } = useMutation({
               <NavigationMenu>
                 <NavigationMenuList class="flex-col bg-[#F2F2F2] py-10 pl-10 pr-5">
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
+                    <NavigationMenuTrigger class="justify-between text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
                       Красители
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <NavigationMenuLink>
-                        <h4 class="text-3xl font-bold">
-                          Красители
-                        </h4>
-                        <div class="mt-9">
-                          <h4 class="text-base font-semibold">
-                            Жирорастворимые  красители
+                    <NavigationMenuContent class="">
+                      <NavigationMenuLink class="">
+                        <div class="pl-10">
+                          <h4 class="text-3xl font-bold">
+                            Красители
                           </h4>
-                          <ul>
-                            <li>
-                              <NuxtLink to="/category/slug">
-                                Guzman
-                              </NuxtLink>
-                            </li>
-                            <li>TopDecor</li>
-                            <li>Kreda</li>
-                          </ul>
+                          <div class="pl- mt-9">
+                            <h4 class="text-base font-semibold">
+                              Жирорастворимые  красители
+                            </h4>
+                            <ul>
+                              <li>
+                                <NuxtLink to="/category/slug">
+                                  Guzman
+                                </NuxtLink>
+                              </li>
+                              <li>TopDecor</li>
+                              <li>Kreda</li>
+                            </ul>
+                          </div>
                         </div>
                       </NavigationMenuLink>
                     </NavigationMenuContent>
@@ -269,7 +271,7 @@ const { mutate } = useMutation({
 
           <ClientOnly>
             <DropdownMenu v-if="user">
-              <DropdownMenuTrigger class="hidden items-center xl:flex">
+              <DropdownMenuTrigger class="hidden items-center xl:flex xl:gap-1">
                 <Avatar>
                   <AvatarImage :src="`https://f8f726d3171d.vps.myjino.ru/${user?.file_path}`" alt="Avatar" />
                   <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
