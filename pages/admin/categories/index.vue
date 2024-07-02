@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Eye, FileX, Trash } from 'lucide-vue-next'
+import qs from 'qs'
 import { deleteCategory } from '~/api/admin/categories/delete-category'
 import { getCategories } from '~/api/admin/categories/get-categories'
 import { useToast } from '~/components/ui/toast'
@@ -11,9 +12,11 @@ definePageMeta({
 })
 
 const { toast } = useToast()
+const route = useRoute()
+const searchParams = computed(() => qs.stringify(route.query))
 
 const { data: categories, refetch, isPending } = useQuery({
-  queryKey: ['categories'],
+  queryKey: ['categories', searchParams],
   queryFn: getCategories,
 })
 
@@ -81,6 +84,34 @@ const { mutate } = useMutation({
       </TableRow>
     </TableBody>
   </Table>
+
+  <div v-if="categories?.payload.length > 0" class="mt-5 flex justify-center">
+    <Pagination
+      v-slot="{ page }"
+      :total="12"
+      :sibling-count="1"
+      show-edges
+      :default-page="$route.query.page ? Number($route.query.page) : 1"
+      @update:page="$router.push({ query: { page: $event } })"
+    >
+      <PaginationList v-slot="{ items }" class="flex items-center gap-1">
+        <PaginationFirst class="border-[#488bee]" />
+        <PaginationPrev class="border-[#488bee]" />
+
+        <template v-for="(item, index) in items">
+          <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
+            <Button class="size-10 p-0" :class="item.value === page ? 'bg-[#488bee] text-white hover:bg-[#488bee]' : 'bg-white border border-[#488bee] hover:bg-[#488bee]'">
+              {{ item.value }}
+            </Button>
+          </PaginationListItem>
+          <PaginationEllipsis v-else :key="item.type" :index="index" />
+        </template>
+
+        <PaginationNext class="border-[#488bee]" />
+        <PaginationLast class="border-[#488bee]" />
+      </PaginationList>
+    </Pagination>
+  </div>
 
   <div class="mt-10 flex justify-end">
     <Button class="bg-[#3c83ed] text-white hover:bg-[#10a4e9]" @click="$router.push('/admin/categories/create')">

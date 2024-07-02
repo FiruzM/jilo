@@ -1,13 +1,14 @@
 import { client } from '~/api/client'
 import type { definitions } from '~/api/v1'
 
-export function createCategory(data: definitions['models.Categories']) {
+export function updateCategory(data: definitions['models.Categories'], id: string) {
   const formData = new FormData()
 
+  formData.append('id', id)
   formData.append('name', data.name as any)
   formData.append('file', data.file as any)
 
-  return client.post('app/categories', {
+  return client.put('app/categories/id', {
     body: formData,
   }).json()
 }

@@ -8,6 +8,8 @@ import type { definitions } from '~/api/v1'
 import { createProduct } from '~/api/admin/products/create-product'
 import { useToast } from '~/components/ui/toast'
 import { getBrands } from '~/api/admin/brands/get-brands'
+import { getCategories } from '~/api/admin/categories/get-categories'
+import { getSubcategories } from '~/api/admin/subcategories/get-subcategories'
 
 definePageMeta({
   layout: 'admin-dashboard',
@@ -18,6 +20,16 @@ definePageMeta({
 const { data: brands } = useQuery({
   queryKey: ['brands'],
   queryFn: getBrands,
+})
+
+const { data: categories } = useQuery({
+  queryKey: ['categories'],
+  queryFn: getCategories,
+})
+
+const { data: subcategories } = useQuery({
+  queryKey: ['subcategories'],
+  queryFn: getSubcategories,
 })
 
 const { toast } = useToast()
@@ -60,7 +72,15 @@ const formSchema = toTypedSchema(z.object({
   brands_id: z
     .string({
       required_error: 'Укажите бренд',
+    }).optional(),
+  category_id: z
+    .string({
+      required_error: 'Укажите категорию',
     }),
+  subcategory_id: z
+    .string({
+      required_error: 'Укажите категорию',
+    }).optional(),
   file_paths: z
     .array(z
       .any()
@@ -143,17 +163,53 @@ const onSubmit = form.handleSubmit((formData) => {
           </FormItem>
         </FormField>
 
-        <!-- <FormField v-slot="{ componentField }" name="inventory_number">
+        <FormField v-slot="{ componentField }" name="category_id">
           <FormItem>
             <FormLabel class="text-[#3c83ed]">
-              Инвентарный номер
+              Категория
             </FormLabel>
-            <FormControl>
-              <Input v-bind="componentField" class="border-[#3c83ed] focus:border-[#10a4e9]" />
-            </FormControl>
+
+            <Select v-bind="componentField">
+              <FormControl>
+                <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
+                  <SelectValue placeholder="Выберите категорию" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent class="border-[#3c83ed]">
+                <SelectGroup>
+                  <SelectItem v-for="category in categories?.payload" :key="category.id" :value="category.id!.toString()">
+                    {{ category.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
             <FormMessage />
           </FormItem>
-        </FormField> -->
+        </FormField>
+
+        <FormField v-slot="{ componentField }" name="subcategory_id">
+          <FormItem>
+            <FormLabel class="text-[#3c83ed]">
+              Подкатегория
+            </FormLabel>
+
+            <Select v-bind="componentField">
+              <FormControl>
+                <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
+                  <SelectValue placeholder="Выберите подкатегорию" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent class="border-[#3c83ed]">
+                <SelectGroup>
+                  <SelectItem v-for="subcategory in subcategories?.payload" :key="subcategory.id" :value="subcategory.id!.toString()">
+                    {{ subcategory.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        </FormField>
 
         <FormField v-slot="{ componentField }" name="brands_id">
           <FormItem>

@@ -3,10 +3,11 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import type { HTTPError } from 'ky'
-import type { definitions } from '~/api/v1'
+import { Image } from 'lucide-vue-next'
 import { useToast } from '~/components/ui/toast'
-import { getCategory } from '~/api/admin/categories/get-category'
-import { updateCategory } from '~/api/admin/categories/update-category'
+import { getBanner } from '~/api/admin/banners/get-banner'
+import { updateBanner } from '~/api/admin/banners/update-banner'
+import type { BannerProps } from '~/api/admin/banners/create-banner'
 
 definePageMeta({
   layout: 'admin-dashboard',
@@ -16,10 +17,10 @@ definePageMeta({
 
 const params: any = useRoute().params
 
-const { data: category, isSuccess, isRefetching } = useQuery({
-  queryKey: ['category', params],
+const { data: banner, isSuccess, isRefetching } = useQuery({
+  queryKey: ['banner', params],
   queryFn: () => {
-    return getCategory(params.id)
+    return getBanner(params.id)
   },
 })
 
@@ -30,7 +31,7 @@ const MAX_IMAGE_SIZE = 10000000 // 10MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 const formSchema = toTypedSchema(z.object({
-  name: z
+  title: z
     .string({
       required_error: 'Укажите наименование',
     })
@@ -40,7 +41,27 @@ const formSchema = toTypedSchema(z.object({
     .max(50, {
       message: 'Максимум 50 символов',
     }),
-  file: z
+  subtitle: z
+    .string({
+      required_error: 'Укажите наименование',
+    })
+    .min(2, {
+      message: 'Минимум 2 символа',
+    })
+    .max(50, {
+      message: 'Максимум 50 символов',
+    }),
+  banner_link: z
+    .string({
+      required_error: 'Укажите наименование',
+    })
+    .min(2, {
+      message: 'Минимум 2 символа',
+    })
+    .max(50, {
+      message: 'Максимум 50 символов',
+    }),
+  banner: z
     .any()
     .refine(file => file, 'Обязательно')
     .refine(
@@ -58,22 +79,24 @@ const form = useForm({
 watch([isSuccess, isRefetching], () => {
   if (isSuccess.value) {
     form.setValues({
-      name: category.value?.payload.name,
+      title: banner.value?.payload.title,
+      subtitle: banner.value?.payload.subtitle,
+      banner_link: banner.value?.payload.banner_link,
     })
   }
 })
 
 const posterPreview = computed(() => {
-  const poster: File = form.values?.file
-  const categoryPreview = category.value?.payload.file_path
+  const poster: File = form.values?.banner
+  const bannerPreview = banner.value?.payload.file_path
 
   return poster
     ? window.URL.createObjectURL(poster)
-    : categoryPreview
+    : bannerPreview
 })
 
 const { mutate, isPending } = useMutation({
-  mutationFn: (data: definitions['models.Products']) => updateCategory(data, params.id),
+  mutationFn: (data: BannerProps) => updateBanner(data, params.id),
 
   onError: async (error: HTTPError) => {
     const errorData = await error.response.json()
@@ -85,10 +108,10 @@ const { mutate, isPending } = useMutation({
     })
   },
   onSuccess: () => {
-    router.push('/admin/categories')
+    router.push('/admin/banners')
 
     toast({
-      title: 'Категория успешно изменена',
+      title: 'Баннер успешно изменен',
     })
   },
 })
@@ -104,10 +127,34 @@ const onSubmit = form.handleSubmit((formData) => {
       <div class="grow">
         <div class="flex justify-between gap-5">
           <div class="flex grow flex-col gap-5">
-            <FormField v-slot="{ componentField }" name="name">
+            <FormField v-slot="{ componentField }" name="title">
               <FormItem>
                 <FormLabel class="text-[#3c83ed]">
-                  Введите наименование категории
+                  Введите наименование титула
+                </FormLabel>
+                <FormControl>
+                  <Input v-bind="componentField" class="border-[#3c83ed] focus:border-[#10a4e9]" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <FormField v-slot="{ componentField }" name="subtitle">
+              <FormItem>
+                <FormLabel class="text-[#3c83ed]">
+                  Введите наименование подтитула
+                </FormLabel>
+                <FormControl>
+                  <Input v-bind="componentField" class="border-[#3c83ed] focus:border-[#10a4e9]" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+
+            <FormField v-slot="{ componentField }" name="banner_link">
+              <FormItem>
+                <FormLabel class="text-[#3c83ed]">
+                  Введите ссылку
                 </FormLabel>
                 <FormControl>
                   <Input v-bind="componentField" class="border-[#3c83ed] focus:border-[#10a4e9]" />
@@ -118,11 +165,11 @@ const onSubmit = form.handleSubmit((formData) => {
 
             <FormField
               v-slot="{ value, handleChange, handleBlur }"
-              name="file"
+              name="banner"
             >
               <FormItem>
                 <FormLabel class="text-[#3c83ed]">
-                  Загрузите обложку категории
+                  Загрузите баннер
                 </FormLabel>
                 <FormControl>
                   <UploadFile
@@ -137,14 +184,14 @@ const onSubmit = form.handleSubmit((formData) => {
             </FormField>
           </div>
           <div class="h-full">
-            <Label class="text-center text-sm font-medium text-[#3c83ed]">Предпросмотр обложки</Label>
+            <Label class="text-center text-sm font-medium text-[#3c83ed]">Предпросмотр баннера</Label>
 
             <div class="flex h-60 w-44 items-center overflow-hidden rounded-lg border-2 border-[#3c83ed]">
               <AspectRatio v-if="posterPreview" :ratio="4 / 6">
                 <img :src="posterPreview" alt="preview" class="size-full object-cover">
               </AspectRatio>
 
-              <Image v-else class="mx-auto size-10 stroke-input stroke-1" />
+              <Image v-else class="mx-auto size-10 stroke-[#3c83ed] stroke-1" />
             </div>
           </div>
         </div>

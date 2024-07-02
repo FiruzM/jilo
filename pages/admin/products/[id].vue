@@ -9,6 +9,8 @@ import { useToast } from '~/components/ui/toast'
 import { getBrands } from '~/api/admin/brands/get-brands'
 import { getProduct } from '~/api/admin/products/get-product'
 import { updateProduct } from '~/api/admin/products/update-product'
+import { getCategories } from '~/api/admin/categories/get-categories'
+import { getSubcategories } from '~/api/admin/subcategories/get-subcategories'
 
 definePageMeta({
   layout: 'admin-dashboard',
@@ -22,6 +24,16 @@ const { data: product, isSuccess, isRefetching } = useQuery({
   queryKey: ['product'],
   queryFn: () => getProduct(params.id),
 
+})
+
+const { data: categories } = useQuery({
+  queryKey: ['categories'],
+  queryFn: getCategories,
+})
+
+const { data: subcategories } = useQuery({
+  queryKey: ['subcategories'],
+  queryFn: getSubcategories,
 })
 
 const { data: brands } = useQuery({
@@ -66,10 +78,20 @@ const formSchema = toTypedSchema(z.object({
     .max(30, {
       message: 'Максимум 30 символов',
     }).optional(),
+
   brands_id: z
     .string({
       required_error: 'Укажите бренд',
+    }).optional(),
+  category_id: z
+    .string({
+      required_error: 'Укажите категорию',
     }),
+  subcategory_id: z
+    .string({
+      required_error: 'Укажите категорию',
+    }).optional(),
+
   file_paths: z
     .array(z
       .any()
@@ -93,6 +115,8 @@ watch([isSuccess, isRefetching], () => {
       price: product.value?.payload.price?.toString(),
       old_price: product.value?.payload.old_price?.toString(),
       brands_id: product.value?.payload.brands_id?.toString(),
+      category_id: product.value?.payload.category_id?.toString(),
+      subcategory_id: product.value?.payload.subcategory_id?.toString(),
     })
   }
 })
@@ -159,6 +183,54 @@ const onSubmit = form.handleSubmit((formData) => {
             <FormControl>
               <Input v-bind="componentField" class="border-[#3c83ed] focus:border-[#10a4e9]" />
             </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
+        <FormField v-slot="{ componentField }" name="category_id">
+          <FormItem>
+            <FormLabel class="text-[#3c83ed]">
+              Категория
+            </FormLabel>
+
+            <Select v-bind="componentField">
+              <FormControl>
+                <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
+                  <SelectValue placeholder="Выберите категорию" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent class="border-[#3c83ed]">
+                <SelectGroup>
+                  <SelectItem v-for="category in categories?.payload" :key="category.id" :value="category.id!.toString()">
+                    {{ category.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
+        <FormField v-slot="{ componentField }" name="subcategory_id">
+          <FormItem>
+            <FormLabel class="text-[#3c83ed]">
+              Подкатегория
+            </FormLabel>
+
+            <Select v-bind="componentField">
+              <FormControl>
+                <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
+                  <SelectValue placeholder="Выберите подкатегорию" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent class="border-[#3c83ed]">
+                <SelectGroup>
+                  <SelectItem v-for="subcategory in subcategories?.payload" :key="subcategory.id" :value="subcategory.id!.toString()">
+                    {{ subcategory.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
             <FormMessage />
           </FormItem>
         </FormField>

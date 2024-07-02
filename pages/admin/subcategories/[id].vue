@@ -4,9 +4,10 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import type { HTTPError } from 'ky'
 import type { definitions } from '~/api/v1'
-import { createSubcategory } from '~/api/admin/subcategories/create-subcategory'
 import { useToast } from '~/components/ui/toast'
 import { getCategories } from '~/api/admin/categories/get-categories'
+import { getSubcategory } from '~/api/admin/subcategories/get-subcategory'
+import { updateSubcategory } from '~/api/admin/subcategories/update-subcategory'
 
 definePageMeta({
   layout: 'admin-dashboard',
@@ -17,6 +18,13 @@ definePageMeta({
 const { data: categories } = useQuery({
   queryKey: ['categories'],
   queryFn: getCategories,
+})
+
+const params: any = useRoute().params
+
+const { data: subcategory, isSuccess, isRefetching } = useQuery({
+  queryKey: ['subcategory', params],
+  queryFn: () => getSubcategory(params.id),
 })
 
 const { toast } = useToast()
@@ -45,8 +53,17 @@ const form = useForm({
   keepValuesOnUnmount: true,
 })
 
+watch([isSuccess, isRefetching], () => {
+  if (isSuccess.value) {
+    form.setValues({
+      name: subcategory.value?.payload.name,
+      categories_id: subcategory.value?.payload.categories_id?.toString(),
+    })
+  }
+})
+
 const { mutate, isPending } = useMutation({
-  mutationFn: (data: definitions['models.Subcategories']) => createSubcategory(data),
+  mutationFn: (data: definitions['models.Subcategories']) => updateSubcategory(data, params.id),
 
   onError: async (error: HTTPError) => {
     const errorData = await error.response.json()
@@ -112,7 +129,7 @@ const onSubmit = form.handleSubmit((formData) => {
         </FormField>
 
         <Button class="self-start bg-[#3c83ed] text-white hover:bg-[#10a4e9]" type="submit" :is-loading="isPending">
-          Добавить
+          Изменить
         </Button>
       </div>
     </form>
