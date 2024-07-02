@@ -1,47 +1,70 @@
 <script setup lang="ts">
 import { Minus, Plus, Trash2 } from 'lucide-vue-next'
+
+const cart: any = useLocalStorage('cart', [])
+
+function decrement(id: number) {
+  cart.value.forEach((item: any) => {
+    if (item.id === id) {
+      item.count -= 1
+    }
+  })
+}
+
+function increment(id: number) {
+  cart.value.forEach((item: any) => {
+    if (item.id === id) {
+      item.count += 1
+    }
+  })
+}
+
+const total = computed(() => {
+  return cart.value.reduce((acc: any, item: any) => acc + (item.price * item.count), 0)
+})
 </script>
 
 <template>
   <div class="mx-auto max-w-[1360px] px-4 pb-20 pt-8 lg:px-10 lg:pb-16 lg:pt-[100px]">
-    <div v-if="true" class="flex flex-col gap-11 lg:flex-row lg:gap-16">
+    <div v-if="cart.length > 0" class="flex flex-col gap-11 lg:flex-row lg:gap-16">
       <div class="grow">
         <div class="hidden items-center justify-between lg:flex">
           <div class="flex gap-5">
             <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
               Корзина
             </h3>
-            <span class="self-end text-sm font-semibold text-[#7A7A7A]">4 товаров</span>
+            <span class="self-end text-sm font-semibold text-[#7A7A7A]">{{ cart.length }} товаров</span>
           </div>
 
-          <div class="flex items-center gap-1">
+          <button class="flex items-center gap-1" @click="cart = []">
             <Trash2 class="stroke-[#7a7a7a]" />
             <span class="text-sm text-[#7a7a7a]">Очистить корзину</span>
-          </div>
+          </button>
         </div>
 
         <div class="flex flex-col lg:mt-5 xl:mt-16">
-          <div v-for="i in 4" :key="i" class="flex gap-6 border-b py-4 lg:py-8">
+          <div v-for="item in cart" :key="item.id" class="flex gap-6 border-b py-4 lg:py-8">
             <div class="self-start rounded-[24px] bg-[#F1F4FA] p-6 lg:self-stretch">
-              <img src="/assets/img/box.png" alt="Logo" class="size-[60px]">
+              <img :src="item.file_paths[0]" alt="Logo" class="size-[60px]">
             </div>
 
             <div class="flex grow flex-col gap-6">
               <div class="flex flex-col gap-4 lg:flex-row lg:justify-between">
                 <p class="max-w-[371px]  font-semibold lg:text-xl">
-                  Коробка для торта с окном Гофрокартон 30х40х20 см
+                  {{ item.name }}
                 </p>
-                <span class="self-start text-sm font-semibold text-primary-foreground lg:text-xl">12.00 с.</span>
+                <span v-if="item.price" class="self-start text-sm font-semibold text-primary-foreground lg:text-xl">{{ item.price }} с.</span>
+                <span v-else class="self-start text-sm font-semibold text-primary-foreground lg:text-xl">{{ item.old_price }} с.</span>
               </div>
 
               <div class="flex justify-between">
                 <div class="flex items-center gap-2">
                   <div class="rounded-full bg-[#F7F8F9] p-1">
-                    <Plus class="size-4 stroke-[#64748B] sm:size-6" />
+                    <Plus class="size-4 stroke-[#64748B] hover:cursor-pointer sm:size-6" @click="increment(item.id)" />
                   </div>
-                  <span class="font-semibold">1</span>
+                  <span class="font-semibold">{{ item.count }}</span>
                   <div class="rounded-full bg-[#F7F8F9] p-1">
-                    <Minus class="size-4 stroke-[#64748B] sm:size-6" />
+                    <Minus class="size-4 stroke-[#64748B] hover:cursor-pointer sm:size-6" @click="decrement(item.id)" />
                   </div>
                 </div>
 
@@ -56,10 +79,10 @@ import { Minus, Plus, Trash2 } from 'lucide-vue-next'
         <div class="flex flex-col gap-4">
           <div class="flex">
             <p class="text-[#80979B]">
-              Товары (4)
+              Товары ({{ cart.length }})
             </p>
             <span class="w-[33%] grow border-b" />
-            <span class="text-[#80979B]">108.00 с.</span>
+            <span class="text-[#80979B]"> {{ total }} с.</span>
           </div>
 
           <div class="flex">

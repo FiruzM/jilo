@@ -1,20 +1,57 @@
+<script setup lang="ts">
+import type { definitions } from '~/api/v1'
+
+const data = defineProps<{ product: definitions['models.Products'] | undefined }>()
+// @ts-expect-error: arr might be empty, and forEach will throw an error
+const percent = ref(((data.product?.old_price - data.product?.price) / data.product?.old_price * 100))
+
+const favorite = useLocalStorage('favorite', [])
+const isLiked = ref(false)
+
+if (favorite.value.find((item: definitions['models.Products']) => item.id === data.product?.id)) {
+  isLiked.value = true
+}
+
+function handleStopPropagation(e: Event) {
+  e.stopPropagation()
+
+  isLiked.value = !isLiked.value
+
+  if (isLiked.value) {
+    // @ts-expect-error: arr might be empty, and forEach will throw an error
+    favorite.value.push(data.product)
+  }
+  else {
+    // Remove the current item from the favorite array
+    const index: any = favorite.value.findIndex((item: definitions['models.Products']) => item.id === data.product?.id)
+    if (index !== -1) {
+      favorite.value.splice(index, 1)
+    }
+  }
+}
+</script>
+
 <template>
   <div class="group overflow-hidden border-white transition-all ease-in xl:rounded-3xl xl:border-[10px] xl:hover:border-[#CCE3DE] xl:hover:bg-[#CCE3DE]">
     <div class="relative flex items-center justify-center rounded-[12px] bg-[#F1F4FA] p-9 sm:rounded-3xl ">
-      <img src="/assets/img/item.png" class="size-[102px] md:size-[142px] lg:size-[182px]" alt="Item">
-      <span class="absolute left-3 top-5 rounded-[3px] bg-primary-foreground px-1 text-sm font-semibold leading-5 text-[#FFDCCD] sm:left-5 md:rounded-md">-20%</span>
-      <span class="absolute left-3 top-[38px] rounded-[3px] bg-primary px-1 text-sm font-bold leading-5 text-primary-foreground sm:left-5 md:top-[50px] md:rounded-md">+30 Б</span>
+      <img :src="data.product?.file_paths[0]" class="size-[102px] md:size-[142px] lg:size-[182px]" alt="Item">
+      <span v-if="data.product?.old_price" class="absolute left-3 top-5 rounded-[3px] bg-primary-foreground px-1 text-sm font-semibold leading-5 text-[#FFDCCD] sm:left-5 md:rounded-md">-{{ Math.ceil(percent) }}%</span>
+      <!-- <span class="absolute left-3 top-[50px] rounded-[3px] bg-primary px-1 text-sm font-bold leading-5 text-primary-foreground sm:left-5 md:top-[50px] md:rounded-md">+30 Б</span> -->
 
-      <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute right-5 top-5 transition-all ease-in-out xl:opacity-0 xl:group-hover:opacity-100">
-        <path d="M18 12C19.49 10.54 21 8.79 21 6.5C21 5.04131 20.4205 3.64236 19.3891 2.61091C18.3576 1.57946 16.9587 1 15.5 1C13.74 1 12.5 1.5 11 3C9.5 1.5 8.26 1 6.5 1C5.04131 1 3.64236 1.57946 2.61091 2.61091C1.57946 3.64236 1 5.04131 1 6.5C1 8.8 2.5 10.55 4 12L11 19L18 12Z" stroke="#4A5759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <svg v-if="!isLiked" width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute right-5 top-5 transition-all ease-in-out xl:opacity-0 xl:group-hover:opacity-100" @click="handleStopPropagation($event)">
+        <path d="M18 12C19.49 10.54 21 8.79 21 6.5C21 5.04131 20.4205 3.64236 19.3891 2.61091C18.3576 1.57946 16.9587 1 15.5 1C13.74 1 12.5 1.5 11 3C9.5 1.5 8.26 1 6.5 1C5.04131 1 3.64236 1.57946 2.61091 2.61091C1.57946 3.64236 1 5.04131 1 6.5C1 8.8 2.5 10.55 4 12L11 19L18 12Z" stroke="#4A5759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fill-transparent hover:cursor-pointer" />
+      </svg>
+
+      <svg v-else width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute right-5 top-5 transition-all ease-in-out xl:opacity-0 xl:group-hover:opacity-100" @click="handleStopPropagation($event)">
+        <path d="M18 12C19.49 10.54 21 8.79 21 6.5C21 5.04131 20.4205 3.64236 19.3891 2.61091C18.3576 1.57946 16.9587 1 15.5 1C13.74 1 12.5 1.5 11 3C9.5 1.5 8.26 1 6.5 1C5.04131 1 3.64236 1.57946 2.61091 2.61091C1.57946 3.64236 1 5.04131 1 6.5C1 8.8 2.5 10.55 4 12L11 19L18 12Z" stroke="#4A5759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fill-primary stroke-primary hover:cursor-pointer" />
       </svg>
     </div>
     <div class="mt-4 flex flex-col">
       <p class="text-xs font-semibold sm:text-sm md:text-base">
-        Краситель гелевый MIXIE Бирюзовый 20 гр
+        {{ data.product?.name }}
       </p>
-      <span class="text-[10px] text-[#8CA9AE]">На складе 200 шт.</span>
-      <span class="font-semibold text-[#809A9E]">12.00 с..</span>
+      <!-- <span class="text-[10px] text-[#8CA9AE]">На складе 200 шт.</span> -->
+      <span class="font-semibold text-[#809A9E]">{{ data.product?.price }} с.</span>
 
       <Button class="mt-4 text-sm transition-all ease-in-out md:mt-6 xl:opacity-0 xl:group-hover:opacity-100">
         <svg class="mr-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

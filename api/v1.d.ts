@@ -503,6 +503,7 @@ export interface definitions {
     updated_at?: string
   }
   'models.Products': {
+    favorite?: boolean
     /** @description The brand ID of the product */
     brands_id?: number
     /** @description The category ID of the product */
@@ -514,7 +515,7 @@ export interface definitions {
     /** @description The creation time of the product */
     created_at?: string
     /** @description A list of file paths associated with the product */
-    file_paths?: string[]
+    file_paths?: Array
     /** @description The unique ID of the product */
     id?: number
     /** @description The inventory number of the product */

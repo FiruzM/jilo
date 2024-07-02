@@ -2,9 +2,17 @@
 import { ChevronRight, ListFilter, Minus } from 'lucide-vue-next'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { getCategoriesProducts } from '~/api/products/get-categories-products'
 
 const selected = ref('')
 const isOpen = ref(false)
+
+const { data: products, isPending, suspense } = useQuery({
+  queryKey: [`products`],
+  queryFn: () => getCategoriesProducts(),
+})
+
+await suspense()
 </script>
 
 <template>
@@ -283,8 +291,12 @@ const isOpen = ref(false)
           </div>
         </RadioGroup>
 
-        <div class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
-          <CardsItemCard v-for="(_, index) in 8" :key="index" @click="() => $router.push('/category/items')" />
+        <div v-if="isPending" class="mt-8 grid grid-cols-2 gap-10 md:grid-cols-3 lg:mt-14 xl:grid-cols-4">
+          <Skeleton v-for="(_, index) in 8" :key="index" class="h-[306px] rounded-[24px]" />
+        </div>
+
+        <div else class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
+          <CardsItemCard v-for="product in products?.payload" :key="product.id" :product="product" @click="() => $router.push('/category/items')" />
         </div>
         <div class="flex justify-center">
           <Button class="mt-16 rounded-xl border border-primary bg-transparent">

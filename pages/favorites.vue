@@ -1,9 +1,11 @@
 <script setup lang="ts">
 const user = useAuthUser()
+
+const favorite: any = useLocalStorage('favorite', [])
 </script>
 
 <template>
-  <div class="mx-auto max-w-[1360px] gap-6 px-4 pb-10 pt-8 lg:flex lg:px-10 lg:pb-16 lg:pt-11">
+  <div v-if="favorite.length > 0" class="mx-auto max-w-[1360px] gap-6 px-4 pb-10 pt-8 lg:flex lg:px-10 lg:pb-16 lg:pt-11">
     <ClientOnly v-if="user">
       <AsidebarProfile class="hidden shrink-0 grow self-start lg:block" />
     </ClientOnly>
@@ -52,8 +54,13 @@ const user = useAuthUser()
       </div>
 
       <div class="mt-6 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
-        <CardsItemCard v-for="(_, index) in 8" :key="index" />
+        <CardsItemCard v-for="product in favorite" :key="product.id" :product="product" @click="$router.push(`/product/${product.id}`)" />
       </div>
     </div>
+  </div>
+  <div v-else>
+    <h3 class="mt-40 text-center text-3xl">
+      Вы пока не добавили никакие товары
+    </h3>
   </div>
 </template>

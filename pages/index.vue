@@ -1,6 +1,26 @@
 <script setup lang="ts">
 import { ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
 import Autoplay from 'embla-carousel-autoplay'
+import { getBanners } from '~/api/admin/banners/get-banners'
+import { getCategories } from '~/api/admin/categories/get-categories'
+import { getCategoriesProducts } from '~/api/products/get-categories-products'
+
+const { data: banners, suspense } = useQuery({
+  queryKey: ['banners'],
+  queryFn: getBanners,
+})
+
+const { data: categories } = useQuery({
+  queryKey: ['categories'],
+  queryFn: getCategories,
+})
+
+const { data: products } = useQuery({
+  queryKey: [`products`],
+  queryFn: () => getCategoriesProducts(),
+})
+
+await suspense()
 </script>
 
 <template>
@@ -16,21 +36,21 @@ import Autoplay from 'embla-carousel-autoplay'
       })]"
     >
       <CarouselContent>
-        <CarouselItem v-for="(_, index) in 4" :key="index">
-          <div class="flex h-[200px] flex-col items-center rounded-3xl bg-primary-foreground px-[14px] py-5 lg:h-auto lg:items-start lg:py-32 lg:pl-16">
+        <CarouselItem v-for="banner in banners?.payload" :key="banner.id">
+          <div class="relative flex h-[200px] flex-col items-center overflow-hidden rounded-3xl px-[14px] py-5 lg:h-auto lg:items-start lg:py-32 lg:pl-16">
+            <img :src="banner.file_path" alt="Banner" class="absolute left-0 top-0 -z-10 size-full object-cover">
             <h3 class="text-2xl font-semibold text-[#FFDCCD] sm:text-3xl">
-              Скидка при заказе на сайте
+              {{ banner.title }}
             </h3>
             <p class="mt-[6px] max-w-[265px] text-center text-xs text-[#FFDCCD] sm:mt-3 sm:max-w-[527px] sm:text-base md:text-lg lg:text-left lg:text-xl">
-              Мы дарим Вам постоянную скидку при оформлении заказа на сайте
+              {{ banner.subtitle }}
             </p>
+            <NuxtLink :to="banner.banner_link" target="_blank" class="mt-2.5 rounded-md bg-[#FFDCCD] p-2 hover:cursor-pointer">
+              Перейти
+            </NuxtLink>
           </div>
         </CarouselItem>
       </CarouselContent>
-      <div class="absolute right-20 top-10 flex lg:hidden">
-        <CarouselPrevious class="-left-10 border-none bg-primary-foreground stroke-[#FFDCCD]" />
-        <CarouselNext class="border-none bg-primary-foreground " />
-      </div>
 
       <CarouselPrevious class="left-5 hidden border-none bg-primary-foreground stroke-[#FFDCCD] lg:flex" />
       <CarouselNext class="right-5 hidden border-none bg-primary-foreground lg:flex" />
@@ -47,11 +67,11 @@ import Autoplay from 'embla-carousel-autoplay'
       </div>
 
       <ul class="mt-5 flex flex-wrap gap-2.5 lg:mt-10 lg:gap-6 xl:grid xl:grid-cols-5">
-        <li v-for="(_, index) in 5" :key="index" class="relative h-[127px] grow overflow-hidden rounded-[12px] bg-[#F1F4FA] p-5 md:h-[253px] lg:rounded-3xl">
+        <li v-for="category in categories?.payload" :key="category.id" class="relative h-[127px] grow overflow-hidden rounded-[12px] bg-[#F1F4FA] p-5 md:h-[253px] lg:rounded-3xl" @click="$router.push(`/category/${category.id}`)">
           <p class="w-[105px] text-xs font-semibold text-primary-foreground sm:w-[205px] sm:text-base md:text-[18px] xl:w-auto">
-            Подложки/подставки для торта
+            {{ category.name }}
           </p>
-          <img src="/assets/img/catalog-item.png" class="absolute bottom-0 right-0 size-[76px] sm:size-[96px] lg:size-[186px]" alt="Item">
+          <img :src="category.file_path" class="absolute bottom-0 right-0 size-[76px] sm:size-[96px] lg:size-[186px]" alt="Item">
         </li>
       </ul>
     </div>
@@ -72,8 +92,8 @@ import Autoplay from 'embla-carousel-autoplay'
           }"
         >
           <CarouselContent>
-            <CarouselItem v-for="(_, index) in 5" :key="index" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-              <CardsItemCard @click="() => $router.push('/products/:id()')" />
+            <CarouselItem v-for="product in products?.payload" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+              <CardsItemCard :product="product" @click="() => $router.push(`/product/${product.id}`)" />
             </CarouselItem>
           </CarouselContent>
         </Carousel>

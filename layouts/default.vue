@@ -1,11 +1,27 @@
 <script setup lang="ts">
 import { Box, Heart, Home, Menu, Package, Search, ShoppingCart, User } from 'lucide-vue-next'
+import { getDetails } from '~/api/details/get-details'
 import { getRoleLink } from '~/lib/utils'
 
 const { locales, locale, setLocale } = useI18n()
 const user = useAuthUser()
 const { logout, me } = useAuth()
 const router = useRouter()
+const favorite = useLocalStorage('favorite', [])
+const cart = useLocalStorage('cart', [])
+
+const { data: details } = useQuery({
+  queryKey: ['details'],
+  queryFn: getDetails,
+})
+
+const categoryButton = ref(false)
+const mobileCategoryButton = ref(false)
+
+watch(() => router.currentRoute.value.path, () => {
+  categoryButton.value = false
+  mobileCategoryButton.value = false
+})
 
 const { mutate } = useMutation({
   mutationFn: () => logout(),
@@ -26,7 +42,7 @@ const { mutate } = useMutation({
         </NuxtLink>
 
         <div class="flex grow items-center gap-2.5 sm:gap-5 lg:gap-8">
-          <Popover>
+          <Popover v-model:open="categoryButton">
             <PopoverTrigger as-child class="hidden xl:flex">
               <Button class="px-3 py-6 text-sm font-semibold">
                 <Menu class="mr-2" />
@@ -35,12 +51,12 @@ const { mutate } = useMutation({
             </PopoverTrigger>
             <PopoverContent class="mt-5 w-screen border-none p-0">
               <NavigationMenu>
-                <NavigationMenuList class="flex-col bg-[#F2F2F2] py-10 pl-10 pr-5">
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger class="justify-between text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
-                      Красители
+                <NavigationMenuList class="h-full flex-col bg-[#F2F2F2] py-10 pl-10 pr-5">
+                  <NavigationMenuItem v-for="detail in details?.payload.Categories" :key="detail.id">
+                    <NavigationMenuTrigger class="justify-between text-[#A6A6A6]" @click="$router.push(`/category/${detail.id}`)">
+                      {{ detail.name }}
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent class="">
+                    <NavigationMenuContent>
                       <NavigationMenuLink class="">
                         <div class="pl-10">
                           <h4 class="text-3xl font-bold">
@@ -64,120 +80,12 @@ const { mutate } = useMutation({
                       </NavigationMenuLink>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
-                      Красители
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <NavigationMenuLink>
-                        <h4 class="text-3xl font-bold">
-                          Красители
-                        </h4>
-                        <div class="mt-9">
-                          <h4 class="text-base font-semibold">
-                            Жирорастворимые  красители
-                          </h4>
-                          <ul>
-                            <li>
-                              <NuxtLink to="/category/slug">
-                                Guzman
-                              </NuxtLink>
-                            </li>
-                            <li>TopDecor</li>
-                            <li>Kreda</li>
-                          </ul>
-                        </div>
-                      </NavigationMenuLink>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
-                      Красители
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <NavigationMenuLink>
-                        <h4 class="text-3xl font-bold">
-                          Красители
-                        </h4>
-                        <div class="mt-9">
-                          <h4 class="text-base font-semibold">
-                            Жирорастворимые  красители
-                          </h4>
-                          <ul>
-                            <li>
-                              <NuxtLink to="/category/slug">
-                                Guzman
-                              </NuxtLink>
-                            </li>
-                            <li>TopDecor</li>
-                            <li>Kreda</li>
-                          </ul>
-                        </div>
-                      </NavigationMenuLink>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
-                      Красители
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <NavigationMenuLink>
-                        <h4 class="text-3xl font-bold">
-                          Красители
-                        </h4>
-                        <div class="mt-9">
-                          <h4 class="text-base font-semibold">
-                            Жирорастворимые  красители
-                          </h4>
-                          <ul>
-                            <li>
-                              <NuxtLink to="/category/slug">
-                                Guzman
-                              </NuxtLink>
-                            </li>
-                            <li>TopDecor</li>
-                            <li>Kreda</li>
-                          </ul>
-                        </div>
-                      </NavigationMenuLink>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger class="justify-between bg-transparent text-[#A6A6A6]" @click="$router.push('/category/:slug()')">
-                      Красители
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <NavigationMenuLink>
-                        <h4 class="text-3xl font-bold">
-                          Красители
-                        </h4>
-                        <div class="mt-9">
-                          <h4 class="text-base font-semibold">
-                            Жирорастворимые  красители
-                          </h4>
-                          <ul>
-                            <li>
-                              <NuxtLink to="/category/slug">
-                                Guzman
-                              </NuxtLink>
-                            </li>
-                            <li>TopDecor</li>
-                            <li>Kreda</li>
-                          </ul>
-                        </div>
-                      </NavigationMenuLink>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
             </PopoverContent>
           </Popover>
 
-          <Sheet>
+          <Sheet v-model:open="mobileCategoryButton">
             <SheetTrigger class="xl:hidden">
               <Button class="h-[34px] rounded-[8px] p-[5px]">
                 <Menu />
@@ -239,7 +147,7 @@ const { mutate } = useMutation({
                 <NuxtLink to="/favorites" class="flex flex-col items-center text-sm text-black">
                   <div class="relative">
                     <Heart />
-                    <span class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">2</span>
+                    <span v-if="favorite.length > 0" class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">{{ favorite.length }}</span>
                   </div>
                   Избранное
                 </NuxtLink>
@@ -248,7 +156,7 @@ const { mutate } = useMutation({
                 <NuxtLink to="/cart" class="flex flex-col items-center text-sm text-black">
                   <div class="relative">
                     <ShoppingCart />
-                    <span class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">2</span>
+                    <span v-if="cart.length > 0" class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">{{ cart.length }}</span>
                   </div>
                   Корзина
                 </NuxtLink>
@@ -344,7 +252,7 @@ const { mutate } = useMutation({
           <NuxtLink to="/favorites" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
             <Heart />
             <span class="pt-1 text-[10px]">Избранное</span>
-            <span class="absolute -top-1 right-0 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">3</span>
+            <span v-if="favorite.length > 0" class="absolute -top-1 right-0 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">{{ favorite.length }}</span>
           </NuxtLink>
         </li>
 
@@ -352,7 +260,7 @@ const { mutate } = useMutation({
           <NuxtLink to="/cart" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
             <ShoppingCart />
             <span class="pt-1 text-[10px]">Корзина</span>
-            <span class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">3</span>
+            <span v-if="cart.length > 0" class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">{{ cart.length }}</span>
           </NuxtLink>
         </li>
 

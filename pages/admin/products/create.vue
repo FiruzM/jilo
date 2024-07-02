@@ -58,7 +58,7 @@ const formSchema = toTypedSchema(z.object({
     })
     .max(30, {
       message: 'Максимум 30 символов',
-    }),
+    }).optional(),
   old_price: z
     .string({
       required_error: 'Укажите цену',
