@@ -52,7 +52,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
 <template>
   <ClientOnly>
     <div class="my-20 flex flex-col items-center">
-      <div class="w-[500px]">
+      <div class="w-full px-4 sm:w-[500px]">
         <div class="flex flex-col items-center gap-2">
           <p class="font-semibold text-black">
             Введите номер телефона
@@ -62,7 +62,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
           </p>
         </div>
 
-        <form class="mt-6 flex flex-col gap-6" @submit="formLoginSubmit">
+        <form class="mt-6 flex flex-col gap-4 md:gap-6" @submit="formLoginSubmit">
           <FormField v-slot="{ componentField }" name="login">
             <FormItem class="w-full">
               <Label>Логин</Label>
@@ -87,7 +87,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
             Получить код
           </Button>
         </form>
-        <NuxtLink to="/register" class="mt-10 flex h-[48px] items-center justify-center rounded-[12px] border border-primary text-sm font-semibold">
+        <NuxtLink to="/register" class="mt-5 flex h-[48px] items-center justify-center rounded-[12px] border border-primary text-sm font-semibold md:mt-10">
           Регистрация
         </NuxtLink>
       </div>

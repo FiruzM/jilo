@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { Box, LucideAlertCircle, Minus, Plus, ShoppingCart, Truck } from 'lucide-vue-next'
 import { getProduct } from '~/api/products/get-product'
+import { useToast } from '~/components/ui/toast'
 
 const params: any = useRoute().params
+const { toast } = useToast()
 
 const { data: product, suspense } = useQuery({
   queryKey: ['product'],
@@ -15,9 +17,17 @@ const count = ref(1)
 function addToCart() {
   const index = cart.value.findIndex((item: any) => item.id === product.value?.payload.id)
   if (index !== -1) {
+    toast({
+      title: 'Товар добавлен',
+      description: 'Товар был добавлен в корзину',
+    })
     return cart.value[index] = { ...product.value?.payload, count: count.value }
   }
   else {
+    toast({
+      title: 'Товар добавлен',
+      description: 'Товар был добавлен в корзину',
+    })
     return cart.value.push({ ...product.value?.payload, count: count.value })
   }
 }

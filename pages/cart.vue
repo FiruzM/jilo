@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { Minus, Plus, Trash2 } from 'lucide-vue-next'
+import { useToast } from '~/components/ui/toast'
+
+const { toast } = useToast()
 
 const cart: any = useLocalStorage('cart', [])
 
@@ -16,6 +19,14 @@ function increment(id: number) {
     if (item.id === id) {
       item.count += 1
     }
+  })
+}
+
+function remove(id: number) {
+  cart.value = cart.value.filter((item: any) => item.id !== id)
+  toast({
+    title: 'Товар удален',
+    description: 'Товар был удален из корзины',
   })
 }
 
@@ -68,7 +79,7 @@ const total = computed(() => {
                   </div>
                 </div>
 
-                <Trash2 class="stroke-[#7a7a7a]" />
+                <Trash2 class="stroke-[#7a7a7a] hover:cursor-pointer" @click="remove(item.id)" />
               </div>
             </div>
           </div>

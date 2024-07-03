@@ -90,7 +90,7 @@ const registerSubmit = formRegister.handleSubmit((values) => {
 </script>
 
 <template>
-  <div class="my-20 flex flex-col items-center">
+  <div class="my-20 flex flex-col items-center px-4">
     <form class="flex flex-col gap-4" @submit="registerSubmit">
       <FormField v-slot="{ componentField }" name="full_name">
         <Label>Введите полное имя</Label>
