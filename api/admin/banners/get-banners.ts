@@ -14,5 +14,5 @@ export function getBanners() {
   const searchParams = qs.stringify(route.query, { skipNulls: true })
   return client.get('app/banners/all', {
     searchParams,
-  }).json<{ payload: Banners[] }>()
+  }).json<{ payload: Banners[], total: number }>()
 }

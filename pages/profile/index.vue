@@ -106,7 +106,7 @@ const onSubmit = form.handleSubmit((values) => {
             <UserRound class="size-10" />
           </div>
           <div v-else class="size-20 overflow-hidden rounded-full">
-            <img :src="`https://f8f726d3171d.vps.myjino.ru/${avatarPreview}`" alt="Avatar" class="size-20 rounded-full">
+            <img :src="avatarPreview" alt="Avatar" class="size-20 rounded-full">
           </div>
           <FormField
             v-slot="{ handleChange, handleBlur, value }"

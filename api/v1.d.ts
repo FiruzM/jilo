@@ -474,7 +474,7 @@ export interface definitions {
     }
   }
   'models.Brands': {
-    categories_id?: number
+    subcategories_id?: number
     created_at?: string
     id?: number
     name?: string

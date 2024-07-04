@@ -82,7 +82,7 @@ const { mutate } = useMutation({
   <div v-if="banners?.payload.length > 0" class="mt-5 flex justify-center">
     <Pagination
       v-slot="{ page }"
-      :total="12"
+      :total="banners?.total"
       :sibling-count="1"
       show-edges
       :default-page="$route.query.page ? Number($route.query.page) : 1"

@@ -4,9 +4,10 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import type { HTTPError } from 'ky'
 import type { definitions } from '~/api/v1'
-import { createBrand } from '~/api/admin/brands/create-brand'
 import { useToast } from '~/components/ui/toast'
 import { getSubcategories } from '~/api/admin/subcategories/get-subcategories'
+import { getBrand } from '~/api/admin/brands/get-brand'
+import { updateBrand } from '~/api/admin/brands/update-brand'
 
 definePageMeta({
   layout: 'admin-dashboard',
@@ -17,6 +18,13 @@ definePageMeta({
 const { data: subcategories } = useQuery({
   queryKey: ['categories'],
   queryFn: getSubcategories,
+})
+
+const params: any = useRoute().params
+
+const { data: brand, isSuccess, isRefetching } = useQuery({
+  queryKey: ['brand', params],
+  queryFn: () => getBrand(params.id),
 })
 
 const { toast } = useToast()
@@ -34,7 +42,7 @@ const formSchema = toTypedSchema(z.object({
       message: 'Максимум 50 символов',
     }),
 
-  subcategories_id: z
+  subcategory_id: z
     .string({
       required_error: 'Укажите категорию',
     }),
@@ -45,8 +53,17 @@ const form = useForm({
   keepValuesOnUnmount: true,
 })
 
+watch([isSuccess, isRefetching], () => {
+  if (isSuccess.value) {
+    form.setValues({
+      name: brand.value?.payload.name,
+      subcategory_id: brand.value?.payload.subcategories_id?.toString(),
+    })
+  }
+})
+
 const { mutate, isPending } = useMutation({
-  mutationFn: (data: definitions['models.Brands']) => createBrand(data),
+  mutationFn: (data: definitions['models.Brands']) => updateBrand(params.id, data),
 
   onError: async (error: HTTPError) => {
     const errorData = await error.response.json()
@@ -61,13 +78,13 @@ const { mutate, isPending } = useMutation({
     router.push('/admin/brands')
 
     toast({
-      title: 'Бренд успешно добавлен',
+      title: 'Бренд успешно изменен',
     })
   },
 })
 
 const onSubmit = form.handleSubmit((formData) => {
-  mutate({ ...formData, subcategories_id: Number(formData.subcategories_id) })
+  mutate({ ...formData, subcategory_id: Number(formData.subcategory_id) } as any)
 })
 </script>
 
@@ -87,7 +104,7 @@ const onSubmit = form.handleSubmit((formData) => {
           </FormItem>
         </FormField>
 
-        <FormField v-slot="{ componentField }" name="subcategories_id">
+        <FormField v-slot="{ componentField }" name="subcategory_id">
           <FormItem>
             <FormLabel class="text-[#3c83ed]">
               Выберите подкатегорию
@@ -112,7 +129,7 @@ const onSubmit = form.handleSubmit((formData) => {
         </FormField>
 
         <Button class="self-start bg-[#3c83ed] text-white hover:bg-[#10a4e9]" type="submit" :is-loading="isPending">
-          Добавить
+          Изменить
         </Button>
       </div>
     </form>

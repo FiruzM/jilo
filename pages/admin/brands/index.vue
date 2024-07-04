@@ -45,7 +45,7 @@ const { mutate } = useMutation({
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableEmpty v-if="brands?.payload.length === 0" :colspan="6">
+      <TableEmpty v-if="!brands?.payload && !isPending" :colspan="6">
         <FileX class="opacity-60. size-14 stroke-[#D5D5D5]" />
       </TableEmpty>
 
@@ -59,7 +59,7 @@ const { mutate } = useMutation({
 
         <TableCell>
           <div class="flex gap-4">
-            <NuxtLink>
+            <NuxtLink :to="`/admin/brands/${brand.id}`">
               <Eye class="cursor-pointer stroke-[#3c83ed]" />
             </NuxtLink>
 
@@ -85,10 +85,10 @@ const { mutate } = useMutation({
     </TableBody>
   </Table>
 
-  <div v-if="brands?.payload.length > 0" class="mt-5 flex justify-center">
+  <div v-if="brands?.payload" class="mt-5 flex justify-center">
     <Pagination
       v-slot="{ page }"
-      :total="12"
+      :total="brands?.total"
       :sibling-count="1"
       show-edges
       :default-page="$route.query.page ? Number($route.query.page) : 1"
@@ -114,7 +114,7 @@ const { mutate } = useMutation({
   </div>
 
   <div class="mt-10 flex justify-end">
-    <Button class="bg-[#3c83ed] text-white hover:bg-[#10a4e9]" @click="$router.push('/admin/banners/create')">
+    <Button class="bg-[#3c83ed] text-white hover:bg-[#10a4e9]" @click="$router.push('/admin/brands/create')">
       Добавить бренд
     </Button>
   </div>

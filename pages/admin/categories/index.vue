@@ -45,7 +45,7 @@ const { mutate } = useMutation({
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableEmpty v-if="categories?.payload.length === 0" :colspan="6">
+      <TableEmpty v-if="!categories?.payload && !isPending" :colspan="6">
         <FileX class="opacity-60. size-14 stroke-[#D5D5D5]" />
       </TableEmpty>
 
@@ -85,10 +85,10 @@ const { mutate } = useMutation({
     </TableBody>
   </Table>
 
-  <div v-if="categories?.payload.length > 0" class="mt-5 flex justify-center">
+  <div v-if="categories?.payload" class="mt-5 flex justify-center">
     <Pagination
       v-slot="{ page }"
-      :total="12"
+      :total="categories?.total"
       :sibling-count="1"
       show-edges
       :default-page="$route.query.page ? Number($route.query.page) : 1"

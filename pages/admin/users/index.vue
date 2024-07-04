@@ -44,7 +44,7 @@ const { mutate } = useMutation({
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableEmpty v-if="users?.payload.length === 0" :colspan="6">
+      <TableEmpty v-if="!users?.payload && !isPending" :colspan="6">
         <FileX class="opacity-60. size-14 stroke-[#D5D5D5]" />
       </TableEmpty>
 
@@ -60,7 +60,7 @@ const { mutate } = useMutation({
 
         <TableCell>
           <div class="flex gap-4">
-            <NuxtLink>
+            <NuxtLink :to="`/admin/users/${user.id}`">
               <Eye class="cursor-pointer stroke-[#3c83ed]" />
             </NuxtLink>
 
@@ -85,4 +85,31 @@ const { mutate } = useMutation({
       </TableRow>
     </TableBody>
   </Table>
+  <div v-if="users?.payload" class="mt-5 flex justify-center">
+    <Pagination
+      v-slot="{ page }"
+      :total="users?.total"
+      :sibling-count="1"
+      show-edges
+      :default-page="$route.query.page ? Number($route.query.page) : 1"
+      @update:page="$router.push({ query: { page: $event } })"
+    >
+      <PaginationList v-slot="{ items }" class="flex items-center gap-1">
+        <PaginationFirst class="border-[#488bee]" />
+        <PaginationPrev class="border-[#488bee]" />
+
+        <template v-for="(item, index) in items">
+          <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
+            <Button class="size-10 p-0" :class="item.value === page ? 'bg-[#488bee] text-white hover:bg-[#488bee]' : 'bg-white border border-[#488bee] hover:bg-[#488bee]'">
+              {{ item.value }}
+            </Button>
+          </PaginationListItem>
+          <PaginationEllipsis v-else :key="item.type" :index="index" />
+        </template>
+
+        <PaginationNext class="border-[#488bee]" />
+        <PaginationLast class="border-[#488bee]" />
+      </PaginationList>
+    </Pagination>
+  </div>
 </template>

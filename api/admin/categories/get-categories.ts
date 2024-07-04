@@ -7,5 +7,5 @@ export function getCategories() {
   const searchParams = qs.stringify(route.query, { skipNulls: true })
   return client.get('app/categories/all', {
     searchParams,
-  }).json<{ payload: definitions['models.Categories'][] }>()
+  }).json<{ payload: definitions['models.Categories'][], total: number }>()
 }

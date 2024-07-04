@@ -63,11 +63,10 @@ await suspense()
         <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
           Все категории
         </h2>
-        <span class="hidden self-end text-lg text-[#7A7A7A] xl:inline">Все категории</span>
       </div>
 
       <ul class="mt-5 flex flex-wrap gap-2.5 lg:mt-10 lg:gap-6 xl:grid xl:grid-cols-5">
-        <li v-for="category in categories?.payload" :key="category.id" class="relative h-[127px] grow overflow-hidden rounded-[12px] bg-[#F1F4FA] p-5 md:h-[253px] lg:rounded-3xl" @click="$router.push(`/category/${category.id}`)">
+        <li v-for="category in categories?.payload" :key="category.id" class="relative h-[127px] grow overflow-hidden rounded-[12px] border-4 border-white bg-[#F1F4FA] p-5 transition-all ease-in hover:border-[#CCE3DE] md:h-[253px] lg:rounded-3xl" @click="$router.push(`/category/${category.id}`)">
           <p class="w-[105px] text-xs font-semibold text-primary-foreground sm:w-[205px] sm:text-base md:text-[18px] xl:w-auto">
             {{ category.name }}
           </p>
@@ -81,7 +80,6 @@ await suspense()
         <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
           Товары по акции
         </h2>
-        <span class="hidden self-end text-lg text-[#7A7A7A] xl:inline">Все товары</span>
       </div>
 
       <div class="mt-5 lg:mt-10">

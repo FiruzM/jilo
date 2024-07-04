@@ -9,7 +9,7 @@ const user = useAuthUser()
     <ClientOnly>
       <div class="flex flex-col items-center gap-4 rounded-[8px] bg-[#EBF7F4] px-8 py-4">
         <Avatar class="size-20">
-          <AvatarImage :src="`https://f8f726d3171d.vps.myjino.ru/${user?.file_path}`" alt="Avatar" />
+          <AvatarImage :src="user?.file_path" alt="Avatar" />
           <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
         </Avatar>
 

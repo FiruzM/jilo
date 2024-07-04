@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Eye, FileX, Trash } from 'lucide-vue-next'
+import { Eye, FileX, ListFilter, Trash } from 'lucide-vue-next'
 import qs from 'qs'
+import { getCategories } from '~/api/admin/categories/get-categories'
 import { deleteSubcategory } from '~/api/admin/subcategories/delete-subcategory'
 import { getSubcategories } from '~/api/admin/subcategories/get-subcategories'
 import { useToast } from '~/components/ui/toast'
@@ -14,10 +15,18 @@ definePageMeta({
 const { toast } = useToast()
 const route = useRoute()
 const searchParams = computed(() => qs.stringify(route.query))
+const isPopoverOpen = ref(false)
+const enabled = computed(() => !!isPopoverOpen.value)
 
 const { data: subcategories, isPending, refetch } = useQuery({
   queryKey: ['subcategories', searchParams],
   queryFn: () => getSubcategories(),
+})
+
+const { data: categories } = useQuery({
+  queryKey: ['categories'],
+  queryFn: () => getCategories(),
+  enabled,
 })
 
 const { mutate } = useMutation({
@@ -31,9 +40,76 @@ const { mutate } = useMutation({
     })
   },
 })
+
+const router = useRouter()
+// @ts-expect-error: arr might be empty
+
+const initialParams = computed(() => qs.parse(route.query))
+
+const params = reactive({
+  ...initialParams.value,
+})
+
+const setSearchParams = useDebounceFn(() => {
+  const searchParams = qs.stringify({
+    ...params,
+
+  }, {
+    skipNulls: true,
+    filter: (_prefix, value) => value || undefined,
+  })
+
+  router.replace({
+    // @ts-expect-error: arr might be empty
+
+    query: qs.parse(searchParams),
+  })
+}, 400)
+
+watch([params], () => setSearchParams())
 </script>
 
 <template>
+  <div class="mb-5 flex justify-end">
+    <Popover v-model:open="isPopoverOpen">
+      <PopoverTrigger>
+        <Button class="rounded-lg bg-[#3c83ed] px-7 text-xs text-white hover:bg-[#3c83ed] sm:text-base">
+          <ListFilter class="mr-2.5 hidden sm:block" />
+          Фильтр
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent class="space-y-2">
+        <Select v-model="params.category_id">
+          <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
+            <SelectValue placeholder="Список категорий" />
+          </SelectTrigger>
+          <SelectContent class="border-[#3c83ed]">
+            <SelectGroup>
+              <SelectItem v-for="category in categories?.payload" :key="category.id" :value="category.id!.toString()">
+                {{ category.name }}
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <Button
+          variant="outline" class="w-full border-0 bg-[#3c83ed] text-white hover:bg-[#3c83ed]"
+          @click="() => {
+            router.replace({
+              query: [],
+            })
+            Object.assign(params, {
+              category_id: undefined,
+            })
+            isPopoverOpen = false
+          }"
+        >
+          Сбросить
+        </Button>
+      </PopoverContent>
+    </Popover>
+  </div>
   <Table>
     <TableHeader>
       <TableRow>
@@ -45,7 +121,7 @@ const { mutate } = useMutation({
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableEmpty v-if="subcategories?.payload.length === 0" :colspan="6">
+      <TableEmpty v-if="!subcategories?.payload && !isPending" :colspan="6">
         <FileX class="opacity-60. size-14 stroke-[#D5D5D5]" />
       </TableEmpty>
 
@@ -85,10 +161,10 @@ const { mutate } = useMutation({
     </TableBody>
   </Table>
 
-  <div v-if="subcategories?.payload.length > 0" class="mt-5 flex justify-center">
+  <div v-if="subcategories?.payload" class="mt-5 flex justify-center">
     <Pagination
       v-slot="{ page }"
-      :total="12"
+      :total="subcategories?.total"
       :sibling-count="1"
       show-edges
       :default-page="$route.query.page ? Number($route.query.page) : 1"
