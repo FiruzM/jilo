@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Eye, FileX, Trash } from 'lucide-vue-next'
+import { Eye, FileX, Search, Trash } from 'lucide-vue-next'
+import qs from 'qs'
 import { deleteUser } from '~/api/admin/users/delete-user'
 import { getUsers } from '~/api/admin/users/get-users'
 import { useToast } from '~/components/ui/toast'
@@ -10,10 +11,13 @@ definePageMeta({
   title: 'Пользователи',
 })
 
+const router = useRouter()
+const route = useRoute()
 const { toast } = useToast()
+const searchParams = computed(() => qs.stringify(route.query))
 
 const { data: users, refetch, isPending } = useQuery({
-  queryKey: ['users'],
+  queryKey: ['users', searchParams],
   queryFn: () => getUsers(),
 })
 
@@ -28,9 +32,43 @@ const { mutate } = useMutation({
     })
   },
 })
+
+// @ts-expect-error: arr might be empty
+const initialParams = computed(() => qs.parse(route.query))
+
+const params = reactive({
+  ...initialParams.value,
+})
+
+const setSearchParams = useDebounceFn(() => {
+  const searchParams = qs.stringify({
+    ...params,
+
+  }, {
+    skipNulls: true,
+    filter: (_prefix, value) => value || undefined,
+  })
+
+  router.replace({
+    // @ts-expect-error: arr might be empty
+    query: qs.parse(searchParams),
+  })
+}, 400)
+
+watch([params], () => setSearchParams())
 </script>
 
 <template>
+  <div class="mb-5 flex justify-end gap-5">
+    <div class="relative shrink">
+      <Input
+        v-model="params.fullName" type="search" class="h-[40px] border-[#3c83ed] pl-10 placeholder:font-medium placeholder:text-[#3c83ed] placeholder:opacity-25 focus:border-[#10a4e9]"
+        placeholder="Поиск"
+      />
+      <Search class="absolute left-3 top-2 stroke-[#3c83ed] opacity-25" />
+    </div>
+  </div>
+
   <Table>
     <TableHeader>
       <TableRow>

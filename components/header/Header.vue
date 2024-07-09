@@ -31,12 +31,22 @@ const { mutate } = useMutation({
         <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
       </Avatar>
 
-      <Button
-        class="size-14 rounded-xl bg-[#000C15] hover:bg-[#01192b]"
-        @click="mutate()"
-      >
-        <LogOut class="stroke-[#0ae8c2]" />
-      </Button>
+      <Popover>
+        <PopoverTrigger class="rounded-xl border border-[#3c83ed] bg-white p-3">
+          <LogOut class="stroke-[#3c83ed]" />
+        </PopoverTrigger>
+        <PopoverContent class="flex flex-col">
+          <NuxtLink to="/" class="border-b pb-5 text-[#3c83ed]">
+            На главную страницу
+          </NuxtLink>
+          <Button
+            class="self-start bg-transparent pt-5 text-[#3c83ed] hover:bg-transparent"
+            @click="mutate()"
+          >
+            Выйти
+          </Button>
+        </PopoverContent>
+      </Popover>
     </div>
   </div>
 </template>

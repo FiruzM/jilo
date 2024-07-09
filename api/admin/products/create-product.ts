@@ -10,7 +10,7 @@ export function createProduct(data: definitions['models.Products']) {
     }
   }
 
-  data.file_paths!.forEach((data) => {
+  data.file_paths!.forEach((data: any) => {
     formData.append('files', data)
   })
 

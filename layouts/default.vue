@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Box, Heart, Home, Menu, Package, Search, ShoppingCart, User } from 'lucide-vue-next'
+import { Box, Heart, Home, Loader2, Menu, Package, Search, ShoppingCart, User } from 'lucide-vue-next'
 import { getDetails } from '~/api/details/get-details'
 import { getRoleLink } from '~/lib/utils'
+import { getSearchProduct } from '~/api/products/get-search-products'
 
 const { locales, locale, setLocale } = useI18n()
 const user = useAuthUser()
@@ -10,17 +11,40 @@ const router = useRouter()
 const favorite = useLocalStorage('favorite', [])
 const cart = useLocalStorage('cart', [])
 
+const categoryButton = ref(false)
+const mobileCategoryButton = ref(false)
+const searchInput = ref(false)
+
+const enabled = computed(() => !!categoryButton.value || !!mobileCategoryButton.value)
+
 const { data: details } = useQuery({
   queryKey: ['details'],
   queryFn: getDetails,
+  enabled,
 })
 
-const categoryButton = ref(false)
-const mobileCategoryButton = ref(false)
+const name = ref('')
+
+const { data: products, refetch, isPending } = useQuery({
+  queryKey: ['products', name.value],
+  queryFn: () => getSearchProduct(name.value),
+  enabled: false,
+})
+
+const getInputValue = useDebounceFn(() => {
+  if (name.value)
+    refetch()
+}, 200)
+
+watch(name, () => {
+  if (name.value)
+    getInputValue()
+})
 
 watch(() => router.currentRoute.value.path, () => {
   categoryButton.value = false
   mobileCategoryButton.value = false
+  searchInput.value = false
 })
 
 const { mutate } = useMutation({
@@ -128,12 +152,31 @@ const { mutate } = useMutation({
             </SheetContent>
           </Sheet>
 
-          <div class="relative min-w-[208px] shrink-0 grow xl:shrink">
-            <Input class="h-[34px] w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" placeholder="Найдите товар здесь" />
-            <span class="absolute right-[3px] top-[2px] rounded-[6px] bg-primary p-[3px] xl:right-[5px] xl:top-[4px] xl:p-[8px]">
-              <Search />
-            </span>
-          </div>
+          <Popover v-model:open="searchInput" class="min-w-[208px] shrink-0 grow xl:shrink">
+            <PopoverTrigger class="relative w-full">
+              <Input v-model="name" class="h-[34px] w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" placeholder="Найдите товар здесь" />
+              <span class="absolute right-[3px] top-[2px] rounded-[6px] bg-primary p-[3px] xl:right-[5px] xl:top-[4px] xl:p-[8px]"> <Search /></span>
+            </PopoverTrigger>
+            <PopoverContent class="w-[290px] grow border-input px-2.5 sm:w-[450px] sm:px-5 md:w-[600px] lg:w-[720px] xl:w-[480px]">
+              <div class="flex flex-col gap-5">
+                <div v-if="isPending && !!name" class="flex justify-center">
+                  <Loader2 class="animate-spin stroke-primary" />
+                </div>
+
+                <div v-if="products?.payload === null" class="flex justify-center">
+                  <p class="text-sm opacity-50">
+                    Ничего не найдено
+                  </p>
+                </div>
+                <NuxtLink v-for="product in products?.payload" :key="product.id" :to="`/product/${product.id}`" class="flex items-center gap-5 rounded-sm px-2 hover:bg-[#f1f4fb]">
+                  <img :src="product.file_paths[0]" alt="" class="size-[50px]">
+                  <p class="text-sm">
+                    {{ product.name }}
+                  </p>
+                </NuxtLink>
+              </div>
+            </PopoverContent>
+          </Popover>
 
           <nav class="hidden xl:block">
             <ul class="flex gap-10">
@@ -181,7 +224,7 @@ const { mutate } = useMutation({
             <DropdownMenu v-if="user">
               <DropdownMenuTrigger class="hidden items-center xl:flex xl:gap-1">
                 <Avatar>
-                  <AvatarImage :src="`https://f8f726d3171d.vps.myjino.ru/${user?.file_path}`" alt="Avatar" />
+                  <AvatarImage :src="user?.file_path" alt="Avatar" />
                   <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
                 </Avatar>
                 <p class="line-clamp-1 max-w-[57px] text-xs">

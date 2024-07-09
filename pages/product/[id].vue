@@ -12,7 +12,7 @@ const { data: product, suspense } = useQuery({
 })
 
 const cart: any = useLocalStorage('cart', [])
-const count = ref(1)
+const quantity = ref(1)
 
 function addToCart() {
   const index = cart.value.findIndex((item: any) => item.id === product.value?.payload.id)
@@ -21,26 +21,26 @@ function addToCart() {
       title: 'Товар добавлен',
       description: 'Товар был добавлен в корзину',
     })
-    return cart.value[index] = { ...product.value?.payload, count: count.value }
+    return cart.value[index] = { ...product.value?.payload, quantity: quantity.value }
   }
   else {
     toast({
       title: 'Товар добавлен',
       description: 'Товар был добавлен в корзину',
     })
-    return cart.value.push({ ...product.value?.payload, count: count.value })
+    return cart.value.push({ ...product.value?.payload, quantity: quantity.value })
   }
 }
 
 function decrement() {
-  if (count.value > 1) {
-    count.value = count.value - 1
+  if (quantity.value > 1) {
+    quantity.value = quantity.value - 1
   }
   return 1
 }
 
 function increment() {
-  count.value = count.value + 1
+  quantity.value = quantity.value + 1
 }
 
 await suspense()
@@ -96,7 +96,7 @@ await suspense()
               <button class="clic rounded-full bg-[#F7F8F9] p-1" @click="decrement">
                 <Minus class="size-4 stroke-[#64748B] hover:cursor-pointer sm:size-6" />
               </button>
-              <span class="font-semibold">{{ count }}</span>
+              <span class="font-semibold">{{ quantity }}</span>
               <button class="rounded-full bg-[#F7F8F9] p-1" @click="increment">
                 <Plus class="size-4 stroke-[#64748B] hover:cursor-pointer sm:size-6" />
               </button>

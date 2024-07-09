@@ -81,6 +81,6 @@ const links = [
   opacity: 1 !important;
 }
 .router-link-active svg {
-  stroke: #0ae8c2;
+  stroke: #3c83ed;
 }
 </style>

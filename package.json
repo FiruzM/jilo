@@ -21,6 +21,7 @@
     "@vee-validate/zod": "^4.12.4",
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^10.7.2",
+    "date-fns": "^3.6.0",
     "embla-carousel": "^8.0.0",
     "embla-carousel-autoplay": "^8.1.5",
     "embla-carousel-vue": "^8.0.0",

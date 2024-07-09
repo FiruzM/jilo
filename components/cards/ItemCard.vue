@@ -43,20 +43,20 @@ function addToCart(e: Event, id: number) {
       title: 'Товар добавлен',
       description: 'Товар был добавлен в корзину',
     })
-    return cart.value.push({ ...data.product, count: 1 })
+    return cart.value.push({ ...data.product, quantity: 1 })
   }
 
   const index = cart.value.findIndex((item: any) => item.id === id)
 
   if (index !== -1) {
-    cart.value[index].count += 1
+    cart.value[index].quantity += 1
     toast({
       title: 'Товар добавлен',
       description: 'Товар был добавлен в корзину',
     })
   }
   else {
-    cart.value.push({ ...data.product, count: 1 })
+    cart.value.push({ ...data.product, quantity: 1 })
     toast({
       title: 'Товар добавлен',
       description: 'Товар был добавлен в корзину',
@@ -81,7 +81,7 @@ function addToCart(e: Event, id: number) {
       </svg>
     </div>
     <div class="mt-4 flex flex-col">
-      <p class="text-xs font-semibold sm:text-sm md:text-base">
+      <p class="line-clamp-2 text-xs font-semibold sm:text-sm md:text-base">
         {{ data.product?.name }}
       </p>
       <!-- <span class="text-[10px] text-[#8CA9AE]">На складе 200 шт.</span> -->

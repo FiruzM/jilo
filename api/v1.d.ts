@@ -462,7 +462,7 @@ export interface paths {
 export interface definitions {
   'models.AddUserParams': {
     email?: string
-    file_path?: string
+    file_path: string
     full_name?: string
     id?: number
     number_phone?: string

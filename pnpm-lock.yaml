@@ -23,6 +23,9 @@ dependencies:
   '@vueuse/core':
     specifier: ^10.7.2
     version: 10.11.0(vue@3.4.29)
+  date-fns:
+    specifier: ^3.6.0
+    version: 3.6.0
   embla-carousel:
     specifier: ^8.0.0
     version: 8.1.5
@@ -5846,6 +5849,10 @@ packages:
     resolution: {integrity: sha512-2iy1EkLdlBzQGvbweYRFxmFath8+K7+AKB0TlhHWkNuH+TmovaMH/Wp7V7R4u7f4SnX3OgLsU9t1NI9ioDnUpg==}
     engines: {node: '>=8'}
     dev: true
+
+  /date-fns@3.6.0:
+    resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
+    dev: false
 
   /dayjs-nuxt@2.1.9(rollup@4.18.0):
     resolution: {integrity: sha512-7L1X8Wm+O2s2o+YK8RH1GK0SUUsh7l0lnIzsjaLGvyu64asLs2KVNoh25J4tQurdILp2TyrFaTo/k3k/ZPub9Q==}

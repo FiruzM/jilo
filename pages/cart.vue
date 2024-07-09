@@ -9,7 +9,7 @@ const cart: any = useLocalStorage('cart', [])
 function decrement(id: number) {
   cart.value.forEach((item: any) => {
     if (item.id === id) {
-      item.count -= 1
+      item.quantity -= 1
     }
   })
 }
@@ -17,7 +17,7 @@ function decrement(id: number) {
 function increment(id: number) {
   cart.value.forEach((item: any) => {
     if (item.id === id) {
-      item.count += 1
+      item.quantity += 1
     }
   })
 }
@@ -31,7 +31,7 @@ function remove(id: number) {
 }
 
 const total = computed(() => {
-  return cart.value.reduce((acc: any, item: any) => acc + (item.price * item.count), 0)
+  return cart.value.reduce((acc: any, item: any) => acc + (item.price * item.quantity), 0)
 })
 </script>
 
@@ -73,7 +73,7 @@ const total = computed(() => {
                   <div class="rounded-full bg-[#F7F8F9] p-1">
                     <Plus class="size-4 stroke-[#64748B] hover:cursor-pointer sm:size-6" @click="increment(item.id)" />
                   </div>
-                  <span class="font-semibold">{{ item.count }}</span>
+                  <span class="font-semibold">{{ item.quantity }}</span>
                   <div class="rounded-full bg-[#F7F8F9] p-1">
                     <Minus class="size-4 stroke-[#64748B] hover:cursor-pointer sm:size-6" @click="decrement(item.id)" />
                   </div>
@@ -95,21 +95,13 @@ const total = computed(() => {
             <span class="w-[33%] grow border-b" />
             <span class="text-[#80979B]"> {{ total }} с.</span>
           </div>
-
-          <div class="flex">
-            <p class="text-[#80979B]">
-              Скидка
-            </p>
-            <span class="w-[33%] grow border-b" />
-            <span class="text-[#80979B]">-60.00 с..</span>
-          </div>
         </div>
 
         <div class="mt-10 flex justify-between">
           <p class="text-xl font-semibold">
             Итого
           </p>
-          <span class="text-xl font-semibold">48.00 с.</span>
+          <span class="text-xl font-semibold">{{ total }} с.</span>
         </div>
         <Button class="mt-6 hidden font-semibold lg:flex" @click="$router.push('/formalization')">
           Перейти к оформлению

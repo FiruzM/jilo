@@ -2,51 +2,67 @@
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
-import { h } from 'vue'
+import { User } from 'lucide-vue-next'
 import { useToast } from '~/components/ui/toast'
+import { postOrder } from '~/api/orders/post-order'
 
 const { toast } = useToast()
+const cart: any = useLocalStorage('cart', [])
+const user = useAuthUser()
+const router = useRouter()
 
 const formSchema = toTypedSchema(z.object({
-  adres: z.string({
+  delivery_address: z.string({
     required_error: 'Укажите адрес',
   }).min(2, {
     message: 'Минимум 2 символа',
-  }).max(50, {
-    message: 'Максимум 50 символов',
-  }),
-  type: z.enum(['current-adres', 'pickup'], {
+  }).optional(),
+  delivery_method: z.enum(['current-adres', 'pickup'], {
     required_error: 'Выберите тип доставки',
   }),
-  comment: z
-    .string({
-      required_error: 'Оставьте комментарий',
-    })
-    .min(10, {
-      message: 'Минимум 10 символов',
-    })
-    .max(160, {
-      message: 'Максимум 160 символов',
-    }),
-  payment: z.enum(['card', 'wallet', 'cash'], {
+  payment_method: z.enum(['card', 'wallet', 'cash'], {
     required_error: 'Выберите тип доставки',
   }),
 }))
 
-const { handleSubmit } = useForm({
+const { handleSubmit, values } = useForm({
   validationSchema: formSchema,
 
   initialValues: {
-    payment: 'card',
-    type: 'current-adres',
+    payment_method: 'card',
+    delivery_method: 'current-adres',
   },
 })
 
+const total = computed(() => {
+  return cart.value.reduce((acc: any, item: any) => acc + (item.price * item.quantity), 0)
+})
+
+const { mutate } = useMutation({
+  mutationFn: (data: any) => postOrder(data),
+  onError(error: any) {
+    toast({
+      title: 'Произошла ошибка',
+      description: error.message,
+      variant: 'destructive',
+    })
+  },
+  onSuccess() {
+    cart.value = []
+    router.push('/order')
+    toast({
+      title: 'Заказ оформлен',
+      description: 'Ваш заказ успешно оформлен, пожалуйста пройдите в заказы чтоб его оплатить',
+    })
+  },
+})
+
+const delivery = ref(20)
+
 const onSubmit = handleSubmit((values) => {
-  toast({
-    title: 'You submitted the following values:',
-    description: h('pre', { class: 'mt-2 w-[340px] rounded-md bg-slate-950 p-4' }, h('code', { class: 'text-white' }, JSON.stringify(values, null, 2))),
-  })
+  mutate({ ...values, order_items: cart.value.map((item: any) => ({ price: item.price, quantity: item.quantity, product_id: item.id })), total_amount: `${total.value + delivery.value}` })
+  //
+  // console.log({ ...values, order_items: cart.value.map((item: any) => ({ price: item.price, quantity: item.quantity, product_id: item.id })), total_amount: `${total.value + delivery.value}` })
 })
 </script>
 
@@ -58,22 +74,39 @@ const onSubmit = handleSubmit((values) => {
 
     <div class="mt-8 flex flex-col gap-7 lg:mt-10 lg:flex-row lg:justify-between">
       <div class="shrink-0 lg:w-[503px] lg:border-r lg:pr-8 xl:w-[803px]">
-        <div class="flex items-center gap-2">
-          <Avatar class="size-10 xl:size-16">
-            <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+        <ClientOnly>
+          <div v-if="user" class="flex items-center gap-2">
+            <Avatar class="size-10 xl:size-16">
+              <AvatarImage :src="user!.file_path" alt="Avatar" />
+              <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
+            </Avatar>
 
-          <div>
-            <p class="text-sm font-semibold sm:text-base">
-              Фарида Рустамова
-            </p>
-            <span class="text-xs opacity-30 sm:text-sm">+992 900 98 76 54</span>
+            <div>
+              <p class="text-sm font-semibold sm:text-base">
+                {{ user?.full_name }}
+              </p>
+              <span class="text-xs opacity-30 sm:text-sm">{{ user?.number_phone }}</span>
+            </div>
           </div>
-        </div>
+
+          <div v-else class="flex items-center gap-2">
+            <Avatar class="size-10 xl:size-16">
+              <User />
+            </Avatar>
+
+            <div>
+              <NuxtLink to="/login" class="text-base font-semibold text-[#EDAFB8] underline">
+                Войти/Зарегистрироваться
+              </NuxtLink>
+              <p class="text-xs opacity-30">
+                Войдите или зарегистрируйтесь, чтобы оформить заказ
+              </p>
+            </div>
+          </div>
+        </ClientOnly>
 
         <form class="mt-10 flex flex-col gap-10" @submit="onSubmit">
-          <FormField v-slot="{ componentField }" type="radio" name="type">
+          <FormField v-slot="{ componentField }" type="radio" name="delivery_method">
             <FormItem class="space-y-3">
               <FormControl>
                 <RadioGroup
@@ -102,19 +135,21 @@ const onSubmit = handleSubmit((values) => {
             </FormItem>
           </FormField>
 
-          <FormField v-slot="{ componentField }" name="adres">
-            <FormItem>
-              <FormLabel class="text-sm font-normal text-black">
-                Адрес доставки
-              </FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="Введите адрес доставки" v-bind="componentField" class="h-12 rounded-xl border-[#D5D5D5]" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
+          <div v-if="values.delivery_method === 'current-adres'">
+            <FormField v-slot="{ componentField }" name="delivery_address">
+              <FormItem>
+                <FormLabel class="text-sm font-normal text-black">
+                  Адрес доставки
+                </FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="Введите адрес доставки" v-bind="componentField" class="h-12 rounded-xl border-[#D5D5D5]" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+          </div>
 
-          <FormField v-slot="{ componentField }" name="comment">
+          <!-- <FormField v-slot="{ componentField }" name="comment">
             <FormItem>
               <FormLabel class="text-sm font-normal text-black">
                 Комментарий к заказу
@@ -127,9 +162,9 @@ const onSubmit = handleSubmit((values) => {
               </FormControl>
               <FormMessage />
             </FormItem>
-          </FormField>
+          </FormField> -->
 
-          <FormField v-slot="{ componentField }" type="radio" name="payment">
+          <FormField v-slot="{ componentField }" type="radio" name="payment_method">
             <FormItem class="space-y-3">
               <FormControl>
                 <RadioGroup
@@ -179,24 +214,26 @@ const onSubmit = handleSubmit((values) => {
             </FormItem>
           </FormField>
 
-          <Button type="submit" class="absolute bottom-8 left-4 w-[92%] lg:static lg:w-full">
-            Оформить заказ
-          </Button>
+          <ClientOnly>
+            <Button :disabled="!user" type="submit" class="absolute bottom-8 left-4 w-[92%] lg:static lg:w-full">
+              Оформить заказ
+            </Button>
+          </ClientOnly>
         </form>
       </div>
 
       <div class="grow lg:pl-6">
         <ScrollArea class="h-[290px] rounded-[12px] border py-2.5 pl-2.5 pr-11 lg:h-[388px] lg:border-none lg:p-0">
           <div class="flex flex-col gap-8 ">
-            <div v-for="i in 4" :key="i" class="flex gap-6">
+            <div v-for="item in cart" :key="item.id" class="flex gap-6">
               <div class="rounded-[12px] bg-[#F1F4FA] p-2.5 lg:rounded-3xl lg:p-6">
-                <img src="/assets/img/box.png" alt="Logo" class="size-11 lg:size-[60px]">
+                <img :src="item.file_paths[0]" alt="Logo" class="size-11 lg:size-[60px]">
               </div>
               <div class="flex flex-col gap-4 lg:justify-between">
-                <h3 class="max-w-[315px] text-xs font-semibold sm:text-base">
-                  Коробка для торта с окном Гофрокартон 30х40х20 см
+                <h3 class="line-clamp-2 max-w-[315px] text-xs font-semibold sm:text-base">
+                  {{ item.name }}
                 </h3>
-                <span class="text-sm">1 х 12.00 с.</span>
+                <span class="text-sm">{{ item.quantity }} х {{ item.price }} с.</span>
               </div>
             </div>
           </div>
@@ -207,13 +244,13 @@ const onSubmit = handleSubmit((values) => {
             <p class="text-sm md:text-base lg:text-xl">
               Сумма по товарам
             </p>
-            <span class="text-sm font-semibold md:text-base lg:text-xl">108.00 с.</span>
+            <span class="text-sm font-semibold md:text-base lg:text-xl">{{ total }} с.</span>
           </div>
           <div class="flex justify-between">
             <p class="text-sm md:text-base lg:text-xl">
               Стоимость доставки
             </p>
-            <span class="text-sm font-semibold md:text-base lg:text-xl">0.00 с.</span>
+            <span class="text-sm font-semibold md:text-base lg:text-xl">{{ delivery }} с.</span>
           </div>
         </div>
 
@@ -221,7 +258,7 @@ const onSubmit = handleSubmit((values) => {
           <p class="text-base md:text-base lg:text-xl">
             Итого
           </p>
-          <span class="text-sm font-semibold md:text-base lg:text-xl">108.00 с.</span>
+          <span class="text-sm font-semibold md:text-base lg:text-xl">{{ total + delivery }} с.</span>
         </div>
       </div>
     </div>
