@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Box, LucideAlertCircle, Minus, Plus, ShoppingCart, Truck } from 'lucide-vue-next'
-import { getProduct } from '~/api/products/get-product'
+import { getProduct } from '~/api/web/products/get-product'
 import { useToast } from '~/components/ui/toast'
 
 const params: any = useRoute().params
@@ -134,3 +134,4 @@ await suspense()
     </div>
   </div>
 </template>
+~/api/web/products/get-product

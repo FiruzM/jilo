@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Box, Heart, Home, Loader2, Menu, Package, Search, ShoppingCart, User } from 'lucide-vue-next'
-import { getDetails } from '~/api/details/get-details'
+import { getDetails } from '~/api/web/details/get-details'
 import { getRoleLink } from '~/lib/utils'
-import { getSearchProduct } from '~/api/products/get-search-products'
+import { getSearchProduct } from '~/api/web/products/get-search-products'
 
 const { locales, locale, setLocale } = useI18n()
 const user = useAuthUser()
@@ -66,7 +66,7 @@ const { mutate } = useMutation({
         </NuxtLink>
 
         <div class="flex grow items-center gap-2.5 sm:gap-5 lg:gap-8">
-          <Popover v-model:open="categoryButton">
+          <Popover v-model:open="categoryButton" :modal="true">
             <PopoverTrigger as-child class="hidden xl:flex">
               <Button class="px-3 py-6 text-sm font-semibold">
                 <Menu class="mr-2" />
@@ -75,32 +75,32 @@ const { mutate } = useMutation({
             </PopoverTrigger>
             <PopoverContent class="mt-5 w-screen border-none p-0">
               <NavigationMenu>
-                <NavigationMenuList class="h-full flex-col bg-[#F2F2F2] py-10 pl-10 pr-5">
-                  <NavigationMenuItem v-for="detail in details?.payload.Categories" :key="detail.id">
-                    <NavigationMenuTrigger class="justify-between text-[#A6A6A6]" @click="$router.push(`/category/${detail.id}`)">
-                      {{ detail.name }}
-                    </NavigationMenuTrigger>
+                <NavigationMenuList class="min-h-[536px] flex-col justify-start bg-[#F9F9F9] p-10">
+                  <NavigationMenuItem v-for="detail in details?.payload.categories" :key="detail.id">
+                    <NavigationMenuTrigger>{{ detail.name }}</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <NavigationMenuLink class="">
-                        <div class="pl-10">
-                          <h4 class="text-3xl font-bold">
-                            Красители
-                          </h4>
-                          <div class="pl- mt-9">
-                            <h4 class="text-base font-semibold">
-                              Жирорастворимые  красители
-                            </h4>
-                            <ul>
-                              <li>
-                                <NuxtLink to="/category/slug">
-                                  Guzman
-                                </NuxtLink>
-                              </li>
-                              <li>TopDecor</li>
-                              <li>Kreda</li>
-                            </ul>
-                          </div>
-                        </div>
+                      <NavigationMenuLink>
+                        <NuxtLink :to="`/category/${detail.id}`" class="mt-10 block pl-6 text-[30px] font-bold">
+                          {{ detail.name }}
+                        </NuxtLink>
+                        <ul class="flex min-h-[526px] gap-10 p-6 pt-9">
+                          <li v-for="subcategory in detail.subcategories" :key="subcategory.id" class="w-[200px] grow">
+                            <NavigationMenuLink as-child>
+                              <NuxtLink class="block text-base font-semibold text-[#242424]" :to="`/subcategory/${subcategory.id}`">
+                                {{ subcategory.name }}
+                              </NuxtLink>
+                              <ul class="fle mt-4 flex-col">
+                                <li v-for="brands in subcategory.brands" :key="brands.id" class="pb-4">
+                                  <NavigationMenuLink as-child>
+                                    <NuxtLink class="text-sm text-[#242424]" :to="`/brand/${brands.id}`">
+                                      {{ brands.name }}
+                                    </NuxtLink>
+                                  </NavigationMenuLink>
+                                </li>
+                              </ul>
+                            </NavigationMenuLink>
+                          </li>
+                        </ul>
                       </NavigationMenuLink>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
@@ -335,3 +335,4 @@ const { mutate } = useMutation({
     </nav>
   </div>
 </template>
+~/api/web/products/get-search-products

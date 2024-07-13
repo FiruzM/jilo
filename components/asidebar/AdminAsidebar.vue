@@ -1,5 +1,5 @@
 <script setup>
-import { BookmarkPlus, Image, ListEnd, ListPlus, ShoppingBasket, Users } from 'lucide-vue-next'
+import { BookmarkPlus, Image, ListEnd, ListPlus, ShoppingBasket, Users, WalletCards } from 'lucide-vue-next'
 
 const links = [
   {
@@ -27,11 +27,11 @@ const links = [
     url: '/admin/banners',
     icon: Image,
   },
-  // {
-  //   title: 'Платежи',
-  //   url: '/admin/payments',
-  //   icon: WalletCards,
-  // },
+  {
+    title: 'Заказы',
+    url: '/admin/orders',
+    icon: WalletCards,
+  },
   // {
   //   title: 'Роли и права',
   //   url: '/admin/roles',

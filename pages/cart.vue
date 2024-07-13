@@ -114,7 +114,7 @@ const total = computed(() => {
 
     <div v-else class="mb-44 mt-[100px] flex items-center justify-center">
       <div class="flex flex-col items-center">
-        <img src="/assets/img/emptycart.png" alt="Cart" class="size-[300px]">
+        <img src="~/assets/img/emptycart.png" alt="Cart" class="size-[300px]">
 
         <h3 class="mb-6 self-center text-3xl font-semibold">
           Внутри пока нет товаров

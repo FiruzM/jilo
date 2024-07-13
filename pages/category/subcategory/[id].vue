@@ -1,36 +1,33 @@
 <script setup lang="ts">
-import { ChevronRight, ListFilter, Loader2, Minus } from 'lucide-vue-next'
-import { getCategoriesProducts } from '~/api/web/products/get-categories-products'
-import { getCategory } from '~/api/web/categories/get-category'
-import { getSubcategories } from '~/api/web/subcategories/get-subcategories'
+import { ChevronRight, ListFilter, Minus } from 'lucide-vue-next'
+import { getSubcategoryProducts } from '~/api/web/products/get-subcategory-products'
+import { getSubcategory } from '~/api/web/subcategories/get-subcategory'
+import { getBrands } from '~/api/web/brands/get-brands'
 
 const isOpen = ref(false)
 
 const params: any = useRoute().params
 
-const { data: products, isPending, suspense, isPending: productsPending } = useQuery({
-  queryKey: [`categoryProducts`, params],
-  queryFn: () => getCategoriesProducts(params.id),
+const { data: products, isPending, suspense } = useQuery({
+  queryKey: [`subcategoryProducts`, params],
+  queryFn: () => getSubcategoryProducts(params.id),
 })
 
-const { data: category, isPending: categoryPending } = useQuery({
-  queryKey: ['category', params],
-  queryFn: () => getCategory(params.id),
+const { data: subcategory } = useQuery({
+  queryKey: ['subcategory', params],
+  queryFn: () => getSubcategory(params.id),
 })
 
-const { data: subcategories, isPending: subcategoriesPending } = useQuery({
-  queryKey: ['categorySubcategories', params],
-  queryFn: () => getSubcategories(params.id),
+const { data: brands } = useQuery({
+  queryKey: ['subcategoryBrands'],
+  queryFn: () => getBrands(params.id),
 })
 
 await suspense()
 </script>
 
 <template>
-  <div v-if="productsPending || categoryPending || subcategoriesPending" class="flex justify-center">
-    <Loader2 class="mt-[100px] animate-spin stroke-primary" />
-  </div>
-  <div v-else class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:px-10 lg:pb-16 lg:pt-11">
+  <div class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:px-10 lg:pb-16 lg:pt-11">
     <Breadcrumb class="hidden lg:flex">
       <BreadcrumbList>
         <BreadcrumbItem>
@@ -40,8 +37,8 @@ await suspense()
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink :href="`/category/${category?.payload.id}`">
-            {{ category?.payload.name }}
+          <BreadcrumbLink :href="`/category/${subcategory?.payload.id}`">
+            {{ subcategory?.payload.name }}
           </BreadcrumbLink>
         </BreadcrumbItem>
       </BreadcrumbList>
@@ -128,7 +125,7 @@ await suspense()
         <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div class="flex gap-5">
             <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-              {{ category?.payload.name }}
+              {{ subcategory?.payload.name }}
             </h2>
             <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.total }} товаров</span>
           </div>
@@ -279,9 +276,9 @@ await suspense()
         </div>
 
         <ul class="mt-8 flex flex-wrap gap-x-10 gap-y-5">
-          <li v-for="subcategory in subcategories?.payload" :key="subcategory.id" class="rounded-[12px] border border-[#4A5759] px-5 py-2.5 text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0]">
-            <NuxtLink :to="`/category/subcategory/${subcategory.id}`">
-              {{ subcategory.name }}
+          <li v-for="brand in brands?.payload" :key="brand.id" class="rounded-[12px] border border-[#4A5759] px-5 py-2.5 text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0]">
+            <NuxtLink :to="`category/subcategory/brand/${brand.id}`">
+              {{ brand.name }}
             </NuxtLink>
           </li>
         </ul>

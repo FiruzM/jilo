@@ -3,7 +3,7 @@ import { ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
 import Autoplay from 'embla-carousel-autoplay'
 import { getBanners } from '~/api/admin/banners/get-banners'
 import { getCategories } from '~/api/admin/categories/get-categories'
-import { getCategoriesProducts } from '~/api/products/get-categories-products'
+import { getDiscountProducts } from '~/api/web/products/get-discount-products'
 
 const { data: banners, suspense } = useQuery({
   queryKey: ['banners'],
@@ -15,9 +15,9 @@ const { data: categories } = useQuery({
   queryFn: getCategories,
 })
 
-const { data: products } = useQuery({
-  queryKey: [`products`],
-  queryFn: () => getCategoriesProducts(),
+const { data: discountProducts } = useQuery({
+  queryKey: ['discountProducts'],
+  queryFn: getDiscountProducts,
 })
 
 await suspense()
@@ -90,7 +90,7 @@ await suspense()
           }"
         >
           <CarouselContent>
-            <CarouselItem v-for="product in products?.payload" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+            <CarouselItem v-for="product in discountProducts?.payload" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
               <CardsItemCard :product="product" @click="() => $router.push(`/product/${product.id}`)" />
             </CarouselItem>
           </CarouselContent>
@@ -185,3 +185,4 @@ await suspense()
     </div>
   </div>
 </template>
+~/api/web/products/get-categories-products

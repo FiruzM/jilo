@@ -1,11 +1,18 @@
-<script setup>
+<script setup lang="ts">
+import { getOrder } from '~/api/web/orders/get-order'
 
+const params: any = useRoute().params
+
+const { data: order } = useQuery({
+  queryKey: ['order', params],
+  queryFn: () => getOrder(params.id),
+})
 </script>
 
 <template>
   <div class="mx-auto flex max-w-[1360px] flex-col gap-4 px-4 pb-10 pt-8 lg:gap-10 lg:px-10 lg:pb-16 lg:pt-[100px] ">
     <h3 class="text-base font-semibold md:text-2xl lg:text-3xl">
-      Заказ №0001
+      Заказ №{{ order?.order_number }}
     </h3>
 
     <span class="self-start rounded-[12px] bg-[#DFF0D8] px-2.5 py-[5px] text-xs text-[#3C763D] sm:text-base lg:px-7 lg:py-4">Заказ успешно оформлен</span>
@@ -46,7 +53,9 @@
           <p class="relative mb-10 gap-4 text-xs font-semibold sm:mb-0">
             108.00 сомони
             <span class="absolute left-[-195px] top-8 ml-4 rounded-xl border border-[#F0E8D8] px-3 py-1 text-sm text-[#765F3C] sm:static">В ожидании</span>
-            <span class="absolute left-[-70px] top-7 ml-4 rounded-xl bg-primary px-5 py-2.5 sm:static lg:px-6 lg:py-3">Перейти к оплате</span>
+            <NuxtLink to="/order/payment" class="absolute left-[-70px] top-7 ml-4 rounded-xl bg-primary px-5 py-2.5 sm:static lg:px-6 lg:py-3">
+              Перейти к оплате
+            </NuxtLink>
           </p>
           <p class="text-xs font-semibold">
             Оплата картой онлайн

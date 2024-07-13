@@ -4,7 +4,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import { User } from 'lucide-vue-next'
 import { useToast } from '~/components/ui/toast'
-import { postOrder } from '~/api/orders/post-order'
+import { postOrder } from '~/api/web/orders/post-order'
 
 const { toast } = useToast()
 const cart: any = useLocalStorage('cart', [])

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ChevronRight, Minus } from 'lucide-vue-next'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 </script>
 
 <template>
@@ -55,7 +52,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
           <p class="w-[105px] text-xs font-semibold text-primary-foreground sm:w-[205px] sm:text-base md:text-[18px] xl:w-auto">
             Подложки/подставки для торта
           </p>
-          <img src="/assets/img/catalog-item.png" class="absolute bottom-0 right-0 size-[76px] sm:size-[96px] lg:size-[186px]" alt="Item">
+          <!-- <img src="~/assets/img/catalog-item.png" class="absolute bottom-0 right-0 size-[76px] sm:size-[96px] lg:size-[186px]" alt="Item"> -->
         </li>
       </ul>
     </div>

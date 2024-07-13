@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { format } from 'date-fns'
-import { getOrders } from '~/api/orders/get-orders'
+import { getOrders } from '~/api/web/orders/get-orders'
 
 definePageMeta({
   middleware: ['user-only'],
@@ -48,7 +48,7 @@ await suspense()
       </div>
 
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div v-for="order in orders?.payload" :key="order.id" class="w-full rounded-[12px] border border-[#D5D5D5] p-5">
+        <div v-for="order in orders?.payload" :key="order.id" class="w-full rounded-[12px] border border-[#D5D5D5] p-5" @click="() => $router.push(`/order/${order.id}`)">
           <div class="flex items-center justify-between border-b  border-[#EFF2F3] pb-4 sm:gap-40">
             <div>
               <h3 class="font-semibold text-black ">
@@ -58,7 +58,9 @@ await suspense()
                 {{ format(new Date(order.created_at), 'dd.MM.yyyy') }}, {{ format(new Date(order.created_at), 'HH:mm') }}
               </p>
             </div>
-            <span class="rounded-[9px] bg-[#F0E8D8] px-[12px] py-[6px] text-[10px] font-semibold text-[#765F3C]">В ожидании оплаты</span>
+            <span :class=" order.status_id === 1 ? 'rounded-[9px] bg-[#F0E8D8] px-[12px] py-[6px] text-[10px] font-semibold text-[#765F3C]' : 'rounded-[9px] bg-[#E1F0D8] px-[12px] py-[6px] text-[10px] font-semibold text-[#4F763C]'">
+              {{ order.status_id === 1 ? "В ожидании оплаты" : "Оплачено" }}
+            </span>
           </div>
 
           <div class="flex gap-20 pt-5">

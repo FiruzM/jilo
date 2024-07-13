@@ -31,9 +31,15 @@ const { data: categories } = useQuery({
   enabled,
 })
 
-const { data: subcategories } = useQuery({
+const {
+  data: subcategories,
+  fetchNextPage,
+
+} = useInfiniteQuery({
   queryKey: ['subcategories'],
-  queryFn: () => getSubcategories(),
+  queryFn: ({ pageParam }) => getSubcategories(pageParam),
+  getNextPageParam: () => 2,
+  initialPageParam: 1,
   enabled,
 })
 
@@ -113,9 +119,18 @@ watch([params], () => setSearchParams())
           </SelectTrigger>
           <SelectContent class="border-[#3c83ed]">
             <SelectGroup>
-              <SelectItem v-for="subcategory in subcategories?.payload" :key="subcategory.id" :value="subcategory.id!.toString()">
-                {{ subcategory.name }}
-              </SelectItem>
+              <template v-for="(data, index) in subcategories?.pages" :key="index">
+                <SelectItem v-for="subcategory in data.payload" :key="subcategory.id" :value="subcategory.id!.toString()">
+                  {{ subcategory.name }}
+                </SelectItem>
+              </template>
+              <button
+
+                @click="() => fetchNextPage()"
+              >
+                Load More
+              </button>
+              <button />
             </SelectGroup>
           </SelectContent>
         </Select>
