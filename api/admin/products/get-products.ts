@@ -1,5 +1,6 @@
 import qs from 'qs'
 import { client } from '~/api/client'
+import type { Pagination } from '~/api/types'
 import type { definitions } from '~/api/v1'
 
 export function getProducts() {
@@ -8,5 +9,5 @@ export function getProducts() {
 
   return client.get('app/products/all', {
     searchParams,
-  }).json<{ payload: definitions['models.Products'][], total: number }>()
+  }).json<{ payload: { data: definitions['models.Products'][], meta: Pagination } }>()
 }

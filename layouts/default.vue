@@ -168,7 +168,7 @@ const { mutate } = useMutation({
                     Ничего не найдено
                   </p>
                 </div>
-                <NuxtLink v-for="product in products?.payload" :key="product.id" :to="`/product/${product.id}`" class="flex items-center gap-5 rounded-sm px-2 hover:bg-[#f1f4fb]">
+                <NuxtLink v-for="product in products?.payload.data" :key="product.id" :to="`/product/${product.id}`" class="flex items-center gap-5 rounded-sm px-2 hover:bg-[#f1f4fb]">
                   <img :src="product.file_paths[0]" alt="" class="size-[50px]">
                   <p class="text-sm">
                     {{ product.name }}

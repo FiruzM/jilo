@@ -90,7 +90,7 @@ await suspense()
           }"
         >
           <CarouselContent>
-            <CarouselItem v-for="product in discountProducts?.payload" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+            <CarouselItem v-for="product in discountProducts?.payload.data" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
               <CardsItemCard :product="product" @click="() => $router.push(`/product/${product.id}`)" />
             </CarouselItem>
           </CarouselContent>

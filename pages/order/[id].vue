@@ -12,7 +12,7 @@ const { data: order } = useQuery({
 <template>
   <div class="mx-auto flex max-w-[1360px] flex-col gap-4 px-4 pb-10 pt-8 lg:gap-10 lg:px-10 lg:pb-16 lg:pt-[100px] ">
     <h3 class="text-base font-semibold md:text-2xl lg:text-3xl">
-      Заказ №{{ order?.order_number }}
+      Заказ №{{ order?.payload.order_number }}
     </h3>
 
     <span class="self-start rounded-[12px] bg-[#DFF0D8] px-2.5 py-[5px] text-xs text-[#3C763D] sm:text-base lg:px-7 lg:py-4">Заказ успешно оформлен</span>
@@ -51,20 +51,20 @@ const { data: order } = useQuery({
             Информация о заказе
           </p>
           <p class="relative mb-10 gap-4 text-xs font-semibold sm:mb-0">
-            108.00 сомони
-            <span class="absolute left-[-195px] top-8 ml-4 rounded-xl border border-[#F0E8D8] px-3 py-1 text-sm text-[#765F3C] sm:static">В ожидании</span>
-            <NuxtLink to="/order/payment" class="absolute left-[-70px] top-7 ml-4 rounded-xl bg-primary px-5 py-2.5 sm:static lg:px-6 lg:py-3">
+            {{ order?.payload.total_amount }} сомони
+            <span class="absolute left-[-195px] top-8 ml-4 rounded-xl border border-[#F0E8D8] px-3 py-1 text-sm text-[#765F3C] sm:static">{{ order?.payload.status_id === 1 ? 'Ожидает оплаты' : 'Оплачено' }}</span>
+            <NuxtLink v-if="order?.payload.status_id === 1" to="/order/payment" class="absolute left-[-70px] top-7 ml-4 rounded-xl bg-primary px-5 py-2.5 sm:static lg:px-6 lg:py-3">
               Перейти к оплате
             </NuxtLink>
           </p>
           <p class="text-xs font-semibold">
-            Оплата картой онлайн
+            {{ order?.payload.payment_method === 'card' ? 'Оплата картой онлайн' : 'Оплата наличными при получении' }}
           </p>
           <p class="text-xs font-semibold">
-            Доставка по адресу
+            {{ order?.payload.delivery_method === 'current-adres' ? 'Доставка по адресу' : 'Самовывоз' }}
           </p>
           <p class="text-xs font-semibold">
-            г. Душанбе, пр-т Рудаки, 34
+            {{ order?.payload.delivery_address }}
           </p>
           <p class="text-xs font-semibold">
             Фарида Рустамова
@@ -96,22 +96,22 @@ const { data: order } = useQuery({
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="i in 5" :key="i" class="border-[#D5D5D5]">
+          <TableRow v-for="item in order?.payload.order_items" :key="item.id" class="border-[#D5D5D5]">
             <TableCell class="text-xs sm:text-base">
               Коробка для торта с окном Гофрокартон 30х40х20 см
             </TableCell>
             <TableCell class="text-xs sm:text-base">
-              1
+              {{ item.quantity }}
             </TableCell>
             <TableCell class="text-right text-xs sm:text-base">
-              12.00 с.
+              {{ item.price }}
             </TableCell>
           </TableRow>
         </TableBody>
       </Table>
       <div class="flex justify-end border-t py-[11px] pr-3">
         <p class="text-xs sm:text-base">
-          Итого: <span class="text-xs font-semibold sm:text-base">60.00 с.</span>
+          Общая сумма товаров: <span class="text-xs font-semibold sm:text-base">{{ order?.payload.order_items.reduce((acc, item) => acc + item.price, 0) }} с.</span>
         </p>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { client } from '~/api/client'
+import type { Pagination } from '~/api/types'
 import type { definitions } from '~/api/v1'
 
 export function getSearchProduct(name: string) {
@@ -6,5 +7,5 @@ export function getSearchProduct(name: string) {
     searchParams: {
       name,
     },
-  }).json<{ payload: definitions['models.Products'] }>()
+  }).json<{ payload: { data: definitions['models.Products'][], meta: Pagination } }>()
 }

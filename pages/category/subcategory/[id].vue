@@ -127,7 +127,7 @@ await suspense()
             <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
               {{ subcategory?.payload.name }}
             </h2>
-            <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.total }} товаров</span>
+            <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.payload.meta.total }} товаров</span>
           </div>
 
           <div class="hidden items-center gap-4 lg:flex">
@@ -275,9 +275,9 @@ await suspense()
           </div>
         </div>
 
-        <ul class="mt-8 flex flex-wrap gap-x-10 gap-y-5">
-          <li v-for="brand in brands?.payload" :key="brand.id" class="rounded-[12px] border border-[#4A5759] px-5 py-2.5 text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0]">
-            <NuxtLink :to="`category/subcategory/brand/${brand.id}`">
+        <ul class="mt-8 flex flex-wrap gap-x-2 gap-y-2.5 sm:gap-x-5 lg:gap-x-10 lg:gap-y-5">
+          <li v-for="brand in brands?.payload" :key="brand.id" class="rounded-[12px] border border-[#4A5759] px-2.5 py-[5px] text-sm text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0] md:px-5 md:py-2.5 md:text-base">
+            <NuxtLink :to="`/category/subcategory/${brand.id}`">
               {{ brand.name }}
             </NuxtLink>
           </li>
@@ -288,7 +288,7 @@ await suspense()
         </div>
 
         <div else class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
-          <CardsItemCard v-for="product in products?.payload" :key="product.id" :product="product" @click="() => $router.push('/category/items')" />
+          <CardsItemCard v-for="product in products?.payload.data" :key="product.id" :product="product" @click="() => $router.push('/category/items')" />
         </div>
         <div class="flex justify-center">
           <Button class="mt-16 rounded-xl border border-primary bg-transparent">

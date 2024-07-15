@@ -158,9 +158,6 @@ watch([params], () => setSearchParams())
   <Table>
     <TableHeader>
       <TableRow>
-        <TableHead>
-          №
-        </TableHead>
         <TableHead>Название</TableHead>
         <TableHead>Цена</TableHead>
         <TableHead>Старая цена</TableHead>
@@ -174,10 +171,7 @@ watch([params], () => setSearchParams())
 
       <TableLoading v-if="isPending" :cells="5" />
 
-      <TableRow v-for="(product, index) in products?.payload" v-else :key="product.id">
-        <TableCell class="font-medium">
-          {{ index + 1 }}
-        </TableCell>
+      <TableRow v-for="(product) in products?.payload.data" v-else :key="product.id">
         <TableCell>{{ product.name }}</TableCell>
         <TableCell>
           {{ product.price }} см
@@ -215,7 +209,7 @@ watch([params], () => setSearchParams())
   <div v-if="products?.payload" class="mt-5 flex justify-center">
     <Pagination
       v-slot="{ page }"
-      :total="products?.total"
+      :total="products?.payload.meta.total"
       :sibling-count="1"
       show-edges
       :default-page="$route.query.page ? Number($route.query.page) : 1"

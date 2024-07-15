@@ -7,16 +7,15 @@ interface Order {
   created_at: string
   order_items: {
     quantity: number
+    id: number
+    price: number
   }[]
   delivery_method: string
   payment_method: string
   status_id: number
+  delivery_address: string
 }
 
 export function getOrder(id: number) {
-  return client.get(`order`, {
-    searchParams: {
-      id,
-    },
-  }).json<{ payload: Order }>()
+  return client.get(`order/${id}`).json<{ payload: Order }>()
 }
