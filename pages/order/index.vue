@@ -18,7 +18,7 @@ await suspense()
 <template>
   <div class="mx-auto max-w-[1360px] gap-6 px-4 pb-10 pt-8 lg:flex lg:px-10 lg:pb-16 lg:pt-11">
     <ClientOnly>
-      <AsidebarProfile class="hidden lg:block" />
+      <AsidebarProfile class="hidden self-start lg:block" />
     </ClientOnly>
 
     <div class="flex flex-col gap-10">
@@ -34,14 +34,14 @@ await suspense()
           <div class="flex items-center space-x-2">
             <RadioGroupItem id="option-two" value="option-two" class="hidden" />
             <Label for="option-two" :class="selected === 'option-two' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
-              В ожидании
+              Не оплачены
             </Label>
           </div>
 
           <div class="flex items-center space-x-2">
             <RadioGroupItem id="option-three" value="option-three" class="hidden" />
             <Label for="option-three" :class="selected === 'option-three' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
-              Получены
+              Оплачены
             </Label>
           </div>
         </RadioGroup>

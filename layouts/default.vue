@@ -86,13 +86,13 @@ const { mutate } = useMutation({
                         <ul class="flex min-h-[526px] gap-10 p-6 pt-9">
                           <li v-for="subcategory in detail.subcategories" :key="subcategory.id" class="w-[200px] grow">
                             <NavigationMenuLink as-child>
-                              <NuxtLink class="block text-base font-semibold text-[#242424]" :to="`/subcategory/${subcategory.id}`">
+                              <NuxtLink class="block text-base font-semibold text-[#242424]" :to="`/category/subcategory/${subcategory.id}`">
                                 {{ subcategory.name }}
                               </NuxtLink>
                               <ul class="fle mt-4 flex-col">
                                 <li v-for="brands in subcategory.brands" :key="brands.id" class="pb-4">
                                   <NavigationMenuLink as-child>
-                                    <NuxtLink class="text-sm text-[#242424]" :to="`/brand/${brands.id}`">
+                                    <NuxtLink class="text-sm text-[#242424]" :to="`category/subcategory/brand/${brands.id}`">
                                       {{ brands.name }}
                                     </NuxtLink>
                                   </NavigationMenuLink>
@@ -122,29 +122,9 @@ const { mutate } = useMutation({
                 </NuxtLink>
 
                 <ul class="mt-10 flex flex-col gap-5">
-                  <li>
-                    <NuxtLink to="/category/:slug()">
-                      Подложки/подставки для торта
-                    </NuxtLink>
-                  </li>
-                  <li>
-                    <NuxtLink to="/category/:slug()">
-                      Подложки/подставки для торта
-                    </NuxtLink>
-                  </li>
-                  <li>
-                    <NuxtLink to="/category/:slug()">
-                      Подложки/подставки для торта
-                    </NuxtLink>
-                  </li>
-                  <li>
-                    <NuxtLink to="/category/:slug()">
-                      Подложки/подставки для торта
-                    </NuxtLink>
-                  </li>
-                  <li>
-                    <NuxtLink to="/category/:slug()">
-                      Подложки/подставки для торта
+                  <li v-for="category in details?.payload.categories" :key="category.id">
+                    <NuxtLink :to="`/category/${category.id}`">
+                      {{ category.name }}
                     </NuxtLink>
                   </li>
                 </ul>

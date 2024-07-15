@@ -88,6 +88,9 @@ await suspense()
           :opts="{
             align: 'center',
           }"
+          :plugins="[Autoplay({
+            delay: 1000,
+          })]"
         >
           <CarouselContent>
             <CarouselItem v-for="product in discountProducts?.payload.data" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">

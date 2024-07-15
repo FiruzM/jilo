@@ -1,26 +1,20 @@
 <script setup lang="ts">
 import { ChevronRight, ListFilter, Minus } from 'lucide-vue-next'
-import { getSubcategoryProducts } from '~/api/web/products/get-subcategory-products'
-import { getSubcategory } from '~/api/web/subcategories/get-subcategory'
-import { getBrands } from '~/api/web/brands/get-brands'
+import { getBrandProducts } from '~/api/web/products/get-brands-products'
+import { getBrand } from '~/api/web/brands/get-brand'
 
 const isOpen = ref(false)
 
 const params: any = useRoute().params
 
 const { data: products, isPending, suspense } = useQuery({
-  queryKey: [`subcategoryProducts`, params],
-  queryFn: () => getSubcategoryProducts(params.id),
+  queryKey: [`brandProducts`, params],
+  queryFn: () => getBrandProducts(params.id),
 })
 
-const { data: subcategory } = useQuery({
-  queryKey: ['subcategory', params],
-  queryFn: () => getSubcategory(params.id),
-})
-
-const { data: brands } = useQuery({
-  queryKey: ['subcategoryBrands'],
-  queryFn: () => getBrands(params.id),
+const { data: brand } = useQuery({
+  queryKey: ['brand', params],
+  queryFn: () => getBrand(params.id),
 })
 
 await suspense()
@@ -37,8 +31,8 @@ await suspense()
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink :href="`/category/${subcategory?.payload.id}`">
-            {{ subcategory?.payload.name }}
+          <BreadcrumbLink :href="`/category/${brand?.payload.id}`">
+            {{ brand?.payload.name }}
           </BreadcrumbLink>
         </BreadcrumbItem>
       </BreadcrumbList>
@@ -125,7 +119,7 @@ await suspense()
         <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div class="flex gap-5">
             <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-              {{ subcategory?.payload.name }}
+              {{ brand?.payload.name }}
             </h2>
             <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.payload.meta.total }} товаров</span>
           </div>
@@ -274,14 +268,6 @@ await suspense()
             </Sheet>
           </div>
         </div>
-
-        <ul class="mt-8 flex flex-wrap gap-x-2 gap-y-2.5 sm:gap-x-5 lg:gap-x-10 lg:gap-y-5">
-          <li v-for="brand in brands?.payload" :key="brand.id" class="rounded-[12px] border border-[#4A5759] px-2.5 py-[5px] text-sm text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0] md:px-5 md:py-2.5 md:text-base">
-            <NuxtLink :to="`/category/subcategory/brand/${brand.id}`">
-              {{ brand.name }}
-            </NuxtLink>
-          </li>
-        </ul>
 
         <div v-if="isPending" class="mt-8 grid grid-cols-2 gap-10 md:grid-cols-3 lg:mt-14 xl:grid-cols-4">
           <Skeleton v-for="(_, index) in 8" :key="index" class="h-[306px] rounded-[24px]" />
