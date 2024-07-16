@@ -5,9 +5,9 @@ import * as z from 'zod'
 import type { HTTPError } from 'ky'
 import type { definitions } from '~/api/v1'
 import { useToast } from '~/components/ui/toast'
-import { getSubcategories } from '~/api/admin/subcategories/get-subcategories'
 import { getBrand } from '~/api/admin/brands/get-brand'
 import { updateBrand } from '~/api/admin/brands/update-brand'
+import { getInfiniteSubcategories } from '~/api/admin/subcategories/get-infinite-subcategories'
 
 definePageMeta({
   layout: 'admin-dashboard',
@@ -15,9 +15,16 @@ definePageMeta({
   title: 'Бренды',
 })
 
-const { data: subcategories } = useQuery({
-  queryKey: ['categories'],
-  queryFn: getSubcategories,
+const {
+  data: subcategories,
+  fetchNextPage,
+  isFetchingNextPage,
+
+} = useInfiniteQuery({
+  queryKey: ['subcategories'],
+  queryFn: ({ pageParam }) => getInfiniteSubcategories(pageParam),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
+  initialPageParam: 1,
 })
 
 const params: any = useRoute().params
@@ -111,16 +118,26 @@ const onSubmit = form.handleSubmit((formData) => {
             </FormLabel>
 
             <Select v-bind="componentField">
-              <FormControl>
-                <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
-                  <SelectValue placeholder="Выберите подкатегорию" />
-                </SelectTrigger>
-              </FormControl>
+              <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
+                <SelectValue placeholder="Список подкатегорий" />
+              </SelectTrigger>
               <SelectContent class="border-[#3c83ed]">
                 <SelectGroup>
-                  <SelectItem v-for="subcategory in subcategories?.payload" :key="subcategory.id" :value="subcategory.id!.toString()">
-                    {{ subcategory.name }}
-                  </SelectItem>
+                  <template v-for="(data, index) in subcategories?.pages" :key="index">
+                    <SelectItem v-for="subcategory in data.payload.data" :key="subcategory.id" :value="subcategory.id!.toString()">
+                      {{ subcategory.name }}
+                    </SelectItem>
+                  </template>
+                  <div class="flex justify-center">
+                    <Button
+                      class="size-auto bg-transparent p-0 pt-2 text-[#3c83ed] hover:bg-transparent"
+                      :disabled="subcategories?.pages[subcategories.pages.length - 1].payload.meta.current_page === subcategories?.pages[subcategories.pages.length - 1].payload.meta.last_page || isFetchingNextPage"
+                      :is-loading="isFetchingNextPage"
+                      @click="() => fetchNextPage()"
+                    >
+                      Загрузить еще
+                    </Button>
+                  </div>
                 </SelectGroup>
               </SelectContent>
             </Select>

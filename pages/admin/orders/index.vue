@@ -6,7 +6,7 @@ import { getAdminOrders } from '~/api/admin/orders/get-orders'
 definePageMeta({
   layout: 'admin-dashboard',
   middleware: ['admin-only'],
-  title: 'Категории',
+  title: 'Заказы',
 })
 
 const route = useRoute()
@@ -48,7 +48,7 @@ const { data: orders, isPending } = useQuery({
         </TableCell>
 
         <TableCell>
-          <span :class="order.status_id === 1 ? 'bg-red-700 px-5 py-2.5 rounded-md text-white' : 'bg-green-600 text-white px-5 py-2.5 rounded-md'">{{ order.status_id === 1 ? 'В обработке' : 'Завершен' }}</span>
+          <span :class="order.status_id === 1 ? 'bg-yellow-400 px-5 py-2.5 rounded-md text-white `' : 'bg-green-600 text-white px-5 py-2.5 rounded-md'">{{ order.status_id === 1 ? 'В обработке' : 'Принят' }}</span>
         </TableCell>
 
         <TableCell>
@@ -56,7 +56,7 @@ const { data: orders, isPending } = useQuery({
         </TableCell>
 
         <TableCell>
-          <Eye class="stroke-[#3c83ed]" />
+          <Eye class="stroke-[#3c83ed] hover:cursor-pointer" @click="$router.push(`/admin/orders/${order.id}`)" />
         </TableCell>
       </TableRow>
     </TableBody>

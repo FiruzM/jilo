@@ -4,7 +4,7 @@ import qs from 'qs'
 import { getCategories } from '~/api/admin/categories/get-categories'
 import { deleteProduct } from '~/api/admin/products/delete-product'
 import { getProducts } from '~/api/admin/products/get-products'
-import { getSubcategories } from '~/api/admin/subcategories/get-subcategories'
+import { getInfiniteSubcategories } from '~/api/admin/subcategories/get-infinite-subcategories'
 import { useToast } from '~/components/ui/toast'
 
 definePageMeta({
@@ -34,11 +34,12 @@ const { data: categories } = useQuery({
 const {
   data: subcategories,
   fetchNextPage,
+  isFetchingNextPage,
 
 } = useInfiniteQuery({
   queryKey: ['subcategories'],
-  queryFn: ({ pageParam }) => getSubcategories(pageParam),
-  getNextPageParam: () => 2,
+  queryFn: ({ pageParam }) => getInfiniteSubcategories(pageParam),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
   initialPageParam: 1,
   enabled,
 })
@@ -120,17 +121,20 @@ watch([params], () => setSearchParams())
           <SelectContent class="border-[#3c83ed]">
             <SelectGroup>
               <template v-for="(data, index) in subcategories?.pages" :key="index">
-                <SelectItem v-for="subcategory in data.payload" :key="subcategory.id" :value="subcategory.id!.toString()">
+                <SelectItem v-for="subcategory in data.payload.data" :key="subcategory.id" :value="subcategory.id!.toString()">
                   {{ subcategory.name }}
                 </SelectItem>
               </template>
-              <button
-
-                @click="() => fetchNextPage()"
-              >
-                Load More
-              </button>
-              <button />
+              <div class="flex justify-center">
+                <Button
+                  class="size-auto bg-transparent p-0 pt-2 text-[#3c83ed] hover:bg-transparent"
+                  :disabled="subcategories?.pages[subcategories.pages.length - 1].payload.meta.current_page === subcategories?.pages[subcategories.pages.length - 1].payload.meta.last_page || isFetchingNextPage"
+                  :is-loading="isFetchingNextPage"
+                  @click="() => fetchNextPage()"
+                >
+                  Загрузить еще
+                </Button>
+              </div>
             </SelectGroup>
           </SelectContent>
         </Select>

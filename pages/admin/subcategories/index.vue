@@ -113,24 +113,18 @@ watch([params], () => setSearchParams())
   <Table>
     <TableHeader>
       <TableRow>
-        <TableHead>
-          №
-        </TableHead>
         <TableHead>Название</TableHead>
         <TableHead>Действия</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableEmpty v-if="!subcategories?.payload && !isPending" :colspan="6">
+      <TableEmpty v-if="!subcategories?.payload.data && !isPending" :colspan="6">
         <FileX class="opacity-60. size-14 stroke-[#D5D5D5]" />
       </TableEmpty>
 
       <TableLoading v-if="isPending" :cells="3" />
 
-      <TableRow v-for="(subcategory, index) in subcategories?.payload" :key="subcategory.id">
-        <TableCell class="font-medium">
-          {{ index + 1 }}
-        </TableCell>
+      <TableRow v-for="(subcategory) in subcategories?.payload.data" :key="subcategory.id">
         <TableCell>{{ subcategory.name }}</TableCell>
 
         <TableCell>
@@ -164,7 +158,7 @@ watch([params], () => setSearchParams())
   <div v-if="subcategories?.payload" class="mt-5 flex justify-center">
     <Pagination
       v-slot="{ page }"
-      :total="subcategories?.total"
+      :total="subcategories?.payload.meta.total"
       :sibling-count="1"
       show-edges
       :default-page="$route.query.page ? Number($route.query.page) : 1"

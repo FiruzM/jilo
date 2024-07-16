@@ -73,7 +73,7 @@ const posterPreview = computed(() => {
 })
 
 const { mutate, isPending } = useMutation({
-  mutationFn: (data: definitions['models.Products']) => updateCategory(data, params.id),
+  mutationFn: (data: definitions['models.Categories']) => updateCategory(data, params.id),
 
   onError: async (error: HTTPError) => {
     const errorData = await error.response.json()

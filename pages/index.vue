@@ -89,7 +89,7 @@ await suspense()
             align: 'center',
           }"
           :plugins="[Autoplay({
-            delay: 1000,
+            delay: 3000,
           })]"
         >
           <CarouselContent>

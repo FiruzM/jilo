@@ -279,7 +279,7 @@ await suspense()
         </div>
 
         <ul class="mt-8 flex flex-wrap gap-x-2 gap-y-2.5 sm:gap-x-5 lg:gap-x-10 lg:gap-y-5">
-          <li v-for="subcategory in subcategories?.payload" :key="subcategory.id" class="rounded-[12px] border border-[#4A5759] px-2.5 py-[5px] text-sm text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0] md:px-5 md:py-2.5 md:text-base">
+          <li v-for="subcategory in subcategories?.payload.data" :key="subcategory.id" class="rounded-[12px] border border-[#4A5759] px-2.5 py-[5px] text-sm text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0] md:px-5 md:py-2.5 md:text-base">
             <NuxtLink :to="`/category/subcategory/${subcategory.id}`">
               {{ subcategory.name }}
             </NuxtLink>

@@ -32,7 +32,7 @@ const { mutate } = useMutation({
 
           <span class="mt-[6px] text-xs text-[#8CA9AE]">{{ user?.number_phone }}</span>
 
-          <NuxtLink class="mt-2 flex items-center gap-1 text-[10px] text-[#8CA9AE]">
+          <NuxtLink to="/profile/update" class="mt-2 flex items-center gap-1 text-[10px] text-[#8CA9AE]">
             <SquarePen class="size-3" />
             Редактировать профиль
           </NuxtLink>
