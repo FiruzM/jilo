@@ -8,9 +8,16 @@ const isOpen = ref(false)
 
 const params: any = useRoute().params
 
-const { data: products, isPending, suspense, isPending: productsPending } = useQuery({
+const {
+  data: products,
+  isPending: productsPending,
+  fetchNextPage: fetchNextProducts,
+  isFetchingNextPage: isFetchingNextProducts,
+} = useInfiniteQuery({
   queryKey: [`categoryProducts`, params],
-  queryFn: () => getCategoriesProducts(params.id),
+  queryFn: ({ pageParam }) => getCategoriesProducts(pageParam, params.id),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
+  initialPageParam: 1,
 })
 
 const { data: category, isPending: categoryPending } = useQuery({
@@ -18,131 +25,166 @@ const { data: category, isPending: categoryPending } = useQuery({
   queryFn: () => getCategory(params.id),
 })
 
-const { data: subcategories, isPending: subcategoriesPending } = useQuery({
-  queryKey: ['categorySubcategories', params],
-  queryFn: () => getSubcategories(params.id),
-})
+const {
+  data: subcategories,
+  fetchNextPage,
+  isFetchingNextPage,
+  isPending: subcategoriesPending,
 
-await suspense()
+} = useInfiniteQuery({
+  queryKey: ['categorySubcategories', params],
+  queryFn: ({ pageParam }) => getSubcategories(pageParam, params.id),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
+  initialPageParam: 1,
+})
 </script>
 
 <template>
   <div v-if="productsPending || categoryPending || subcategoriesPending" class="flex justify-center">
     <Loader2 class="mt-[100px] animate-spin stroke-primary" />
   </div>
-  <div v-else class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:px-10 lg:pb-16 lg:pt-11">
-    <Breadcrumb class="hidden lg:flex">
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/category">
-            Каталог товаров
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink :href="`/category/${category?.payload.id}`">
-            {{ category?.payload.name }}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
-
-    <div class="mt-11 flex gap-7">
-      <div class="hidden max-w-[250px] shrink-0 lg:block">
-        <ScrollArea class="h-svh">
-          <Collapsible v-model:open="isOpen">
-            <CollapsibleTrigger class="flex items-center">
-              <ChevronRight :class="isOpen ? 'transition-all ease-in rotate-90' : 'transition-all ease-in'" />
-              <span class="font-semibold">Купить жильё</span>
-            </CollapsibleTrigger>
-            <CollapsibleContent class="ml-6 mt-6 flex flex-col gap-4">
-              <div>Все квартиры</div>
-              <div>Вторичка</div>
-              <div>Вторичка</div>
-              <div>Вторичка</div>
-            </CollapsibleContent>
-          </Collapsible>
-
-          <div class="mt-6">
-            <p class="mb-4 font-semibold">
-              Количество комнат
-            </p>
-            <div class="flex flex-col gap-4">
-              <div class="flex items-center space-x-2">
-                <Checkbox id="studio" />
-                <label
-                  for="studio"
-                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Студия
-                </label>
-              </div>
-
-              <div class="flex items-center space-x-2">
-                <Checkbox id="studio" />
-                <label
-                  for="studio"
-                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Студия
-                </label>
-              </div>
-
-              <div class="flex items-center space-x-2">
-                <Checkbox id="studio" />
-                <label
-                  for="studio"
-                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Студия
-                </label>
-              </div>
-
-              <div class="flex items-center space-x-2">
-                <Checkbox id="studio" />
-                <label
-                  for="studio"
-                  class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Студия
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <p class="mt-6 font-semibold">
-              Цена, ₽
-            </p>
-
-            <div class="mt-4 flex items-center gap-2.5">
-              <Input class="rounded-lg" placeholder="от" />
-              <Minus />
-              <Input class="rounded-lg" placeholder="до" />
-            </div>
-          </div>
-        </ScrollArea>
-      </div>
-
-      <div class="grow">
-        <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-          <div class="flex gap-5">
-            <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
+  <CLientOnly v-else>
+    <div class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:px-10 lg:pb-16 lg:pt-11">
+      <Breadcrumb class="hidden lg:flex">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/category">
+              Каталог товаров
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink :href="`/category/${category?.payload.id}`">
               {{ category?.payload.name }}
-            </h2>
-            <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.payload.meta.total }} товаров</span>
-          </div>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-          <div class="hidden items-center gap-4 lg:flex">
-            <div>
-              <p class="text-sm">
-                Сортировать по:
+      <div class="mt-11 flex gap-7">
+        <div class="hidden max-w-[250px] shrink-0 lg:block">
+          <ScrollArea class="h-svh">
+            <Collapsible v-model:open="isOpen">
+              <CollapsibleTrigger class="flex items-center">
+                <ChevronRight :class="isOpen ? 'transition-all ease-in rotate-90' : 'transition-all ease-in'" />
+                <span class="font-semibold">Купить жильё</span>
+              </CollapsibleTrigger>
+              <CollapsibleContent class="ml-6 mt-6 flex flex-col gap-4">
+                <div>Все квартиры</div>
+                <div>Вторичка</div>
+                <div>Вторичка</div>
+                <div>Вторичка</div>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <div class="mt-6">
+              <p class="mb-4 font-semibold">
+                Количество комнат
               </p>
+              <div class="flex flex-col gap-4">
+                <div class="flex items-center space-x-2">
+                  <Checkbox id="studio" />
+                  <label
+                    for="studio"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Студия
+                  </label>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                  <Checkbox id="studio" />
+                  <label
+                    for="studio"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Студия
+                  </label>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                  <Checkbox id="studio" />
+                  <label
+                    for="studio"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Студия
+                  </label>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                  <Checkbox id="studio" />
+                  <label
+                    for="studio"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Студия
+                  </label>
+                </div>
+              </div>
             </div>
 
             <div>
+              <p class="mt-6 font-semibold">
+                Цена, ₽
+              </p>
+
+              <div class="mt-4 flex items-center gap-2.5">
+                <Input class="rounded-lg" placeholder="от" />
+                <Minus />
+                <Input class="rounded-lg" placeholder="до" />
+              </div>
+            </div>
+          </ScrollArea>
+        </div>
+
+        <div class="grow">
+          <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+            <div class="flex gap-5">
+              <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
+                {{ category?.payload.name }}
+              </h2>
+              <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.pages[products.pages.length - 1].payload.meta.total }}товаров</span>
+            </div>
+
+            <div class="hidden items-center gap-4 lg:flex">
+              <div>
+                <p class="text-sm">
+                  Сортировать по:
+                </p>
+              </div>
+
+              <div>
+                <Select>
+                  <SelectTrigger class="h-9 w-[180px] rounded-[12px] border-[#D5D5D5] text-black">
+                    <SelectValue placeholder="Выберите параметр" />
+                  </SelectTrigger>
+                  <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
+                    <SelectGroup>
+                      <SelectItem value="popular">
+                        Популярные
+                      </SelectItem>
+
+                      <SelectItem value="cheap">
+                        Сначала дешевле
+                      </SelectItem>
+
+                      <SelectItem value="expensive">
+                        Сначала дороже
+                      </SelectItem>
+
+                      <SelectItem value="new">
+                        Новинки
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div class="flex lg:hidden">
               <Select>
-                <SelectTrigger class="h-9 w-[180px] rounded-[12px] border-[#D5D5D5] text-black">
+                <SelectTrigger class="h-9 w-[172px] rounded-[12px] rounded-r-none border-[#D5D5D5] text-xs text-primary-foreground">
                   <SelectValue placeholder="Выберите параметр" />
                 </SelectTrigger>
                 <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
@@ -165,140 +207,129 @@ await suspense()
                   </SelectGroup>
                 </SelectContent>
               </Select>
+
+              <Sheet>
+                <SheetTrigger class="flex items-center gap-2 rounded-[12px] rounded-l-none border border-l-0 border-[#D5D5D5] px-11 text-xs text-primary-foreground">
+                  <ListFilter />
+                  Фильтры
+                </SheetTrigger>
+                <SheetContent side="top">
+                  <ScrollArea class="h-svh">
+                    <Collapsible v-model:open="isOpen">
+                      <CollapsibleTrigger class="flex items-center">
+                        <ChevronRight :class="isOpen ? 'transition-all ease-in rotate-90' : 'transition-all ease-in'" />
+                        <span class="font-semibold">Купить жильё</span>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent class="ml-6 mt-6 flex flex-col gap-4">
+                        <div>Все квартиры</div>
+                        <div>Вторичка</div>
+                        <div>Вторичка</div>
+                        <div>Вторичка</div>
+                      </CollapsibleContent>
+                    </Collapsible>
+
+                    <div class="mt-2">
+                      <p class="mb-4 font-semibold">
+                        Количество комнат
+                      </p>
+                      <div class="flex flex-col gap-4">
+                        <div class="flex items-center space-x-2">
+                          <Checkbox id="studio" />
+                          <label
+                            for="studio"
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            Студия
+                          </label>
+                        </div>
+
+                        <div class="flex items-center space-x-2">
+                          <Checkbox id="studio" />
+                          <label
+                            for="studio"
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            Студия
+                          </label>
+                        </div>
+
+                        <div class="flex items-center space-x-2">
+                          <Checkbox id="studio" />
+                          <label
+                            for="studio"
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            Студия
+                          </label>
+                        </div>
+
+                        <div class="flex items-center space-x-2">
+                          <Checkbox id="studio" />
+                          <label
+                            for="studio"
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            Студия
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p class="mt-6 font-semibold">
+                        Цена, ₽
+                      </p>
+
+                      <div class="mt-4 flex items-center gap-2.5">
+                        <Input class="rounded-lg" placeholder="от" />
+                        <Minus />
+                        <Input class="rounded-lg" placeholder="до" />
+                      </div>
+                    </div>
+                  </ScrollArea>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
 
-          <div class="flex lg:hidden">
-            <Select>
-              <SelectTrigger class="h-9 w-[172px] rounded-[12px] rounded-r-none border-[#D5D5D5] text-xs text-primary-foreground">
-                <SelectValue placeholder="Выберите параметр" />
-              </SelectTrigger>
-              <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
-                <SelectGroup>
-                  <SelectItem value="popular">
-                    Популярные
-                  </SelectItem>
+          <ul class="mt-8 flex flex-wrap gap-x-2 gap-y-2.5 sm:gap-x-5 lg:gap-x-10 lg:gap-y-5">
+            <template v-for="(data, index) in subcategories?.pages" :key="index">
+              <li v-for="subcategory in data?.payload.data" :key="subcategory.id" class="rounded-[12px] border border-[#4A5759] px-2.5 py-[5px] text-sm text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0] md:px-5 md:py-2.5 md:text-base">
+                <NuxtLink :to="`/category/subcategory/${subcategory.id}`">
+                  {{ subcategory.name }}
+                </NuxtLink>
+              </li>
+            </template>
+          </ul>
 
-                  <SelectItem value="cheap">
-                    Сначала дешевле
-                  </SelectItem>
-
-                  <SelectItem value="expensive">
-                    Сначала дороже
-                  </SelectItem>
-
-                  <SelectItem value="new">
-                    Новинки
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-
-            <Sheet>
-              <SheetTrigger class="flex items-center gap-2 rounded-[12px] rounded-l-none border border-l-0 border-[#D5D5D5] px-11 text-xs text-primary-foreground">
-                <ListFilter />
-                Фильтры
-              </SheetTrigger>
-              <SheetContent side="top">
-                <ScrollArea class="h-svh">
-                  <Collapsible v-model:open="isOpen">
-                    <CollapsibleTrigger class="flex items-center">
-                      <ChevronRight :class="isOpen ? 'transition-all ease-in rotate-90' : 'transition-all ease-in'" />
-                      <span class="font-semibold">Купить жильё</span>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent class="ml-6 mt-6 flex flex-col gap-4">
-                      <div>Все квартиры</div>
-                      <div>Вторичка</div>
-                      <div>Вторичка</div>
-                      <div>Вторичка</div>
-                    </CollapsibleContent>
-                  </Collapsible>
-
-                  <div class="mt-2">
-                    <p class="mb-4 font-semibold">
-                      Количество комнат
-                    </p>
-                    <div class="flex flex-col gap-4">
-                      <div class="flex items-center space-x-2">
-                        <Checkbox id="studio" />
-                        <label
-                          for="studio"
-                          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Студия
-                        </label>
-                      </div>
-
-                      <div class="flex items-center space-x-2">
-                        <Checkbox id="studio" />
-                        <label
-                          for="studio"
-                          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Студия
-                        </label>
-                      </div>
-
-                      <div class="flex items-center space-x-2">
-                        <Checkbox id="studio" />
-                        <label
-                          for="studio"
-                          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Студия
-                        </label>
-                      </div>
-
-                      <div class="flex items-center space-x-2">
-                        <Checkbox id="studio" />
-                        <label
-                          for="studio"
-                          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Студия
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p class="mt-6 font-semibold">
-                      Цена, ₽
-                    </p>
-
-                    <div class="mt-4 flex items-center gap-2.5">
-                      <Input class="rounded-lg" placeholder="от" />
-                      <Minus />
-                      <Input class="rounded-lg" placeholder="до" />
-                    </div>
-                  </div>
-                </ScrollArea>
-              </SheetContent>
-            </Sheet>
+          <div class="flex justify-center">
+            <Button
+              class="mt-5 size-auto bg-transparent p-0 text-[#4A5759] hover:bg-transparent"
+              :disabled="subcategories?.pages[subcategories.pages.length - 1].payload.meta.current_page === subcategories?.pages[subcategories.pages.length - 1].payload.meta.last_page || isFetchingNextPage"
+              :is-loading="isFetchingNextPage"
+              @click="() => fetchNextPage()"
+            >
+              Загрузить еще
+            </Button>
           </div>
-        </div>
 
-        <ul class="mt-8 flex flex-wrap gap-x-2 gap-y-2.5 sm:gap-x-5 lg:gap-x-10 lg:gap-y-5">
-          <li v-for="subcategory in subcategories?.payload.data" :key="subcategory.id" class="rounded-[12px] border border-[#4A5759] px-2.5 py-[5px] text-sm text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0] md:px-5 md:py-2.5 md:text-base">
-            <NuxtLink :to="`/category/subcategory/${subcategory.id}`">
-              {{ subcategory.name }}
-            </NuxtLink>
-          </li>
-        </ul>
-
-        <div v-if="isPending" class="mt-8 grid grid-cols-2 gap-10 md:grid-cols-3 lg:mt-14 xl:grid-cols-4">
-          <Skeleton v-for="(_, index) in 8" :key="index" class="h-[306px] rounded-[24px]" />
-        </div>
-
-        <div else class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
-          <CardsItemCard v-for="product in products?.payload.data" :key="product.id" :product="product" @click="() => $router.push('/category/items')" />
-        </div>
-        <div class="flex justify-center">
-          <Button class="mt-16 rounded-xl border border-primary bg-transparent">
-            Показать больше
-          </Button>
+          <div class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
+            <template v-for="(data, index) in products?.pages" :key="index">
+              <CardsItemCard v-for="product in data?.payload.data" :key="product.id" :product="product" @click="() => $router.push('/category/items')" />
+            </template>
+          </div>
+          <div class="flex justify-center">
+            <Button
+              class="mt-16 rounded-xl border border-primary bg-transparent"
+              :disabled="products?.pages[products.pages.length - 1].payload.meta.current_page === products?.pages[products.pages.length - 1].payload.meta.last_page || isFetchingNextProducts"
+              :is-loading="isFetchingNextProducts"
+              @click="() => fetchNextProducts()"
+            >
+              Показать больше
+            </Button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </CLientOnly>
 </template>

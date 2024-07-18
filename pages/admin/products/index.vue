@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Eye, FileX, ListFilter, Search, Trash } from 'lucide-vue-next'
 import qs from 'qs'
-import { getCategories } from '~/api/admin/categories/get-categories'
+import { getInfiniteCategories } from '~/api/admin/categories/get-infinite-categories'
 import { deleteProduct } from '~/api/admin/products/delete-product'
 import { getProducts } from '~/api/admin/products/get-products'
 import { getInfiniteSubcategories } from '~/api/admin/subcategories/get-infinite-subcategories'
@@ -25,9 +25,16 @@ const { data: products, refetch, isPending } = useQuery({
 const isPopoverOpen = ref(false)
 const enabled = computed(() => !!isPopoverOpen.value)
 
-const { data: categories } = useQuery({
+const {
+  data: categories,
+  fetchNextPage: fetchNextCategories,
+  isFetchingNextPage: isFetchingNextCategories,
+
+} = useInfiniteQuery({
   queryKey: ['categories'],
-  queryFn: () => getCategories(),
+  queryFn: ({ pageParam }) => getInfiniteCategories(pageParam),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
+  initialPageParam: 1,
   enabled,
 })
 
@@ -107,9 +114,21 @@ watch([params], () => setSearchParams())
           </SelectTrigger>
           <SelectContent class="border-[#3c83ed]">
             <SelectGroup>
-              <SelectItem v-for="category in categories?.payload" :key="category.id" :value="category.id!.toString()">
-                {{ category.name }}
-              </SelectItem>
+              <template v-for="(data, index) in categories?.pages" :key="index">
+                <SelectItem v-for="category in data.payload.data" :key="category.id" :value="category.id!.toString()">
+                  {{ category.name }}
+                </SelectItem>
+              </template>
+              <div class="flex justify-center">
+                <Button
+                  class="size-auto bg-transparent p-0 pt-2 text-[#3c83ed] hover:bg-transparent"
+                  :disabled="categories?.pages[categories.pages.length - 1].payload.meta.current_page === categories?.pages[categories.pages.length - 1].payload.meta.last_page || isFetchingNextCategories"
+                  :is-loading="isFetchingNextCategories"
+                  @click="() => fetchNextCategories()"
+                >
+                  Загрузить еще
+                </Button>
+              </div>
             </SelectGroup>
           </SelectContent>
         </Select>

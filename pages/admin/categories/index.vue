@@ -51,7 +51,7 @@ const { mutate } = useMutation({
 
       <TableLoading v-if="isPending" :cells="3" />
 
-      <TableRow v-for="(category, index) in categories?.payload" :key="category.id">
+      <TableRow v-for="(category, index) in categories?.payload.data" :key="category.id">
         <TableCell class="font-medium">
           {{ index + 1 }}
         </TableCell>
@@ -88,7 +88,7 @@ const { mutate } = useMutation({
   <div v-if="categories?.payload" class="mt-5 flex justify-center">
     <Pagination
       v-slot="{ page }"
-      :total="categories?.total"
+      :total="categories?.payload.meta.total"
       :sibling-count="1"
       show-edges
       :default-page="$route.query.page ? Number($route.query.page) : 1"

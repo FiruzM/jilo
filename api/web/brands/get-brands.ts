@@ -1,10 +1,12 @@
 import { client } from '~/api/client'
+import type { Pagination } from '~/api/types'
 import type { definitions } from '~/api/v1'
 
-export function getBrands(id: number) {
+export function getBrands(pageParam: number, id: number) {
   return client.get('app/brands/all', {
     searchParams: {
       subcategory_id: id,
+      page: pageParam,
     },
-  }).json<{ payload: definitions['models.Brands'][], total: number }>()
+  }).json<{ payload:{data: definitions['models.Brands'][], meta: Pagination} }>()
 }

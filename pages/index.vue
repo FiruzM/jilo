@@ -1,31 +1,57 @@
 <script setup lang="ts">
-import { ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
+import { Loader2, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
 import Autoplay from 'embla-carousel-autoplay'
+import { getInfiniteCategories } from '~/api/admin/categories/get-infinite-categories'
 import { getBanners } from '~/api/admin/banners/get-banners'
-import { getCategories } from '~/api/admin/categories/get-categories'
 import { getDiscountProducts } from '~/api/web/products/get-discount-products'
 
-const { data: banners, suspense } = useQuery({
+const { data: banners, isPending: isBannersPending } = useQuery({
   queryKey: ['banners'],
   queryFn: getBanners,
 })
 
-const { data: categories } = useQuery({
+const {
+  data: categories,
+  fetchNextPage: fetchNextCategories,
+  isFetchingNextPage: isFetchingNextCategories,
+  isPending: isCategoriesPending,
+
+} = useInfiniteQuery({
   queryKey: ['categories'],
-  queryFn: getCategories,
+  queryFn: ({ pageParam }) => getInfiniteCategories(pageParam),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
+  initialPageParam: 1,
 })
 
-const { data: discountProducts } = useQuery({
+const { data: discountProducts, isPending: discountProductsPending, refetch } = useQuery({
   queryKey: ['discountProducts'],
   queryFn: getDiscountProducts,
+  enabled: false,
 })
 
-await suspense()
+const discountSection = ref()
+const hasTriggered = ref(false)
+
+onMounted(() => {
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !hasTriggered.value) {
+      // section is now in view, enable the query
+      refetch()
+      hasTriggered.value = true
+    }
+  }, { threshold: 1.0 })
+
+  observer.observe(discountSection.value)
+})
 </script>
 
 <template>
   <div class="mx-auto mt-5 max-w-[1360px] px-4 lg:mt-10 lg:px-10">
+    <div v-if="isBannersPending" class="flex justify-center">
+      <Loader2 class="mt-[100px] animate-spin stroke-primary" />
+    </div>
     <Carousel
+      v-else
       class="relative w-full"
       :opts="{
         align: 'center',
@@ -65,39 +91,68 @@ await suspense()
         </h2>
       </div>
 
-      <ul class="mt-5 flex flex-wrap gap-2.5 lg:mt-10 lg:gap-6 xl:grid xl:grid-cols-5">
-        <li v-for="category in categories?.payload" :key="category.id" class="relative h-[127px] grow overflow-hidden rounded-[12px] border-4 border-white bg-[#F1F4FA] p-5 transition-all ease-in hover:border-[#CCE3DE] md:h-[253px] lg:rounded-3xl" @click="$router.push(`/category/${category.id}`)">
-          <p class="w-[105px] text-xs font-semibold text-primary-foreground sm:w-[205px] sm:text-base md:text-[18px] xl:w-auto">
-            {{ category.name }}
-          </p>
-          <img :src="category.file_path" class="absolute bottom-0 right-0 size-[76px] sm:size-[96px] lg:size-[160px]" alt="Item">
+      <ul v-if="isCategoriesPending" class="mt-5 flex flex-wrap gap-2.5 lg:mt-10 lg:gap-6 xl:grid xl:grid-cols-5">
+        <li v-for="i in 5" :key="i" class="relative h-[127px] grow overflow-hidden rounded-[12px] border-4 border-white bg-[#F1F4FA] p-5 transition-all ease-in hover:border-[#CCE3DE] md:h-[253px] lg:rounded-3xl">
+          <Skeleton class="size-full w-[118px]" />
         </li>
       </ul>
+
+      <ul class="mt-5 flex flex-wrap gap-2.5 lg:mt-10 lg:gap-6 xl:grid xl:grid-cols-5">
+        <template v-for="(data, index) in categories?.pages" :key="index">
+          <li
+            v-for="category in data.payload.data"
+            :key="category.id"
+            class="relative h-[127px] grow overflow-hidden rounded-[12px] border-4 border-white bg-[#F1F4FA] p-5 transition-all ease-in hover:border-[#CCE3DE] md:h-[253px] lg:rounded-3xl"
+            @click="$router.push(`/category/${category.id}`)"
+          >
+            <p class="w-[105px] text-xs font-semibold text-primary-foreground sm:w-[205px] sm:text-base md:text-[18px] xl:w-auto">
+              {{ category.name }}
+            </p>
+            <img :src="category.file_path" class="absolute bottom-0 right-0 size-[76px] sm:size-[96px] lg:size-[160px]" alt="Item">
+          </li>
+        </template>
+      </ul>
+      <div class="flex justify-center">
+        <Button
+          class="mt-16 rounded-xl border border-primary bg-transparent"
+          :disabled="categories?.pages[categories.pages.length - 1].payload.meta.current_page === categories?.pages[categories.pages.length - 1].payload.meta.last_page || isFetchingNextCategories"
+          :is-loading="isFetchingNextCategories"
+          @click="() => fetchNextCategories()"
+        >
+          Показать больше
+        </Button>
+      </div>
     </div>
 
-    <div class="mt-10 lg:mt-[100px]">
-      <div class="flex gap-11">
-        <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-          Товары по акции
-        </h2>
+    <div ref="discountSection" class="mt-10 lg:mt-[100px]">
+      <div v-if="discountProductsPending" class="flex justify-center">
+        <Loader2 class="mt-[100px] animate-spin stroke-primary" />
       </div>
 
-      <div class="mt-5 lg:mt-10">
-        <Carousel
-          class="relative w-full"
-          :opts="{
-            align: 'center',
-          }"
-          :plugins="[Autoplay({
-            delay: 3000,
-          })]"
-        >
-          <CarouselContent>
-            <CarouselItem v-for="product in discountProducts?.payload.data" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-              <CardsItemCard :product="product" @click="() => $router.push(`/product/${product.id}`)" />
-            </CarouselItem>
-          </CarouselContent>
-        </Carousel>
+      <div v-else>
+        <div class="flex gap-11">
+          <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
+            Товары по акции
+          </h2>
+        </div>
+
+        <div class="mt-5 lg:mt-10">
+          <Carousel
+            class="relative w-full"
+            :opts="{
+              align: 'center',
+            }"
+            :plugins="[Autoplay({
+              delay: 3000,
+            })]"
+          >
+            <CarouselContent>
+              <CarouselItem v-for="product in discountProducts?.payload.data" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                <CardsItemCard :product="product" @click="() => $router.push(`/product/${product.id}`)" />
+              </CarouselItem>
+            </CarouselContent>
+          </Carousel>
+        </div>
       </div>
     </div>
 
