@@ -36,7 +36,7 @@ const formRegisterSchema = toTypedSchema(z.object({
     }).email(),
   number_phone: z
     .string({
-      required_error: 'Укажите телефон',
+      required_error: 'Укажите номер телефона',
     })
     .min(9, {
       message: 'Минимум 9 символа',
@@ -54,7 +54,7 @@ const formRegisterSchema = toTypedSchema(z.object({
 
   repeat_password: z
     .string({
-      required_error: 'Укажите пароль',
+      required_error: 'Повторите пароль',
     })
     .min(4, {
       message: 'Минимум 4 символа',
@@ -63,7 +63,7 @@ const formRegisterSchema = toTypedSchema(z.object({
       message: 'Максимум 50 символов',
     }),
 }).refine(data => data.password === data.repeat_password, {
-  message: 'Пароль не совпадает',
+  message: 'Пароли не совпадают',
   path: ['repeat_password'],
 }))
 

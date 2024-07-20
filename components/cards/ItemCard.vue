@@ -68,9 +68,9 @@ function addToCart(e: Event, id: number) {
 <template>
   <div class="ga-4 group flex flex-col justify-between overflow-hidden border-white transition-all ease-in xl:rounded-3xl xl:border-[10px] xl:hover:border-[#CCE3DE] xl:hover:bg-[#CCE3DE]">
     <div>
-      <div class="relative flex items-center justify-center rounded-[12px] bg-[#F1F4FA] p-9 sm:rounded-3xl ">
-        <div class="overflow-hidden rounded-[3px] border border-[#CCE3DE]">
-          <img :src="data.product?.file_paths[0]" class="size-[102px] md:size-[142px] lg:size-[182px]" alt="Item">
+      <div class="relative rounded-[12px] sm:rounded-3xl">
+        <div class="flex h-[150px] items-center justify-center overflow-hidden rounded-[12px] border border-[#CCE3DE] bg-white sm:h-[253px] sm:rounded-3xl ">
+          <img :src="data.product?.file_paths[0]" class="w-full object-cover" alt="Item">
         </div>
         <span v-if="data.product?.old_price" class="absolute left-3 top-5 rounded-[3px] bg-primary-foreground px-1 text-sm font-semibold leading-5 text-[#FFDCCD] sm:left-5 md:rounded-md">-{{ Math.ceil(percent) }}%</span>
         <!-- <span class="absolute left-3 top-[50px] rounded-[3px] bg-primary px-1 text-sm font-bold leading-5 text-primary-foreground sm:left-5 md:top-[50px] md:rounded-md">+30 Б</span> -->

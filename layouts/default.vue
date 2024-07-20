@@ -61,7 +61,7 @@ const { mutate } = useMutation({
   <div class="flex min-h-screen flex-col xl:pb-0">
     <header>
       <ClientOnly>
-        <div class="mx-auto flex max-w-[1360px] items-center gap-2.5 px-2 py-4 sm:gap-5 lg:px-10 xl:gap-8">
+        <div class="mx-auto flex max-w-[1360px] items-center gap-2.5 p-4 sm:gap-5 lg:px-10 xl:gap-8">
           <NuxtLink to="/" class="w-[50px] lg:w-20">
             <img src="/assets/img/logo.png" alt="Logo" class="w-[50px] lg:w-20">
           </NuxtLink>
@@ -189,7 +189,7 @@ const { mutate } = useMutation({
             </nav>
 
             <Select :model-value="locale" @update:model-value="(code) => setLocale(code)">
-              <SelectTrigger class="max-w-[40px] border-0 bg-transparent p-0 text-[10px] font-semibold text-black md:text-xs">
+              <SelectTrigger class="max-w-[40px] justify-normal border-0 bg-transparent p-0 text-[10px] font-semibold text-black md:text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent class="w-fit border-[#D5D5D5] p-0">
@@ -317,4 +317,3 @@ const { mutate } = useMutation({
     </nav>
   </div>
 </template>
-~/api/web/products/get-search-products

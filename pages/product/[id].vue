@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Box, LucideAlertCircle, Minus, Plus, ShoppingCart, Truck } from 'lucide-vue-next'
+import { Box, Minus, Plus, ShoppingCart } from 'lucide-vue-next'
 import { getProduct } from '~/api/web/products/get-product'
 import { useToast } from '~/components/ui/toast'
 
@@ -57,26 +57,33 @@ await suspense()
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink href="/category/krasitely">
-            Красители
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Жирорастворимые красители</BreadcrumbPage>
+          <BreadcrumbPage>{{ product?.payload.name }}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
 
-    <div class="mt-4 flex flex-col gap-5 lg:flex-row lg:gap-16">
-      <div class="flex items-center justify-center rounded-3xl bg-[#F1F4FA] px-16 py-12 lg:px-[135px]">
-        <img :src="product?.payload.file_paths[0]" alt="Logo" class="size-[203px] md:size-[303px] xl:size-[450px]">
+    <div class="mt-4 flex flex-col gap-5 md:flex-row lg:gap-16">
+      <div class="flex size-full items-center justify-center overflow-hidden rounded-[24px] border-[5px] border-[#F1F4FA] bg-white md:size-[536px]">
+        <Carousel
+          class="relative w-full"
+          :opts="{
+            align: 'center',
+          }"
+        >
+          <CarouselContent class="">
+            <CarouselItem v-for="(img, index) in product?.payload.file_paths" :key="index">
+              <img :src="img" alt="Logo" class="h-[333px] w-full object-contain sm:h-[432px]">
+            </CarouselItem>
+          </CarouselContent>
+
+          <div v-if="product?.payload.file_paths.length > 1">
+            <CarouselPrevious class="left-1 border-none bg-primary-foreground stroke-[#FFDCCD]" />
+            <CarouselNext class="right-1 border-none bg-primary-foreground" />
+          </div>
+        </Carousel>
       </div>
 
       <div class="flex flex-col gap-6">
-        <p class="self-start rounded-full bg-primary-foreground px-2 py-1 text-sm font-semibold text-[#FFDCCD]">
-          New!
-        </p>
         <div>
           <h2 class="max-w-[574px] text-xl font-semibold sm:text-2xl md:text-3xl lg:text-4xl">
             {{ product?.payload.name }}
@@ -85,10 +92,6 @@ await suspense()
             {{ product?.payload.price }} с
           </p>
         </div>
-
-        <p class="text-xs text-[#6E7C87] sm:text-sm">
-          Артикул 107293
-        </p>
 
         <div class="flex max-w-96 flex-col gap-6">
           <div class="flex gap-6">
@@ -102,7 +105,7 @@ await suspense()
               </button>
             </div>
             <Button class="grow text-sm sm:text-base" @click="addToCart">
-              <ShoppingCart class="mr-2.5" />
+              <ShoppingCart class="mr-2.5 hidden" />
               Добавить в корзину
             </Button>
           </div>
@@ -114,19 +117,9 @@ await suspense()
 
         <div>
           <ul>
-            <li class="flex gap-2 border-b border-[#E5E9EB] py-2 text-sm">
-              <Truck class="stroke-[#9AA6AC]" />
-              <span class="border-b border-[#242424]">Рассчитать доставку</span>
-            </li>
-
-            <li class="flex gap-2 border-b border-[#E5E9EB] py-2 text-sm">
+            <li class="flex gap-2 text-sm">
               <Box class="stroke-[#9AA6AC]" />
               <span>Наличие на складе <span class="font-semibold text-[#368C18]">Много</span></span>
-            </li>
-
-            <li class="flex gap-2 border-b border-[#E5E9EB] py-2 text-sm">
-              <LucideAlertCircle class="stroke-[#9AA6AC]" />
-              <span>Самовывоз сегодня - бесплатно <br> Доставка завтра - от 0 ₽</span>
             </li>
           </ul>
         </div>
@@ -134,4 +127,3 @@ await suspense()
     </div>
   </div>
 </template>
-~/api/web/products/get-product

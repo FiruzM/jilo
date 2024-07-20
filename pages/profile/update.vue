@@ -21,18 +21,18 @@ const { refetch } = useQuery({
   queryFn: () => currentUser(),
 })
 
-const MAX_IMAGE_SIZE = 1000000 // 100KB
+const MAX_IMAGE_SIZE = 1000000
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 const formSchema = computed(() => toTypedSchema(z.object({
   avatar: z
-    .any()
+    .any({ message: 'Выберите файл' })
     .refine(file => file)
     .refine(
       file => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      'Only .jpg, .jpeg, .png formats are supported.',
+      'Поддерживаются только .jpg, .jpeg, .png and .webp форматы.',
     )
-    .refine(file => file?.size <= MAX_IMAGE_SIZE, `Max image size is 100KB.`)
+    .refine(file => file?.size <= MAX_IMAGE_SIZE, `Максимальный размер изображения -1МБ`)
     .optional(),
   full_name: z
     .string({
@@ -46,7 +46,7 @@ const formSchema = computed(() => toTypedSchema(z.object({
     }),
   number_phone: z
     .string({
-      required_error: 'Укажите телефон',
+      required_error: 'Укажите номер телефона',
     })
     .min(9, {
       message: 'Минимум 9 символа',
@@ -88,10 +88,8 @@ const { mutate, isPending } = useMutation({
   },
 })
 
-const onSubmit = form.handleSubmit((values) => {
+const onSubmit = form.handleSubmit((values: any) => {
   mutate(values)
-  // eslint-disable-next-line no-console
-  console.log('Form submitted!', values)
 })
 </script>
 
@@ -131,7 +129,7 @@ const onSubmit = form.handleSubmit((values) => {
                       <span class="max-w-[176px] text-[11px] leading-4 text-[#8CA9AE]">
                         Требуемое разрешение 250х250
                         Формат - jpeg, png, webp
-                        Размер не более 2 Мб
+                        Размер не более 1 Мб
                       </span>
                     </div>
                   </div>

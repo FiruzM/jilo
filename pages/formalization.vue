@@ -17,10 +17,11 @@ const formSchema = toTypedSchema(z.object({
   }).min(2, {
     message: 'Минимум 2 символа',
   }).optional(),
+  comment: z.string().optional(),
   delivery_method: z.enum(['current-adres', 'pickup'], {
     required_error: 'Выберите тип доставки',
   }),
-  payment_method: z.enum(['card', 'wallet', 'cash'], {
+  payment_method: z.enum(['card', 'cash'], {
     required_error: 'Выберите тип доставки',
   }),
 }))
@@ -149,7 +150,7 @@ const onSubmit = handleSubmit((values) => {
             </FormField>
           </div>
 
-          <!-- <FormField v-slot="{ componentField }" name="comment">
+          <FormField v-slot="{ componentField }" name="comment">
             <FormItem>
               <FormLabel class="text-sm font-normal text-black">
                 Комментарий к заказу
@@ -162,7 +163,7 @@ const onSubmit = handleSubmit((values) => {
               </FormControl>
               <FormMessage />
             </FormItem>
-          </FormField> -->
+          </FormField>
 
           <FormField v-slot="{ componentField }" type="radio" name="payment_method">
             <FormItem class="space-y-3">
@@ -171,23 +172,10 @@ const onSubmit = handleSubmit((values) => {
                   class="flex flex-col gap-6"
                   v-bind="componentField"
                 >
-                  <FormIte>
-                    <div class="flex items-center gap-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem value="card" />
-                      </FormControl>
-                      <FormLabel class="text-sm text-black">
-                        Оплата картой
-                      </FormLabel>
-                    </div>
-                    <FormDescription class="!mt-0 ml-7 text-[10px] text-black/30">
-                      Оплата картами Корти Милли, VISA и МИР
-                    </FormDescription>
-                  </FormIte>
                   <FormItem>
                     <div class="flex items-center gap-x-3 space-y-0">
                       <FormControl>
-                        <RadioGroupItem value="wallet" />
+                        <RadioGroupItem value="card" />
                       </FormControl>
                       <FormLabel class="text-sm text-black">
                         Оплата через эл. кошелёк
@@ -204,7 +192,7 @@ const onSubmit = handleSubmit((values) => {
                         <RadioGroupItem value="cash" />
                       </FormControl>
                       <FormLabel class="text-sm text-black">
-                        Наличными или картой при получении
+                        Наличными при получении
                       </FormLabel>
                     </div>
                   </FormItem>

@@ -5,10 +5,13 @@ interface Order {
   total_amount: number
   order_number: string
   created_at: string
+  user_name: string
+  user_phone: string
   order_items: {
     quantity: number
     id: number
     price: number
+    product_name: string
   }[]
   delivery_method: string
   payment_method: string
