@@ -18,7 +18,7 @@ const user = useAuthUser()
 const formLoginSchema = toTypedSchema(z.object({
   login: z.string({
     required_error: 'Укажите email',
-  }).email(),
+  }).email({ message: 'Неверный формат email' }),
   password: z.string({
     required_error: 'Укажите пароль',
   }),

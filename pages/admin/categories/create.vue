@@ -16,7 +16,7 @@ definePageMeta({
 const { toast } = useToast()
 const router = useRouter()
 
-const MAX_IMAGE_SIZE = 10000000 // 10MB
+const MAX_IMAGE_SIZE = 1000000 // 1MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 const formSchema = toTypedSchema(z.object({
@@ -32,12 +32,12 @@ const formSchema = toTypedSchema(z.object({
     }),
   file: z
     .any()
-    .refine(file => file, 'Required')
+    .refine(file => file, 'Выберите файл')
     .refine(
       file => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      'Only .jpg, .jpeg, .png and .webp formats are supported.',
+      'Поддерживаются только .jpg, .jpeg, .png and .webp форматы.',
     )
-    .refine(file => file?.size <= MAX_IMAGE_SIZE, `Max image size is 10MB.`),
+    .refine(file => file?.size <= MAX_IMAGE_SIZE, `Максимальный размер файла 1 МБ.`),
 }))
 
 const form = useForm({

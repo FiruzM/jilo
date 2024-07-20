@@ -6,11 +6,11 @@ import type { HTTPError } from 'ky'
 import { ImagePlus } from 'lucide-vue-next'
 import type { definitions } from '~/api/v1'
 import { useToast } from '~/components/ui/toast'
-import { getBrands } from '~/api/admin/brands/get-brands'
 import { getProduct } from '~/api/admin/products/get-product'
 import { updateProduct } from '~/api/admin/products/update-product'
-import { getCategories } from '~/api/admin/categories/get-categories'
+import { getInfiniteCategories } from '~/api/admin/categories/get-infinite-categories'
 import { getInfiniteSubcategories } from '~/api/admin/subcategories/get-infinite-subcategories'
+import { getInfiniteBrands } from '~/api/admin/brands/get-infinite-brands'
 
 definePageMeta({
   layout: 'admin-dashboard',
@@ -21,14 +21,21 @@ definePageMeta({
 const params: any = useRoute().params
 
 const { data: product, isSuccess, isRefetching } = useQuery({
-  queryKey: ['product'],
+  queryKey: ['product', params.id],
   queryFn: () => getProduct(params.id),
 
 })
 
-const { data: categories } = useQuery({
+const {
+  data: categories,
+  fetchNextPage: fetchNextCategories,
+  isFetchingNextPage: isFetchingNextCategories,
+
+} = useInfiniteQuery({
   queryKey: ['categories'],
-  queryFn: getCategories,
+  queryFn: ({ pageParam }) => getInfiniteCategories(pageParam),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
+  initialPageParam: 1,
 })
 
 const {
@@ -43,15 +50,21 @@ const {
   initialPageParam: 1,
 })
 
-const { data: brands } = useQuery({
+const {
+  data: brands,
+  fetchNextPage: fetchNextBrandsPage,
+  isFetchingNextPage: isFetchingNextBrandsPage,
+} = useInfiniteQuery({
   queryKey: ['brands'],
-  queryFn: getBrands,
+  queryFn: ({ pageParam }) => getInfiniteBrands(pageParam),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
+  initialPageParam: 1,
 })
 
 const { toast } = useToast()
 const router = useRouter()
 
-const MAX_IMAGE_SIZE = 1000000 // 100KB
+const MAX_IMAGE_SIZE = 3000000
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
 const formSchema = toTypedSchema(z.object({
@@ -101,13 +114,13 @@ const formSchema = toTypedSchema(z.object({
 
   file_paths: z
     .array(z
-      .any()
-      .refine(file => file, 'Required')
+      .any({ message: 'Выберите файл' })
+      .refine(file => file, 'Выберите файл')
       .refine(
         file => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        'Only .jpg, .jpeg, .png and .webp formats are supported.',
+        'Поддерживаются только .jpg, .jpeg, .png and .webp форматы.',
       )
-      .refine(file => file?.size <= MAX_IMAGE_SIZE, `Max image size is 100KB.`)).optional(),
+      .refine(file => file?.size <= MAX_IMAGE_SIZE, `Максимальный размер файла 3 МБ.`), { message: 'Выберите файл' }).optional(),
 }))
 
 const form = useForm({
@@ -203,14 +216,26 @@ const onSubmit = form.handleSubmit((formData) => {
             <Select v-bind="componentField">
               <FormControl>
                 <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
-                  <SelectValue placeholder="Выберите категорию" />
+                  <SelectValue placeholder="Список категорий" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent class="border-[#3c83ed]">
                 <SelectGroup>
-                  <SelectItem v-for="category in categories?.payload" :key="category.id" :value="category.id!.toString()">
-                    {{ category.name }}
-                  </SelectItem>
+                  <template v-for="(data, index) in categories?.pages" :key="index">
+                    <SelectItem v-for="category in data.payload.data" :key="category.id" :value="category.id!.toString()">
+                      {{ category.name }}
+                    </SelectItem>
+                  </template>
+                  <div class="flex justify-center">
+                    <Button
+                      class="size-auto bg-transparent p-0 pt-2 text-[#3c83ed] hover:bg-transparent"
+                      :disabled="categories?.pages[categories.pages.length - 1].payload.meta.current_page === categories?.pages[categories.pages.length - 1].payload.meta.last_page || isFetchingNextCategories"
+                      :is-loading="isFetchingNextCategories"
+                      @click="() => fetchNextCategories()"
+                    >
+                      Загрузить еще
+                    </Button>
+                  </div>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -225,9 +250,11 @@ const onSubmit = form.handleSubmit((formData) => {
             </FormLabel>
 
             <Select v-bind="componentField">
-              <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
-                <SelectValue placeholder="Список подкатегорий" />
-              </SelectTrigger>
+              <FormControl>
+                <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
+                  <SelectValue placeholder="Список подкатегорий" />
+                </SelectTrigger>
+              </FormControl>
               <SelectContent class="border-[#3c83ed]">
                 <SelectGroup>
                   <template v-for="(data, index) in subcategories?.pages" :key="index">
@@ -261,14 +288,26 @@ const onSubmit = form.handleSubmit((formData) => {
             <Select v-bind="componentField">
               <FormControl>
                 <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
-                  <SelectValue placeholder="Выберите бренд" />
+                  <SelectValue placeholder="Список брендов" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent class="border-[#3c83ed]">
                 <SelectGroup>
-                  <SelectItem v-for="brand in brands?.payload" :key="brand.id" :value="brand.id!.toString()">
-                    {{ brand.name }}
-                  </SelectItem>
+                  <template v-for="(data, index) in brands?.pages" :key="index">
+                    <SelectItem v-for="brand in data.payload.data" :key="brand.id" :value="brand.id!.toString()">
+                      {{ brand.name }}
+                    </SelectItem>
+                  </template>
+                  <div class="flex justify-center">
+                    <Button
+                      class="size-auto bg-transparent p-0 pt-2 text-[#3c83ed] hover:bg-transparent"
+                      :disabled="brands?.pages[brands.pages.length - 1].payload.meta.current_page === brands?.pages[brands.pages.length - 1].payload.meta.last_page || isFetchingNextBrandsPage"
+                      :is-loading="isFetchingNextBrandsPage"
+                      @click="() => fetchNextBrandsPage()"
+                    >
+                      Загрузить еще
+                    </Button>
+                  </div>
                 </SelectGroup>
               </SelectContent>
             </Select>

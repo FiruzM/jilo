@@ -280,7 +280,7 @@ const { data: brand, isPending: brandPending } = useQuery({
 
           <div class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
             <template v-for="(data, index) in products?.pages" :key="index">
-              <CardsItemCard v-for="product in data?.payload.data" :key="product.id" :product="product" @click="() => $router.push('/category/items')" />
+              <CardsItemCard v-for="product in data?.payload.data" :key="product.id" :product="product" @click="() => $router.push(`/product/${product.id}`)" />
             </template>
           </div>
           <div class="flex justify-center">

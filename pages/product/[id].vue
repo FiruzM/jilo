@@ -7,7 +7,7 @@ const params: any = useRoute().params
 const { toast } = useToast()
 
 const { data: product, suspense } = useQuery({
-  queryKey: ['product'],
+  queryKey: ['product', params.id],
   queryFn: () => getProduct(params.id),
 })
 

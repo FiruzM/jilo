@@ -101,9 +101,11 @@ const onSubmit = form.handleSubmit((formData) => {
             </FormLabel>
 
             <Select v-bind="componentField">
-              <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
-                <SelectValue placeholder="Список подкатегорий" />
-              </SelectTrigger>
+              <FormControl>
+                <SelectTrigger class="border-[#3c83ed] text-[#3c83ed]">
+                  <SelectValue placeholder="Список подкатегорий" />
+                </SelectTrigger>
+              </FormControl>
               <SelectContent class="border-[#3c83ed]">
                 <SelectGroup>
                   <template v-for="(data, index) in subcategories?.pages" :key="index">
