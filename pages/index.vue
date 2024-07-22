@@ -23,13 +23,22 @@ const {
   initialPageParam: 1,
 })
 
-const { data: discountProducts, isPending: discountProductsPending, refetch } = useQuery({
+const {
+  data: discountProducts,
+  isPending: discountProductsPending,
+  fetchNextPage,
+  isFetchingNextPage,
+  refetch,
+} = useInfiniteQuery({
   queryKey: ['discountProducts'],
-  queryFn: getDiscountProducts,
+  queryFn: ({ pageParam }) => getDiscountProducts(pageParam),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
+  initialPageParam: 1,
   enabled: false,
 })
 
 const discountSection = ref()
+const lastDiscountItem = ref()
 const hasTriggered = ref(false)
 
 onMounted(() => {
@@ -42,6 +51,18 @@ onMounted(() => {
   }, { threshold: 1.0 })
 
   observer.observe(discountSection.value)
+})
+
+onUpdated(() => {
+  const lastDiscountItemObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !isFetchingNextPage.value && discountProducts.value?.pages[discountProducts.value.pages.length - 1].payload.meta.current_page !== discountProducts.value?.pages[discountProducts.value.pages.length - 1].payload.meta.last_page) {
+      fetchNextPage()
+    }
+  }, { threshold: 1.0 })
+
+  if (lastDiscountItem.value) {
+    lastDiscountItemObserver.observe(lastDiscountItem.value)
+  }
 })
 </script>
 
@@ -142,12 +163,24 @@ onMounted(() => {
             :opts="{
               align: 'center',
             }"
+            :plugins="[Autoplay({
+              delay: 4000,
+            })]"
           >
             <CarouselContent>
-              <CarouselItem v-for="product in discountProducts?.payload.data" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-                <CardsItemCard class="h-full" :product="product" @click="() => $router.push(`/product/${product.id}`)" />
-              </CarouselItem>
+              <template v-for="(data, index) in discountProducts?.pages" :key="index">
+                <CarouselItem v-for="(product, idx) in data.payload.data" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                  <CardsItemCard :ref="(el) => { if (idx + 1 === data.payload.data.length - 1) lastDiscountItem = el?.$el }" class="h-full" :product="product" @click="() => $router.push(`/product/${product.id}`)" />
+                </CarouselItem>
+              </template>
+              <div v-if="isFetchingNextPage" class="flex justify-center lg:hidden">
+                <Loader2 class="mt-[100px] animate-spin stroke-primary" />
+              </div>
             </CarouselContent>
+            <div class="lg:hidden">
+              <CarouselPrevious class="left-0 border-none bg-primary-foreground stroke-[#FFDCCD]" />
+              <CarouselNext class="right-0 border-none bg-primary-foreground" />
+            </div>
           </Carousel>
         </div>
       </div>
