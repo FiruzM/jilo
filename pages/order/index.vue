@@ -27,21 +27,21 @@ await suspense()
           <div class="flex items-center space-x-2">
             <RadioGroupItem id="option-one" value="option-one" class="hidden" />
             <Label for="option-one" :class="selected === 'option-one' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
-              Все заказы
+              {{ $t('all_orders') }}
             </Label>
           </div>
 
           <div class="flex items-center space-x-2">
             <RadioGroupItem id="option-two" value="option-two" class="hidden" />
             <Label for="option-two" :class="selected === 'option-two' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
-              Не оплачены
+              {{ $t('not_paid') }}
             </Label>
           </div>
 
           <div class="flex items-center space-x-2">
             <RadioGroupItem id="option-three" value="option-three" class="hidden" />
             <Label for="option-three" :class="selected === 'option-three' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
-              Оплачены
+              {{ $t('all_paid') }}
             </Label>
           </div>
         </RadioGroup>
@@ -52,30 +52,30 @@ await suspense()
           <div class="flex items-center justify-between border-b  border-[#EFF2F3] pb-4 sm:gap-40">
             <div>
               <h3 class="font-semibold text-black ">
-                Заказ №{{ order.order_number }}
+                {{ $t('order') }} №{{ order.order_number }}
               </h3>
               <p class="text-xs text-[#809A9E]">
                 {{ format(new Date(order.created_at), 'dd.MM.yyyy') }}, {{ format(new Date(order.created_at), 'HH:mm') }}
               </p>
             </div>
             <span :class=" order.status_id === 1 ? 'rounded-[9px] bg-[#F0E8D8] px-[12px] py-[6px] text-[10px] font-semibold text-[#765F3C]' : 'rounded-[9px] bg-[#E1F0D8] px-[12px] py-[6px] text-[10px] font-semibold text-[#4F763C]'">
-              {{ order.status_id === 1 ? "В ожидании оплаты" : "Оплачено" }}
+              {{ order.status_id === 1 ? $t('not_paid') : $t('paid') }}
             </span>
           </div>
 
           <div class="flex gap-20 pt-5">
             <div class="flex flex-col gap-3">
               <p class="text-xs">
-                Сумма:
+                {{ $t('sum') }}:
               </p>
               <p class="text-xs">
-                Количество:
+                {{ $t('quantity') }}:
               </p>
               <p class="text-xs">
-                Способ получения:
+                {{ $t('obtaining_method') }}:
               </p>
               <p class="text-xs">
-                Способ оплаты:
+                {{ $t('payment_method') }}:
               </p>
             </div>
 
@@ -87,10 +87,10 @@ await suspense()
                 {{ order.order_items.reduce((acc: any, item: any) => acc + item.quantity, 0) }}
               </p>
               <p class="text-xs font-semibold">
-                {{ order.delivery_method === 'current-adres' ? 'Доставка' : 'Самовывоз' }}
+                {{ order.delivery_method === 'current-adres' ? $t('delivery') : $t('pickup') }}
               </p>
               <p class="text-xs font-semibold">
-                {{ order.payment_method === 'card' ? 'Картой' : 'Наличными' }}
+                {{ order.payment_method === 'card' ? $t('card') : $t('cash') }}
               </p>
             </div>
           </div>

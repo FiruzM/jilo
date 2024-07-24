@@ -23,7 +23,7 @@ await suspense()
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <div class="flex gap-5">
           <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-            Все категории
+            {{ $t('all_categories') }}
           </h2>
         </div>
       </div>
@@ -45,7 +45,7 @@ await suspense()
           :is-loading="isFetchingNextCategories"
           @click="() => fetchNextCategories()"
         >
-          Показать больше
+          {{ $t('show_more') }}
         </Button>
       </div>
     </div>

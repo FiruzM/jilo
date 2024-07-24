@@ -83,11 +83,10 @@ export default defineNuxtConfig({
   site: {
     url: process.env.NUXT_PUBLIC_WEBSITE_URL,
     name: 'Jilo',
-    description: 'Place where you can get your startup ideas',
   },
 
   robots: {
-    disallow: ['/ecosystem/**', '/admin/**', '/investor/**', '/startupper/**'],
+    disallow: ['/admin/**'],
   },
 
   ogImage: {

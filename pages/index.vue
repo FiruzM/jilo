@@ -93,7 +93,7 @@ onUpdated(() => {
               {{ banner.subtitle }}
             </p>
             <NuxtLink :to="banner.banner_link" target="_blank" class="mt-2.5 rounded-md bg-[#FFDCCD] p-2 hover:cursor-pointer">
-              Перейти
+              {{ $t('cross') }}
             </NuxtLink>
           </div>
         </CarouselItem>
@@ -108,7 +108,7 @@ onUpdated(() => {
     <div class="mt-10 lg:mt-[100px]">
       <div class="flex gap-11">
         <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-          Все категории
+          {{ $t('all_categories') }}
         </h2>
       </div>
 
@@ -140,7 +140,7 @@ onUpdated(() => {
           :is-loading="isFetchingNextCategories"
           @click="() => fetchNextCategories()"
         >
-          Показать больше
+          {{ $t('show_more') }}
         </Button>
       </div>
     </div>
@@ -153,7 +153,7 @@ onUpdated(() => {
       <div v-else>
         <div class="flex gap-11">
           <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-            Товары по акции
+            {{ $t('discount_products') }}
           </h2>
         </div>
 
@@ -170,7 +170,7 @@ onUpdated(() => {
             <CarouselContent>
               <template v-for="(data, index) in discountProducts?.pages" :key="index">
                 <CarouselItem v-for="(product, idx) in data.payload.data" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-                  <CardsItemCard :ref="(el) => { if (idx + 1 === data.payload.data.length - 1) lastDiscountItem = el?.$el }" class="h-full" :product="product" @click="() => $router.push(`/product/${product.id}`)" />
+                  <CardsItemCard :ref="(el: any) => { if (idx + 1 === data.payload.data.length - 1) lastDiscountItem = el?.$el }" class="h-full" :product="product" @click="() => $router.push(`/product/${product.id}`)" />
                 </CarouselItem>
               </template>
               <div v-if="isFetchingNextPage" class="flex justify-center lg:hidden">
@@ -188,7 +188,7 @@ onUpdated(() => {
 
     <div class="mt-10 lg:mt-[92px]">
       <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-        Наши преимущества
+        {{ $t('our_advantages') }}
       </h2>
 
       <ul class="mt-5 grid grid-cols-2 gap-7 sm:grid-cols-3 lg:mt-16">
@@ -198,10 +198,10 @@ onUpdated(() => {
           </div>
           <div class="flex flex-col gap-1 md:gap-3 lg:gap-4">
             <h4 class="text-xs font-semibold sm:text-sm md:text-base lg:text-xl">
-              Быстрая доставка
+              {{ $t('fast_delivery') }}
             </h4>
             <p class="text-[9px] leading-[160%] sm:text-xs  md:text-sm lg:text-base">
-              Гарантированная скорость доставки, чтобы получить свои заказы быстрее и без задержек
+              {{ $t('guaranteed_delivery_speed') }}
             </p>
           </div>
         </li>
@@ -212,10 +212,10 @@ onUpdated(() => {
           </div>
           <div class="flex flex-col gap-1 md:gap-3 lg:gap-4">
             <h4 class="text-xs font-semibold sm:text-sm md:text-base lg:text-xl">
-              Широкий ассортимент
+              {{ $t('wide_range') }}
             </h4>
             <p class="text-[9px] leading-[160%] sm:text-xs md:text-sm lg:text-base">
-              Разнообразие товаров для каждого вкуса и потребности, чтобы найти идеальный продукт
+              {{ $t('products_variety') }}
             </p>
           </div>
         </li>
@@ -226,10 +226,10 @@ onUpdated(() => {
           </div>
           <div class="flex flex-col gap-1 md:gap-3 lg:gap-4">
             <h4 class="text-xs font-semibold sm:text-sm md:text-base lg:text-xl">
-              Высокое качество
+              {{ $t('high_quality') }}
             </h4>
             <p class="xl text-[9px] leading-[160%]  sm:text-xs md:text-sm lg:text-base">
-              Премиум качество на каждом этапе процесса, обеспечивающее ваше доверие и уверенность
+              {{ $t('premium_quality') }}
             </p>
           </div>
         </li>
@@ -238,7 +238,7 @@ onUpdated(() => {
 
     <div class="my-10 lg:my-[100px]">
       <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-        Отзывы
+        {{ $t('reviews') }}
       </h2>
 
       <Carousel class="mt-5 lg:mt-10">

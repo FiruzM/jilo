@@ -13,14 +13,14 @@ const favorite: any = useLocalStorage('favorite', [])
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-            Избранное
+            {{ $t('favorites') }}
           </h2>
         </div>
 
         <div class="flex items-center gap-4">
           <div>
             <p class="text-sm">
-              Сортировать по:
+              {{ $t('sort_by') }}:
             </p>
           </div>
 
@@ -32,19 +32,19 @@ const favorite: any = useLocalStorage('favorite', [])
               <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
                 <SelectGroup>
                   <SelectItem value="popular">
-                    Популярные
+                    {{ $t('popular') }}
                   </SelectItem>
 
                   <SelectItem value="cheap">
-                    Сначала дешевле
+                    {{ $t('cheaper_first') }}
                   </SelectItem>
 
                   <SelectItem value="expensive">
-                    Сначала дороже
+                    {{ $t('expensive_first') }}
                   </SelectItem>
 
                   <SelectItem value="new">
-                    Новинки
+                    {{ $t('new') }}
                   </SelectItem>
                 </SelectGroup>
               </SelectContent>

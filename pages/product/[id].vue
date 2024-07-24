@@ -52,7 +52,7 @@ await suspense()
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/category">
-            Каталог товаров
+            {{ $t('catalog') }}
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
@@ -106,12 +106,12 @@ await suspense()
             </div>
             <Button class="grow text-sm sm:text-base" @click="addToCart">
               <ShoppingCart class="mr-2.5 hidden" />
-              Добавить в корзину
+              {{ $t('add_to_cart') }}
             </Button>
           </div>
 
           <Button class="border border-primary bg-transparent text-sm sm:text-base">
-            Купить в один клик
+            {{ $t('buy') }}
           </Button>
         </div>
 
@@ -119,7 +119,10 @@ await suspense()
           <ul>
             <li class="flex gap-2 text-sm">
               <Box class="stroke-[#9AA6AC]" />
-              <span>Наличие на складе <span class="font-semibold text-[#368C18]">Много</span></span>
+              <span>
+                {{ $t('availability_in_stock') }}
+                <span class="font-semibold text-[#368C18]">{{ $t('many') }}</span>
+              </span>
             </li>
           </ul>
         </div>

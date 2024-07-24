@@ -5,6 +5,7 @@ import { useToast } from '~/components/ui/toast'
 const { toast } = useToast()
 
 const cart: any = useLocalStorage('cart', [])
+const { t } = useI18n()
 
 function decrement(id: number) {
   cart.value.forEach((item: any) => {
@@ -25,8 +26,8 @@ function increment(id: number) {
 function remove(id: number) {
   cart.value = cart.value.filter((item: any) => item.id !== id)
   toast({
-    title: 'Товар удален',
-    description: 'Товар был удален из корзины',
+    title: t('product_deleted'),
+    description: t('product_was_deleted_from_cart'),
   })
 }
 
@@ -43,14 +44,14 @@ const total = computed(() => {
           <div class="hidden items-center justify-between lg:flex">
             <div class="flex gap-5">
               <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-                Корзина
+                {{ $t('cart') }}
               </h3>
-              <span class="self-end text-sm font-semibold text-[#7A7A7A]">{{ cart.length }} товаров</span>
+              <span class="self-end text-sm font-semibold text-[#7A7A7A]">{{ cart.length }} {{ $t('product') }}</span>
             </div>
 
             <button class="flex items-center gap-1" @click="cart = []">
               <Trash2 class="stroke-[#7a7a7a]" />
-              <span class="text-sm text-[#7a7a7a]">Очистить корзину</span>
+              <span class="text-sm text-[#7a7a7a]">{{ $t('empty_trash') }}</span>
             </button>
           </div>
 
@@ -91,7 +92,7 @@ const total = computed(() => {
           <div class="flex flex-col gap-4">
             <div class="flex">
               <p class="text-[#80979B]">
-                Товары ({{ cart.length }})
+                {{ $t('products') }} ({{ cart.length }})
               </p>
               <span class="w-[33%] grow border-b" />
               <span class="text-[#80979B]"> {{ total }} с.</span>
@@ -100,16 +101,16 @@ const total = computed(() => {
 
           <div class="mt-10 flex justify-between">
             <p class="text-xl font-semibold">
-              Итого
+              {{ $t('total') }}
             </p>
             <span class="text-xl font-semibold">{{ total }} с.</span>
           </div>
           <Button class="mt-6 hidden font-semibold lg:flex" @click="$router.push('/formalization')">
-            Перейти к оформлению
+            {{ $t('formalize_order') }}
           </Button>
         </div>
         <Button class="sticky bottom-24 mx-auto -mt-28 w-[296px] font-semibold sm:w-[90%] lg:hidden" @click="$router.push('/formalization')">
-          Перейти к оформлению
+          {{ $t('formalize_order') }}
         </Button>
       </div>
     </ClientOnly>

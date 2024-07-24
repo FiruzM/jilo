@@ -49,7 +49,7 @@ const {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/category">
-              Каталог товаров
+              {{ $t('catalog') }}
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -144,13 +144,13 @@ const {
               <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
                 {{ category?.payload.name }}
               </h2>
-              <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.pages[products.pages.length - 1].payload.meta.total }}товаров</span>
+              <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.pages[products.pages.length - 1].payload.meta.total }} {{ $t('product') }}</span>
             </div>
 
             <div class="hidden items-center gap-4 lg:flex">
               <div>
                 <p class="text-sm">
-                  Сортировать по:
+                  {{ $t('sort_by') }}:
                 </p>
               </div>
 
@@ -162,19 +162,19 @@ const {
                   <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
                     <SelectGroup>
                       <SelectItem value="popular">
-                        Популярные
+                        {{ $t('popular') }}
                       </SelectItem>
 
                       <SelectItem value="cheap">
-                        Сначала дешевле
+                        {{ $t('cheaper_first') }}
                       </SelectItem>
 
                       <SelectItem value="expensive">
-                        Сначала дороже
+                        {{ $t('expensive_first') }}
                       </SelectItem>
 
                       <SelectItem value="new">
-                        Новинки
+                        {{ $t('new') }}
                       </SelectItem>
                     </SelectGroup>
                   </SelectContent>
@@ -190,19 +190,19 @@ const {
                 <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
                   <SelectGroup>
                     <SelectItem value="popular">
-                      Популярные
+                      {{ $t('popular') }}
                     </SelectItem>
 
                     <SelectItem value="cheap">
-                      Сначала дешевле
+                      {{ $t('cheaper_first') }}
                     </SelectItem>
 
                     <SelectItem value="expensive">
-                      Сначала дороже
+                      {{ $t('expensive_first') }}
                     </SelectItem>
 
                     <SelectItem value="new">
-                      Новинки
+                      {{ $t('new') }}
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>
@@ -211,7 +211,7 @@ const {
               <Sheet>
                 <SheetTrigger class="flex items-center gap-2 rounded-[12px] rounded-l-none border border-l-0 border-[#D5D5D5] px-11 text-xs text-primary-foreground">
                   <ListFilter />
-                  Фильтры
+                  {{ $t('filters') }}
                 </SheetTrigger>
                 <SheetContent side="top">
                   <ScrollArea class="h-svh">
@@ -309,7 +309,7 @@ const {
               :is-loading="isFetchingNextPage"
               @click="() => fetchNextPage()"
             >
-              Загрузить еще
+              {{ $t('upload_more') }}
             </Button>
           </div>
 
@@ -325,7 +325,7 @@ const {
               :is-loading="isFetchingNextProducts"
               @click="() => fetchNextProducts()"
             >
-              Показать больше
+              {{ $t('show_more') }}
             </Button>
           </div>
         </div>

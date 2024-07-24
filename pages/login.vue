@@ -10,6 +10,8 @@ definePageMeta({
   middleware: ['guest-only'],
 })
 
+const { t } = useI18n()
+
 const { toast } = useToast()
 const router = useRouter()
 const { me, login } = useAuth()
@@ -17,10 +19,10 @@ const user = useAuthUser()
 
 const formLoginSchema = toTypedSchema(z.object({
   login: z.string({
-    required_error: 'Укажите email',
-  }).email({ message: 'Неверный формат email' }),
+    required_error: t('enter_your_email'),
+  }).email({ message: t('invalid_email') }),
   password: z.string({
-    required_error: 'Укажите пароль',
+    required_error: t('enter_your_password'),
   }),
 }))
 const formLogin = useForm({
@@ -31,7 +33,7 @@ const formLogin = useForm({
 const { mutate, isPending } = useMutation({
   mutationFn: (data: definitions['models.UserLogin']) => login(data),
   onError: async () => {
-    formLogin.setErrors({ login: undefined, password: 'Неверный логин или пароль' })
+    formLogin.setErrors({ login: undefined, password: t('incorect_password') })
   },
 
   onSuccess: async () => {
@@ -39,7 +41,7 @@ const { mutate, isPending } = useMutation({
     router.push(getRoleLink(user.value?.role?.name))
 
     toast({
-      title: 'Авторизация прошла успешно',
+      title: t('authorization_successfully'),
     })
   },
 })
@@ -75,7 +77,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
 
           <FormField v-slot="{ componentField }" name="password">
             <FormItem class="w-full">
-              <Label>Пароль</Label>
+              <Label>{{ $t('password') }}</Label>
               <FormControl>
                 <PasswordInput v-bind="componentField" />
               </FormControl>
@@ -88,7 +90,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
           </Button>
         </form>
         <NuxtLink to="/register" class="mt-5 flex h-[48px] items-center justify-center rounded-[12px] border border-primary text-sm font-semibold md:mt-10">
-          Регистрация
+          {{ $t('registration') }}
         </NuxtLink>
       </div>
     </div>

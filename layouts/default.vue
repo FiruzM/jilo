@@ -5,6 +5,7 @@ import { getRoleLink } from '~/lib/utils'
 import { getSearchProduct } from '~/api/web/products/get-search-products'
 
 const { locales, locale, setLocale } = useI18n()
+
 const user = useAuthUser()
 const { logout, me } = useAuth()
 const router = useRouter()
@@ -71,7 +72,7 @@ const { mutate } = useMutation({
               <PopoverTrigger as-child class="hidden xl:flex">
                 <Button class="px-3 py-6 text-sm font-semibold">
                   <Menu class="mr-2" />
-                  <span>Категории</span>
+                  <span>{{ $t('categories') }}</span>
                 </Button>
               </PopoverTrigger>
               <PopoverContent class="mt-5 w-screen border-none p-0">
@@ -119,7 +120,7 @@ const { mutate } = useMutation({
               <SheetContent side="left">
                 <SheetHeader class="text-left">
                   <NuxtLink to="/category" class="mt-10">
-                    Все категории
+                    {{ $t('all_categories') }}
                   </NuxtLink>
 
                   <ul class="mt-10 flex flex-col gap-5">
@@ -135,7 +136,7 @@ const { mutate } = useMutation({
 
             <Popover v-model:open="searchInput" class="min-w-[208px] shrink-0 grow xl:shrink">
               <PopoverTrigger class="relative w-full">
-                <Input v-model="name" class="h-[34px] w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" placeholder="Найдите товар здесь" />
+                <Input v-model="name" class="h-[34px] w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" :placeholder="$t('find_product_here')" />
                 <span class="absolute right-[3px] top-[2px] rounded-[6px] bg-primary p-[3px] xl:right-[5px] xl:top-[4px] xl:p-[8px]"> <Search /></span>
               </PopoverTrigger>
               <PopoverContent class="w-[290px] grow border-input px-2.5 sm:w-[450px] sm:px-5 md:w-[600px] lg:w-[720px] xl:w-[480px]">
@@ -146,7 +147,7 @@ const { mutate } = useMutation({
 
                   <div v-if="products?.payload === null" class="flex justify-center">
                     <p class="text-sm opacity-50">
-                      Ничего не найдено
+                      {{ $t('nothing_found') }}
                     </p>
                   </div>
                   <NuxtLink v-for="product in products?.payload.data" :key="product.id" :to="`/product/${product.id}`" class="flex items-center gap-5 rounded-sm px-2 hover:bg-[#f1f4fb]">
@@ -164,7 +165,7 @@ const { mutate } = useMutation({
                 <li>
                   <NuxtLink to="/order" class="flex flex-col items-center text-sm text-black">
                     <Package />
-                    Заказы
+                    {{ $t('orders') }}
                   </NuxtLink>
                 </li>
                 <li>
@@ -173,7 +174,7 @@ const { mutate } = useMutation({
                       <Heart />
                       <span v-if="favorite.length > 0" class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">{{ favorite.length }}</span>
                     </div>
-                    Избранное
+                    {{ $t('favorites') }}
                   </NuxtLink>
                 </li>
                 <li>
@@ -182,7 +183,7 @@ const { mutate } = useMutation({
                       <ShoppingCart />
                       <span v-if="cart.length > 0" class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">{{ cart.length }}</span>
                     </div>
-                    Корзина
+                    {{ $t('cart') }}
                   </NuxtLink>
                 </li>
               </ul>
@@ -215,18 +216,18 @@ const { mutate } = useMutation({
                 <DropdownMenuContent>
                   <DropdownMenuItem>
                     <NuxtLink :to="getRoleLink(user.role?.name)">
-                      Личный кабинет
+                      {{ $t('personal_account') }}
                     </NuxtLink>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem @click="mutate()">
-                    Выход
+                    {{ $t('logout') }}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
               <Button v-else variant="outline" class="hidden py-6 text-sm font-medium xl:flex" @click="$router.push('/login')">
-                Войти
+                {{ $t('login') }}
               </Button>
             </ClientOnly>
           </div>
@@ -262,21 +263,21 @@ const { mutate } = useMutation({
         <li>
           <NuxtLink to="/" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
             <Home />
-            <span class="pt-1 text-[10px]">Главная</span>
+            <span class="pt-1 text-[10px]">{{ $t('main') }}</span>
           </NuxtLink>
         </li>
 
         <li>
           <NuxtLink to="/order" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
             <Box />
-            <span class="pt-1 text-[10px]">Заказы</span>
+            <span class="pt-1 text-[10px]">{{ $t('orders') }}</span>
           </NuxtLink>
         </li>
 
         <li>
           <NuxtLink to="/favorites" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
             <Heart />
-            <span class="pt-1 text-[10px]">Избранное</span>
+            <span class="pt-1 text-[10px]">{{ $t('favorites') }}</span>
             <span v-if="favorite.length > 0" class="absolute -top-1 right-0 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">{{ favorite.length }}</span>
           </NuxtLink>
         </li>
@@ -284,7 +285,7 @@ const { mutate } = useMutation({
         <li>
           <NuxtLink to="/cart" class="relative flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
             <ShoppingCart />
-            <span class="pt-1 text-[10px]">Корзина</span>
+            <span class="pt-1 text-[10px]">{{ $t('cart') }}</span>
             <span v-if="cart.length > 0" class="absolute -right-2 -top-1 rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">{{ cart.length }}</span>
           </NuxtLink>
         </li>
@@ -293,24 +294,24 @@ const { mutate } = useMutation({
           <DropdownMenu v-if="user">
             <DropdownMenuTrigger class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
               <User />
-              <span class="pt-1 text-[10px]">Профиль</span>
+              <span class="pt-1 text-[10px]">{{ $t('profile') }}</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem>
                 <NuxtLink :to="getRoleLink(user?.role?.name)">
-                  Личный кабинет
+                  {{ $t('personal_account') }}
                 </NuxtLink>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem @click="mutate()">
-                Выход
+                {{ $t('logout') }}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
           <NuxtLink v-else to="/login" class="flex flex-col items-center [&.router-link-active]:text-[#EDAFB8]">
             <User />
-            <span class="pt-1 text-[10px]">Профиль</span>
+            <span class="pt-1 text-[10px]">{{ $t('profile') }}</span>
           </NuxtLink>
         </li>
       </ul>

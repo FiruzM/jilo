@@ -5,9 +5,9 @@ import { QrCode } from 'lucide-vue-next'
 <template>
   <div class="mx-auto max-w-[1360px] px-4 pb-10 pt-8 lg:gap-10 lg:px-10 lg:pb-16 lg:pt-[100px] ">
     <h3 class="text-3xl font-semibold">
-      Инструкция по оплате заказа
+      {{ $t('instruction') }}
     </h3>
-    <div class="flex  gap-14">
+    <div class="mt-10 flex  gap-14">
       <div class="flex gap-8">
         <div class="h-[434px] w-[200px] rounded-[15px] bg-[#868686]" />
         <div class="relative">
@@ -16,7 +16,7 @@ import { QrCode } from 'lucide-vue-next'
           </svg>
 
           <p class="max-w-[148px] pl-7 text-xl text-[#252C32]">
-            Откройте приложение alif mobi
+            {{ $t('open_alif_app') }}
           </p>
         </div>
       </div>
@@ -29,7 +29,7 @@ import { QrCode } from 'lucide-vue-next'
           </svg>
 
           <p class="max-w-[158px] pl-8 text-xl text-[#252C32]">
-            Выберите QR-сканер и отсканируйте наш QR
+            {{ $t('choose_qr') }}
           </p>
         </div>
       </div>
@@ -42,7 +42,7 @@ import { QrCode } from 'lucide-vue-next'
           </svg>
 
           <p class="max-w-[189px] pl-6 text-xl text-[#252C32]">
-            Введите сумму заказа и в поле комментария напишите номер Вашего заказа
+            {{ $t('enter_total_price') }}
           </p>
         </div>
       </div>
@@ -52,7 +52,7 @@ import { QrCode } from 'lucide-vue-next'
       <Tabs default-value="alif" class="mt-5">
         <TabsList class="gap-6 bg-transparent">
           <h3 class="text-sm font-semibold text-black lg:text-3xl">
-            Выберите банк для оплаты
+            {{ $t('choose_bank') }}
           </h3>
           <TabsTrigger value="alif" class="rounded-[12px] bg-[#00AF66] p-0 px-[30px] py-[15px] data-[state=active]:bg-[#00AF66]">
             <img src="~/assets/img/alif.png" alt="Alif">
@@ -66,7 +66,7 @@ import { QrCode } from 'lucide-vue-next'
           <div class="mt-[33px]">
             <QrCode class="size-[83px] stroke-primary" />
             <p class="mt-[27px] text-6xl font-semibold">
-              Откройте QR-сканер в Alif mobi и отсканируйте QR-код
+              {{ $t('open_alif_qr') }}
             </p>
           </div>
         </TabsContent>
@@ -75,7 +75,7 @@ import { QrCode } from 'lucide-vue-next'
           <div class="mt-[33px]">
             <QrCode class="size-[83px] stroke-primary" />
             <p class="mt-[27px] text-6xl font-semibold">
-              Откройте QR-сканер в DC mobi и отсканируйте QR-код
+              {{ $t('open_dc_qr') }}
             </p>
           </div>
         </TabsContent>

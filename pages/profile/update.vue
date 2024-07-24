@@ -12,6 +12,7 @@ definePageMeta({
   middleware: ['user-only'],
 })
 
+const { t } = useI18n()
 const user = useAuthUser()
 const authStor = useAuth()
 const { toast } = useToast()
@@ -26,30 +27,30 @@ const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/web
 
 const formSchema = computed(() => toTypedSchema(z.object({
   avatar: z
-    .any({ message: 'Выберите файл' })
+    .any({ message: t('choose_file') })
     .refine(file => file)
     .refine(
       file => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      'Поддерживаются только .jpg, .jpeg, .png and .webp форматы.',
+      t('supported_only'),
     )
-    .refine(file => file?.size <= MAX_IMAGE_SIZE, `Максимальный размер изображения -1МБ`)
+    .refine(file => file?.size <= MAX_IMAGE_SIZE, `${t('max_size')} -1МБ`)
     .optional(),
   full_name: z
     .string({
-      required_error: 'Укажите имя',
+      required_error: t('enter_your_name'),
     })
     .min(2, {
-      message: 'Минимум 2 символа',
+      message: `${t('minimum')} 2 ${t('symbols')}`,
     })
     .max(50, {
-      message: 'Максимум 50 символов',
+      message: `${t('maximum')} 50 ${t('symbols')}`,
     }),
   number_phone: z
     .string({
-      required_error: 'Укажите номер телефона',
+      required_error: t('enter_your_phone'),
     })
     .min(9, {
-      message: 'Минимум 9 символа',
+      message: `${t('minimum')} 9 ${t('symbols')}`,
     }),
 })))
 
@@ -123,13 +124,11 @@ const onSubmit = form.handleSubmit((values: any) => {
                     />
                     <div class="flex flex-col gap-2 ">
                       <p class="flex gap-3 text-center text-[18px] text-[#EDAFB8] hover:cursor-pointer sm:text-base">
-                        Загрузить фото
+                        {{ t('upload_image') }}
                       </p>
 
                       <span class="max-w-[176px] text-[11px] leading-4 text-[#8CA9AE]">
-                        Требуемое разрешение 250х250
-                        Формат - jpeg, png, webp
-                        Размер не более 1 Мб
+                        {{ t('required_permission') }}
                       </span>
                     </div>
                   </div>
@@ -141,14 +140,14 @@ const onSubmit = form.handleSubmit((values: any) => {
         </div>
 
         <h3 class="mt-9 font-semibold">
-          Контактная информация
+          {{ t('personal_data') }}
         </h3>
 
         <div class="mt-9 flex flex-col gap-4">
           <FormField v-slot="{ componentField }" name="full_name">
             <FormItem>
               <FormLabel class="text-sm font-medium text-[#8CA9AE]">
-                Полное имя
+                {{ t('full_name') }}
               </FormLabel>
               <FormControl>
                 <Input type="text" v-bind="componentField" class="h-14 w-full rounded-xl border-[#D5D5D5] sm:w-[529px]" />
@@ -160,7 +159,7 @@ const onSubmit = form.handleSubmit((values: any) => {
           <FormField v-slot="{ componentField }" name="number_phone">
             <FormItem>
               <FormLabel class="text-sm font-medium text-[#8CA9AE]">
-                Номер телефона
+                {{ t('phone_number') }}
               </FormLabel>
               <FormControl>
                 <Input type="text" v-bind="componentField" class="h-14 w-full rounded-xl border-[#D5D5D5] sm:w-[529px]" />
@@ -171,7 +170,7 @@ const onSubmit = form.handleSubmit((values: any) => {
         </div>
 
         <Button type="submit" class="mt-9 w-full max-w-[529px] rounded-xl" :is-loading="isPending">
-          Сохранить
+          {{ t('save') }}
         </Button>
       </form>
     </div>

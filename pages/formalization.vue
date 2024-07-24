@@ -10,19 +10,20 @@ const { toast } = useToast()
 const cart: any = useLocalStorage('cart', [])
 const user = useAuthUser()
 const router = useRouter()
+const { t } = useI18n()
 
 const formSchema = toTypedSchema(z.object({
   delivery_address: z.string({
-    required_error: 'Укажите адрес',
+    required_error: t('enter_address'),
   }).min(2, {
-    message: 'Минимум 2 символа',
+    message: `${t('minimum')} 2 ${t('symbols')}`,
   }).optional(),
   comment: z.string().optional(),
   delivery_method: z.enum(['current-adres', 'pickup'], {
-    required_error: 'Выберите тип доставки',
+    required_error: t('choose_delivery_method'),
   }),
   payment_method: z.enum(['card', 'cash'], {
-    required_error: 'Выберите тип доставки',
+    required_error: t('choose_payment_method'),
   }),
 }))
 
@@ -43,7 +44,7 @@ const { mutate } = useMutation({
   mutationFn: (data: any) => postOrder(data),
   onError(error: any) {
     toast({
-      title: 'Произошла ошибка',
+      title: t('error'),
       description: error.message,
       variant: 'destructive',
     })
@@ -52,8 +53,8 @@ const { mutate } = useMutation({
     cart.value = []
     router.push('/order')
     toast({
-      title: 'Заказ оформлен',
-      description: 'Ваш заказ успешно оформлен, пожалуйста пройдите в заказы чтоб его оплатить',
+      title: t('order_is_processed'),
+      description: t('order_successfully_processed'),
     })
   },
 })
@@ -70,7 +71,7 @@ const onSubmit = handleSubmit((values) => {
 <template>
   <div class="relative mx-auto max-w-[1360px] px-4 pb-28 pt-8 lg:px-10 lg:pb-16 lg:pt-[100px]">
     <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-      Оформление заказа
+      {{ $t('order_processed') }}
     </h3>
 
     <div class="mt-8 flex flex-col gap-7 lg:mt-10 lg:flex-row lg:justify-between">
@@ -97,10 +98,10 @@ const onSubmit = handleSubmit((values) => {
 
             <div>
               <NuxtLink to="/login" class="text-base font-semibold text-[#EDAFB8] underline">
-                Войти/Зарегистрироваться
+                {{ $t('login') }}/{{ $t('register') }}
               </NuxtLink>
               <p class="text-xs opacity-30">
-                Войдите или зарегистрируйтесь, чтобы оформить заказ
+                {{ $t('login_or_register') }}
               </p>
             </div>
           </div>
@@ -119,7 +120,7 @@ const onSubmit = handleSubmit((values) => {
                       <RadioGroupItem value="current-adres" />
                     </FormControl>
                     <FormLabel class="text-sm text-black">
-                      Доставка по адресу
+                      {{ $t('delivery_to_adres') }}
                     </FormLabel>
                   </FormItem>
                   <FormItem class="flex items-center gap-x-3 space-y-0">
@@ -127,7 +128,7 @@ const onSubmit = handleSubmit((values) => {
                       <RadioGroupItem value="pickup" />
                     </FormControl>
                     <FormLabel class="text-sm text-black">
-                      Самовывоз
+                      {{ $t('pickup') }}
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>
@@ -140,7 +141,7 @@ const onSubmit = handleSubmit((values) => {
             <FormField v-slot="{ componentField }" name="delivery_address">
               <FormItem>
                 <FormLabel class="text-sm font-normal text-black">
-                  Адрес доставки
+                  {{ $t('delivery_address') }}
                 </FormLabel>
                 <FormControl>
                   <Input type="text" placeholder="Введите адрес доставки" v-bind="componentField" class="h-12 rounded-xl border-[#D5D5D5]" />
@@ -153,7 +154,7 @@ const onSubmit = handleSubmit((values) => {
           <FormField v-slot="{ componentField }" name="comment">
             <FormItem>
               <FormLabel class="text-sm font-normal text-black">
-                Комментарий к заказу
+                {{ $t('comment_to_order') }}
               </FormLabel>
               <FormControl>
                 <Textarea
@@ -178,11 +179,11 @@ const onSubmit = handleSubmit((values) => {
                         <RadioGroupItem value="card" />
                       </FormControl>
                       <FormLabel class="text-sm text-black">
-                        Оплата через эл. кошелёк
+                        {{ $t('payment_by_card') }}
                       </FormLabel>
                     </div>
                     <FormDescription class="!mt-0 ml-7 text-[10px] text-black/30">
-                      Оплата электронными кошельками Алиф Моби, DC Next
+                      {{ $t('payment_dc_alif') }}
                     </FormDescription>
                   </FormItem>
 
@@ -192,7 +193,7 @@ const onSubmit = handleSubmit((values) => {
                         <RadioGroupItem value="cash" />
                       </FormControl>
                       <FormLabel class="text-sm text-black">
-                        Наличными при получении
+                        {{ $t('payment_by_cash') }}
                       </FormLabel>
                     </div>
                   </FormItem>
@@ -204,7 +205,7 @@ const onSubmit = handleSubmit((values) => {
 
           <ClientOnly>
             <Button :disabled="!user" type="submit" class="absolute bottom-8 left-4 w-[92%] lg:static lg:w-full">
-              Оформить заказ
+              {{ $t('checkout') }}
             </Button>
           </ClientOnly>
         </form>
@@ -230,13 +231,13 @@ const onSubmit = handleSubmit((values) => {
         <div class="mt-4 flex flex-col gap-4 border-b py-4 lg:mt-8 lg:border-y lg:py-8">
           <div class="flex justify-between">
             <p class="text-sm md:text-base lg:text-xl">
-              Сумма по товарам
+              {{ $t('summ_of_all_products') }}
             </p>
             <span class="text-sm font-semibold md:text-base lg:text-xl">{{ total }} с.</span>
           </div>
           <div class="flex justify-between">
             <p class="text-sm md:text-base lg:text-xl">
-              Стоимость доставки
+              {{ $t('delivery_price') }}
             </p>
             <span class="text-sm font-semibold md:text-base lg:text-xl">{{ delivery }} с.</span>
           </div>
@@ -244,7 +245,7 @@ const onSubmit = handleSubmit((values) => {
 
         <div class="flex justify-between py-4 lg:py-8">
           <p class="text-base md:text-base lg:text-xl">
-            Итого
+            {{ $t('total') }}
           </p>
           <span class="text-sm font-semibold md:text-base lg:text-xl">{{ total + delivery }} с.</span>
         </div>
