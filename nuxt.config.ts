@@ -11,7 +11,12 @@ export default defineNuxtConfig({
     'dayjs-nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/seo',
+    'vue-yandex-maps/nuxt',
   ],
+
+  yandexMaps: {
+    apikey: '6d6ca20e-5fc8-4ef3-9e02-797d2aeda8c0',
+  },
 
   routeRules: {
     '/admin/**': { ssr: false },

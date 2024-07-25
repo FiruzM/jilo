@@ -129,6 +129,10 @@
   "copied": "Скопировано",
   "order_number_copied": "Номер заказа скопирован",
   "copy_order_number": "Cкопировать номер заказа",
-  "filters": "Фильтры"
-
+  "filters": "Фильтры",
+  "our_contacts": "Наши контакты",
+  "create_review": "Оставить отзыв",
+  "send": "Отправить",
+  "write_your_review": "Введите текст",
+  "route": "Построить маршрут"
 }

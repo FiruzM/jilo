@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Box, Heart, Home, Loader2, Menu, Package, Search, ShoppingCart, User } from 'lucide-vue-next'
+import { Box, Heart, Home, Instagram, Loader2, Menu, Package, Search, ShoppingCart, User } from 'lucide-vue-next'
 import { getDetails } from '~/api/web/details/get-details'
 import { getRoleLink } from '~/lib/utils'
 import { getSearchProduct } from '~/api/web/products/get-search-products'
@@ -240,21 +240,29 @@ const { mutate } = useMutation({
     </main>
 
     <footer class="bg-primary-foreground">
-      <div class="mx-auto flex max-w-[1360px] flex-col gap-5 px-4 py-5 md:items-center lg:flex-row lg:items-center lg:justify-between lg:px-10 lg:py-[99px]">
-        <h2 class="text-3xl font-medium text-[#FFDCCD]">
-          Ҷило Эксклюзив
-        </h2>
+      <div class="mx-auto flex max-w-[1360px] items-center justify-between px-4 py-5 lg:flex-row lg:items-center lg:justify-between lg:py-16 lg:pl-[102px] lg:pr-10">
+        <div class="w-[120px] lg:h-[113px] lg:w-[198px]">
+          <img src="~/assets/img/footer-logo.png" alt="footer logo">
+        </div>
 
-        <nav>
-          <ul class="flex flex-col gap-[5px] md:flex-row md:gap-10">
-            <li v-for="(_, index) in 4" :key="index" class="text-[#FFDCCD]">
-              About
-            </li>
-          </ul>
-        </nav>
-        <p class="text-[#FFDCCD]">
-          2024 @ Company
-        </p>
+        <div class="flex flex-col gap-3">
+          <div class="flex gap-2.5 self-end">
+            <a href="#" class="rounded-[10px] bg-[#FFDCCD] p-2.5">
+              <Instagram class="stroke-[#4A585A]" />
+            </a>
+            <a href="#" class="rounded-[10px] bg-[#FFDCCD] p-2.5">
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.9268 3.0625C15.9512 1.09375 13.3171 0 10.5366 0C4.7561 0 0.0731696 4.66667 0.0731696 10.4271C0.0731696 12.25 0.585366 14.0729 1.46341 15.6042L0 21L5.56098 19.5417C7.09756 20.3438 8.78049 20.7812 10.5366 20.7812C16.3171 20.7812 21 16.1146 21 10.3542C20.9268 7.65625 19.9024 5.03125 17.9268 3.0625ZM15.5854 14.1458C15.3659 14.7292 14.3415 15.3125 13.8293 15.3854C13.3902 15.4583 12.8049 15.4583 12.2195 15.3125C11.8537 15.1667 11.3415 15.0208 10.7561 14.7292C8.12195 13.6354 6.43903 11.0104 6.29268 10.7917C6.14634 10.6458 5.19512 9.40625 5.19512 8.09375C5.19512 6.78125 5.85366 6.19792 6.07317 5.90625C6.29268 5.61458 6.58536 5.61458 6.80488 5.61458C6.95122 5.61458 7.17073 5.61458 7.31707 5.61458C7.46341 5.61458 7.68293 5.54167 7.90244 6.05208C8.12195 6.5625 8.63414 7.875 8.70731 7.94792C8.78049 8.09375 8.78049 8.23958 8.70731 8.38542C8.63414 8.53125 8.56097 8.67708 8.41463 8.82292C8.26829 8.96875 8.12195 9.1875 8.04878 9.26042C7.90244 9.40625 7.7561 9.55208 7.90244 9.77083C8.04878 10.0625 8.56097 10.8646 9.36585 11.5937C10.3902 12.4687 11.1951 12.7604 11.4878 12.9063C11.7805 13.0521 11.9268 12.9792 12.0732 12.8333C12.2195 12.6875 12.7317 12.1042 12.878 11.8125C13.0244 11.5208 13.2439 11.5938 13.4634 11.6667C13.6829 11.7396 15 12.3958 15.2195 12.5417C15.5122 12.6875 15.6585 12.7604 15.7317 12.8333C15.8049 13.0521 15.8049 13.5625 15.5854 14.1458Z" fill="#4A585A" />
+              </svg>
+            </a>
+          </div>
+
+          <p class="font-medium text-[#FFDCCD]">
+            г. Душанбе, ул. С. Айни 17
+          </p>
+
+          <a href="tel:+9929004466464" class="self-end font-medium text-[#FFDCCD]">+992 900 446 6464</a>
+        </div>
       </div>
     </footer>
 

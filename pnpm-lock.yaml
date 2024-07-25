@@ -47,6 +47,9 @@ dependencies:
   vee-validate:
     specifier: ^4.12.4
     version: 4.13.1(vue@3.4.29)
+  vue-yandex-maps:
+    specifier: ^2.1.4
+    version: 2.1.4(nuxt@3.12.2)(vue@3.4.29)
   zod:
     specifier: ^3.22.4
     version: 3.23.8
@@ -4816,6 +4819,21 @@ packages:
   /@xtuc/long@4.2.2:
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
     dev: true
+
+  /@yandex/ymaps3-types@0.0.27:
+    resolution: {integrity: sha512-aQ2FNLXekN810mwfY7vfP8jh9pNu2AZA7N/W0T2ziSdaooWPvUFY+QWE7+PhXbJU5L8E4LKk5jW61m56rs9AJg==}
+    peerDependencies:
+      '@types/react': 16-18
+      '@types/react-dom': 16-18
+      '@vue/runtime-core': '3'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+      '@vue/runtime-core':
+        optional: true
+    dev: false
 
   /JSONStream@1.3.5:
     resolution: {integrity: sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==}
@@ -12285,6 +12303,28 @@ packages:
       vue: 3.4.29(typescript@5.4.5)
       vue-observe-visibility: 2.0.0-alpha.1(vue@3.4.29)
       vue-resize: 2.0.0-alpha.1(vue@3.4.29)
+
+  /vue-yandex-maps@2.1.4(nuxt@3.12.2)(vue@3.4.29):
+    resolution: {integrity: sha512-W/vJPbBRkSXpGxeDgHBYQmyViq4ct4T4Vih7RM2uhXMJySSHrVMl1yKUDE0qpg2Or4ZD9BiwYOm3HG/JtvcHxg==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@vue/composition-api': '>=1'
+      nuxt: ^2.16 || ^3
+      vue: ^2.7 || ^3.3
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      nuxt:
+        optional: true
+    dependencies:
+      '@yandex/ymaps3-types': 0.0.27
+      nuxt: 3.12.2(@opentelemetry/api@1.8.0)(@types/node@20.14.6)(@unocss/reset@0.61.0)(eslint@8.57.0)(floating-vue@5.2.2)(rollup@4.18.0)(typescript@5.4.5)(unocss@0.61.0)(vite@5.3.1)(vue-tsc@1.8.27)
+      vue: 3.4.29(typescript@5.4.5)
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
+      - '@vue/runtime-core'
+    dev: false
 
   /vue@3.4.29(typescript@5.4.5):
     resolution: {integrity: sha512-8QUYfRcYzNlYuzKPfge1UWC6nF9ym0lx7mpGVPJYNhddxEf3DD0+kU07NTL0sXuiT2HuJuKr/iEO8WvXvT0RSQ==}

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { Loader2, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
+import { Loader2, MapPin, Pen, Phone, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
 import Autoplay from 'embla-carousel-autoplay'
 import { getInfiniteCategories } from '~/api/admin/categories/get-infinite-categories'
 import { getBanners } from '~/api/admin/banners/get-banners'
 import { getDiscountProducts } from '~/api/web/products/get-discount-products'
+
+const { t } = useI18n()
 
 const { data: banners, isPending: isBannersPending } = useQuery({
   queryKey: ['banners'],
@@ -237,9 +239,43 @@ onUpdated(() => {
     </div>
 
     <div class="my-10 lg:my-[100px]">
-      <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-        {{ $t('reviews') }}
-      </h2>
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
+          {{ $t('reviews') }}
+        </h2>
+        <Dialog>
+          <DialogTrigger class="flex items-center gap-3">
+            <Pen />
+            <p class="font-medium md:text-2xl">
+              {{ $t('create_review') }}
+            </p>
+          </DialogTrigger>
+          <DialogContent class="rounded-3xl p-5">
+            <DialogHeader>
+              <DialogTitle class="text-2xl font-semibold">
+                {{ $t('create_review') }}
+              </DialogTitle>
+            </DialogHeader>
+            <form class="w-full space-y-6" @submit="onSubmit">
+              <FormField v-slot="{ componentField }" name="bio">
+                <FormItem>
+                  <FormControl>
+                    <Textarea
+                      :placeholder="t('write_your_review')"
+                      class="min-h-[115px] resize-none rounded-[12px] border-[#D0D5DD]"
+                      v-bind="componentField"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </FormField>
+              <Button type="submit" class="w-full">
+                {{ $t('send') }}
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
 
       <Carousel class="mt-5 lg:mt-10">
         <CarouselContent>
@@ -270,6 +306,34 @@ onUpdated(() => {
         <CarouselPrevious class="left-10 hidden border-none bg-primary-foreground stroke-[#FFDCCD] lg:flex" />
         <CarouselNext class="right-10 hidden border-none bg-primary-foreground lg:flex" />
       </Carousel>
+    </div>
+
+    <div class="my-10 flex flex-col gap-10 sm:flex-row lg:my-[100px] lg:gap-[214px]">
+      <div class="">
+        <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
+          {{ $t('our_contacts') }}
+        </h3>
+
+        <div class="mt-10 flex flex-col gap-2.5 lg:mt-[53px]">
+          <div class="flex min-w-[340px] items-center gap-2.5">
+            <MapPin />
+            <p class="text-base md:text-2xl">
+              г. Душанбе, ул. С. Айни 17
+            </p>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <Phone />
+            <a href="tel:+9929004466464" class="text-base md:text-2xl">+992 900 446 6464</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative h-[300px] grow overflow-hidden rounded-3xl border-[3px] border-[#CCE3DE] lg:h-[523px]">
+        <a href="https://yandex.ru/maps/?rtext=~38.56338339223135,68.79294927546309&rtt=mt" target="_blank" class="absolute bottom-3 left-3 z-50 rounded-lg bg-primary p-2 font-medium">
+          {{ $t('route') }}
+        </a>
+        <MapYandexMap />
+      </div>
     </div>
   </div>
 </template>
