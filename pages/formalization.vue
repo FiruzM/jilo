@@ -63,8 +63,6 @@ const delivery = ref(20)
 
 const onSubmit = handleSubmit((values) => {
   mutate({ ...values, order_items: cart.value.map((item: any) => ({ price: item.price, quantity: item.quantity, product_id: item.id })), total_amount: `${total.value + delivery.value}` })
-  //
-  // console.log({ ...values, order_items: cart.value.map((item: any) => ({ price: item.price, quantity: item.quantity, product_id: item.id })), total_amount: `${total.value + delivery.value}` })
 })
 </script>
 
@@ -144,11 +142,17 @@ const onSubmit = handleSubmit((values) => {
                   {{ $t('delivery_address') }}
                 </FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Введите адрес доставки" v-bind="componentField" class="h-12 rounded-xl border-[#D5D5D5]" />
+                  <Input type="text" :placeholder="t('type_delivery_adres')" v-bind="componentField" class="h-12 rounded-xl border-[#D5D5D5]" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             </FormField>
+
+            <div class="mt-4">
+              <p class="max-w-[451px] text-xs text-[#4A5759]">
+                <span class="text-[#F76659]">*</span>{{ $t($t('delivery_time')) }}
+              </p>
+            </div>
           </div>
 
           <FormField v-slot="{ componentField }" name="comment">
@@ -205,7 +209,7 @@ const onSubmit = handleSubmit((values) => {
 
           <ClientOnly>
             <Button :disabled="!user" type="submit" class="absolute bottom-8 left-4 w-[92%] lg:static lg:w-full">
-              {{ $t('checkout') }}
+              {{ $t('order_confirm') }}
             </Button>
           </ClientOnly>
         </form>

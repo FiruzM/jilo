@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxtjs/seo',
     'vue-yandex-maps/nuxt',
+    "nuxt-rating"
   ],
 
   yandexMaps: {

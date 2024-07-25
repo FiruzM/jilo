@@ -25,7 +25,6 @@ const INC_POINT = {
         center: [68.79294927546309, 38.56338339223135],
         zoom: 18,
       },
-      theme,
       showScaleInCopyrights: true,
     }"
     width="100%"

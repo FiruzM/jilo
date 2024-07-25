@@ -116,19 +116,19 @@ const total = computed(() => {
     </ClientOnly>
 
     <ClientOnly v-else>
-      <div class="mb-44 mt-[100px] flex items-center justify-center">
-        <div class="flex flex-col items-center">
-          <img src="~/assets/img/emptycart.png" alt="Cart" class="size-[300px]">
+      <div class="mb-44 flex items-center justify-center">
+        <div class="flex flex-col items-center md:-mt-20">
+          <img src="~/assets/img/empty-cart.png" alt="Cart" class="size-[300px] md:size-[486px]">
 
-          <h3 class="mb-6 self-center text-3xl font-semibold">
-            Внутри пока нет товаров
+          <h3 class="mb-2 self-center text-xl font-semibold sm:text-2xl md:text-4xl">
+            {{ $t('empty_cart') }}
           </h3>
-          <p class="mb-6 self-center text-base font-semibold">
-            Перейдите в раздел с товарами, чтобы оставить заявку
+          <p class="mb-9 self-center text-xs font-semibold text-[#7A7A7A] md:text-xl">
+            {{ $t('empty_cart_description') }}
           </p>
 
-          <NuxtLink to="/category" class="rounded-xl bg-primary px-6 py-4">
-            Перейти в каталог
+          <NuxtLink to="/category" class="rounded-xl bg-primary px-[53px] py-3 text-sm">
+            {{ $t('go_to_category') }}
           </NuxtLink>
         </div>
       </div>

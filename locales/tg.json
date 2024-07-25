@@ -129,6 +129,19 @@
   "copied": "Скопировано",
   "order_number_copied": "Номер заказа скопирован",
   "copy_order_number": "Cкопировать номер заказа",
-  "filters": "Фильтры"
-
+  "filters": "Фильтры",
+  "our_contacts": "Наши контакты",
+  "create_review": "Оставить отзыв",
+  "send": "Отправить",
+  "write_your_review": "Введите текст",
+  "route": "Построить маршрут",
+  "obligatory_field": "обязательное поле",
+  "rate": "Рейтинг",
+  "authorization": "Авторизация",
+  "empty_favorites": "В избранных нет товаров",
+  "empty_cart": "В корзине нет товаров",
+  "empty_cart_description": "Для приобретения товара, перейдите в Категории",
+  "go_to_category": "Перейти в Категории",
+  "order_confirm": "Подтвердить заказ",
+  "type_delivery_adres": "Введите адрес доставки"
 }

@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { Loader2, MapPin, Pen, Phone, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
+import { Loader2, MapPin, Phone, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
 import Autoplay from 'embla-carousel-autoplay'
 import { getInfiniteCategories } from '~/api/admin/categories/get-infinite-categories'
 import { getBanners } from '~/api/admin/banners/get-banners'
 import { getDiscountProducts } from '~/api/web/products/get-discount-products'
-
-const { t } = useI18n()
 
 const { data: banners, isPending: isBannersPending } = useQuery({
   queryKey: ['banners'],
@@ -243,38 +241,7 @@ onUpdated(() => {
         <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
           {{ $t('reviews') }}
         </h2>
-        <Dialog>
-          <DialogTrigger class="flex items-center gap-3">
-            <Pen />
-            <p class="font-medium md:text-2xl">
-              {{ $t('create_review') }}
-            </p>
-          </DialogTrigger>
-          <DialogContent class="rounded-3xl p-5">
-            <DialogHeader>
-              <DialogTitle class="text-2xl font-semibold">
-                {{ $t('create_review') }}
-              </DialogTitle>
-            </DialogHeader>
-            <form class="w-full space-y-6" @submit="onSubmit">
-              <FormField v-slot="{ componentField }" name="bio">
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      :placeholder="t('write_your_review')"
-                      class="min-h-[115px] resize-none rounded-[12px] border-[#D0D5DD]"
-                      v-bind="componentField"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </FormField>
-              <Button type="submit" class="w-full">
-                {{ $t('send') }}
-              </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+        <CommentsCreateComment />
       </div>
 
       <Carousel class="mt-5 lg:mt-10">
@@ -290,6 +257,19 @@ onUpdated(() => {
                   <p class="text-xl font-semibold text-primary-foreground sm:text-3xl lg:text-[40px]">
                     Саида Рустамова
                   </p>
+                  <div class="flex items-center">
+                    <span>3.5</span>
+                    <NuxtRating
+                      class="px-3"
+                      border-color="#db8403"
+                      active-color="#ffa41c"
+                      inactive-color="white"
+                      :rounded-corners="true"
+                      :border-width="5"
+                      :rating-size="10"
+                      :rating-value="3.5"
+                    />
+                  </div>
                   <p class="text-sm text-primary-foreground sm:text-base lg:text-xl">
                     Заказывала во многоих кондитерских магазинах, но остановилась именно на Чило Эксклюзив. Отличный магазин с наверно лучшими ценами в Таджикистане. Заказываю всегда доставку и курьер привозят всегда вовремя в договоренный промежуток времени.
                   </p>
@@ -311,7 +291,7 @@ onUpdated(() => {
     <div class="my-10 flex flex-col gap-10 sm:flex-row lg:my-[100px] lg:gap-[214px]">
       <div class="">
         <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-          {{ $t('our_contacts') }}
+          {{ $t(' ') }}
         </h3>
 
         <div class="mt-10 flex flex-col gap-2.5 lg:mt-[53px]">
@@ -329,7 +309,7 @@ onUpdated(() => {
       </div>
 
       <div class="relative h-[300px] grow overflow-hidden rounded-3xl border-[3px] border-[#CCE3DE] lg:h-[523px]">
-        <a href="https://yandex.ru/maps/?rtext=~38.56338339223135,68.79294927546309&rtt=mt" target="_blank" class="absolute bottom-3 left-3 z-50 rounded-lg bg-primary p-2 font-medium">
+        <a href="https://yandex.ru/maps/?rtext=~38.56338339223135,68.79294927546309&rtt=mt" target="_blank" class="absolute bottom-3 left-3 z-50 rounded-lg bg-primary p-2 text-xs font-medium">
           {{ $t('route') }}
         </a>
         <MapYandexMap />

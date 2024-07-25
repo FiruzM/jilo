@@ -58,9 +58,12 @@ const favorite: any = useLocalStorage('favorite', [])
       </div>
     </div>
   </div>
-  <div v-else>
-    <h3 class="mt-40 text-center text-3xl">
-      Вы пока не добавили никакие товары
-    </h3>
+  <div v-else class="flex justify-center">
+    <div class="relative">
+      <img src="~/assets/img/favorite.png" alt="Favorites" class="size-[300px] md:size-[516px]">
+      <h4 class="absolute bottom-10 left-[30px] w-full text-xl font-semibold md:bottom-16 md:left-[50px] md:text-4xl">
+        {{ $t('empty_favorites') }}
+      </h4>
+    </div>
   </div>
 </template>

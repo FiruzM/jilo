@@ -41,6 +41,9 @@ dependencies:
   lucide-vue-next:
     specifier: ^0.309.0
     version: 0.309.0(vue@3.4.29)
+  nuxt-rating:
+    specifier: ^0.1.5
+    version: 0.1.5(rollup@4.18.0)
   radix-vue:
     specifier: ^1.3.1
     version: 1.8.4(vue@3.4.29)
@@ -9165,6 +9168,17 @@ packages:
       - webpack
     dev: true
 
+  /nuxt-rating@0.1.5(rollup@4.18.0):
+    resolution: {integrity: sha512-43vdn5RqPt6BXHuEYnRWWFDP17PGAFBubTwCCaCxPn92u0kLC22l5UpkDyH5Pqlsey9COFDYLXzbAb/+7axiuA==}
+    dependencies:
+      '@nuxt/kit': 3.12.2(magicast@0.3.4)(rollup@4.18.0)
+      typescript: 5.5.4
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
+    dev: false
+
   /nuxt-schema-org@3.3.7(@nuxt/devtools@1.3.3)(@vue/compiler-core@3.4.29)(nuxt@3.12.2)(postcss@8.4.38)(rollup@4.18.0)(vite@5.3.1)(vue@3.4.29)(webpack@5.92.1):
     resolution: {integrity: sha512-y+k44bIaZhwSOR6z0a6EtEXaJmlxuR2CExHDZmiK2g1isDz5iVaIb8ne6M6qLy4GqbENKbL5SaFKorHv0Llqqw==}
     dependencies:
@@ -11598,6 +11612,12 @@ packages:
     resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  /typescript@5.5.4:
+    resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: false
 
   /ufo@1.5.3:
     resolution: {integrity: sha512-Y7HYmWaFwPUmkoQCUIAYpKqkOf+SbVj/2fJJZ4RJMCfZp0rTGwRbzQD+HghfnhKOjL9E01okqz+ncJskGYfBNw==}

@@ -57,10 +57,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
       <div class="w-full px-4 sm:w-[500px]">
         <div class="flex flex-col items-center gap-2">
           <p class="font-semibold text-black">
-            Введите номер телефона
-          </p>
-          <p class=" text-xs text-black">
-            Мы отправим вам СМС с кодом подтверждения
+            {{ $t('authorization') }}
           </p>
         </div>
 
@@ -86,7 +83,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
           </FormField>
 
           <Button class="text-sm" type="submit" :is-loading="isPending">
-            Получить код
+            {{ $t('login') }}
           </Button>
         </form>
         <NuxtLink to="/register" class="mt-5 flex h-[48px] items-center justify-center rounded-[12px] border border-primary text-sm font-semibold md:mt-10">
