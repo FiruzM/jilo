@@ -5,6 +5,17 @@ import { getInfiniteCategories } from '~/api/admin/categories/get-infinite-categ
 import { getBanners } from '~/api/admin/banners/get-banners'
 import { getDiscountProducts } from '~/api/web/products/get-discount-products'
 
+const { t } = useI18n()
+
+useHead({
+  title: t('main'),
+  meta: [
+    { name: 'title', content: 'Jilo Exlusive' },
+    { name: 'description', content: 'Добро пожаловать в Jilo Exclusive, ваш эксклюзивный интернет-магазин для кондитеров! Мы предлагаем широкий ассортимент высококачественных ингредиентов, инструментов и аксессуаров для кондитерского искусства. От натуральных ароматизаторов и пищевых красителей до профессиональных форм для выпечки и декора, наш ассортимент имеет все, что нужно для создания уникальных и вкусных кондитерских изделий. Мы сотрудничаем только с проверенными поставщиками, чтобы обеспечить вам доступ к лучшим продуктам по конкурентоспособным ценам. Благодаря быстрой доставке и безопасным способам оплаты, покупки в нашем магазине - это простая и приятная процедура. Создавайте свои шедевры с Jilo Exclusive!' },
+    { name: 'keywords', content: 'jilo shop, jilo exclusive, jilo,' },
+  ],
+})
+
 const { data: banners, isPending: isBannersPending } = useQuery({
   queryKey: ['banners'],
   queryFn: getBanners,
