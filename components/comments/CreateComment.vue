@@ -1,27 +1,28 @@
 <script setup lang="ts">
 import { Pen } from 'lucide-vue-next'
-import { h } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
+import type { HTTPError } from 'ky'
 import { useToast } from '~/components/ui/toast'
+import type { CommentProps } from '~/api/web/comments/create-comments'
+import { createComment } from '~/api/web/comments/create-comments'
 
 const { t } = useI18n()
 const { toast } = useToast()
+// const user = useAuthUser()
+
 const rating = ref(0)
 
 const formSchema = toTypedSchema(z.object({
-  comment: z
+  description: z
     .string({
       required_error: t('obligatory_field'),
     })
     .min(10, {
       message: `${t('minimum')} 10 ${t('symbols')}`,
-    })
-    .max(160, {
-      message: `${t('maximum')} 160 ${t('symbols')}`,
     }),
-  rate: z
+  grade: z
     .string({
       required_error: `${t('obligatory_field')}`,
     }).optional(),
@@ -31,16 +32,34 @@ const { handleSubmit } = useForm({
   validationSchema: formSchema,
 })
 
+const open = ref(false)
+
+const { mutate, isPending } = useMutation({
+  mutationFn: (data: CommentProps) => createComment(data),
+  onError: async (error: HTTPError) => {
+    const errorData = await error.response.json()
+
+    toast({
+      title: 'Произошла ошибка',
+      description: errorData.message,
+      variant: 'destructive',
+    })
+  },
+  onSuccess: () => {
+    toast({
+      title: 'Отзыв успешно добавлен',
+    })
+    open.value = false
+  },
+})
+
 const onSubmit = handleSubmit((values) => {
-  toast({
-    title: 'You submitted the following values:',
-    description: h('pre', { class: 'mt-2 w-[340px] rounded-md bg-slate-950 p-4' }, h('code', { class: 'text-white' }, JSON.stringify({ ...values, rate: rating.value }, null, 2))),
-  })
+  mutate({ ...values, grade: rating.value })
 })
 </script>
 
 <template>
-  <Dialog>
+  <Dialog v-model:open="open">
     <DialogTrigger class="flex items-center gap-3">
       <Pen />
       <p class="font-medium md:text-2xl">
@@ -54,7 +73,7 @@ const onSubmit = handleSubmit((values) => {
         </DialogTitle>
       </DialogHeader>
       <form class="w-full space-y-6" @submit="onSubmit">
-        <FormField v-slot="{ componentField }" name="comment">
+        <FormField v-slot="{ componentField }" name="description">
           <FormItem>
             <FormControl>
               <Textarea
@@ -67,7 +86,7 @@ const onSubmit = handleSubmit((values) => {
           </FormItem>
         </FormField>
 
-        <FormField v-slot="{ componentField }" name="rate">
+        <FormField v-slot="{ componentField }" name="grade">
           <FormItem>
             <FormControl>
               <div class="flex items-center">
@@ -93,7 +112,7 @@ const onSubmit = handleSubmit((values) => {
             <FormMessage />
           </FormItem>
         </FormField>
-        <Button type="submit" class="w-full">
+        <Button type="submit" class="w-full" :is-loading="isPending">
           {{ $t('send') }}
         </Button>
       </form>

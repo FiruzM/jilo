@@ -40,7 +40,7 @@ const total = computed(() => {
   return cart.value.reduce((acc: any, item: any) => acc + (item.price * item.quantity), 0)
 })
 
-const { mutate } = useMutation({
+const { mutate, isPending } = useMutation({
   mutationFn: (data: any) => postOrder(data),
   onError(error: any) {
     toast({
@@ -51,7 +51,7 @@ const { mutate } = useMutation({
   },
   onSuccess() {
     cart.value = []
-    router.push('/order')
+    router.push('/order?status_id=1')
     toast({
       title: t('order_is_processed'),
       description: t('order_successfully_processed'),
@@ -62,7 +62,7 @@ const { mutate } = useMutation({
 const delivery = ref(20)
 
 const onSubmit = handleSubmit((values) => {
-  mutate({ ...values, order_items: cart.value.map((item: any) => ({ price: item.price, quantity: item.quantity, product_id: item.id })), total_amount: `${total.value + delivery.value}` })
+  mutate({ ...values, order_items: cart.value.map((item: any) => ({ price: item.price, quantity: item.quantity, product_id: item.id, product_name: item.name })), total_amount: `${total.value + delivery.value}` })
 })
 </script>
 
@@ -208,7 +208,7 @@ const onSubmit = handleSubmit((values) => {
           </FormField>
 
           <ClientOnly>
-            <Button :disabled="!user" type="submit" class="absolute bottom-8 left-4 w-[92%] lg:static lg:w-full">
+            <Button :disabled="!user" type="submit" class="absolute bottom-8 left-4 w-[92%] lg:static lg:w-full" :is-loading="isPending">
               {{ $t('order_confirm') }}
             </Button>
           </ClientOnly>

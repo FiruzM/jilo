@@ -503,6 +503,8 @@ export interface definitions {
     updated_at?: string
   }
   'models.Products': {
+    quantity?: number
+    description?: string
     favorite?: boolean
     /** @description The brand ID of the product */
     brands_id?: number

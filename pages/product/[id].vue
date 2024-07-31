@@ -121,12 +121,21 @@ await suspense()
               <Box class="stroke-[#9AA6AC]" />
               <span>
                 {{ $t('availability_in_stock') }}
-                <span class="font-semibold text-[#368C18]">{{ $t('many') }}</span>
+                <span class="font-semibold text-[#368C18]">{{ product?.payload.quantity >= 20 ? $t('many') : $t('few') }}</span>
               </span>
             </li>
           </ul>
         </div>
       </div>
+    </div>
+
+    <div class="mt-5 sm:mt-10">
+      <h3 class="text-xl font-semibold sm:text-2xl md:text-3xl">
+        Описание товара
+      </h3>
+      <p class="mt-2.5 text-sm sm:text-base md:mt-5 md:text-lg">
+        {{ product?.payload.description }}
+      </p>
     </div>
   </div>
 </template>

@@ -12,6 +12,7 @@ interface Orders {
   delivery_method: string
   payment_method: string
   status_id: number
+  user_name: string
 }
 
 export function getAdminOrders() {

@@ -89,6 +89,17 @@ const formSchema = toTypedSchema(z.object({
     .max(30, {
       message: 'Максимум 30 символов',
     }).optional(),
+  description: z
+    .string({
+      required_error: 'Укажите описание',
+    })
+    .min(10, {
+      message: 'Минимум 10 символов',
+    }),
+  quantity: z
+    .number({
+      required_error: 'Укажите количество',
+    }),
   brands_id: z
     .string({
       required_error: 'Укажите бренд',
@@ -178,6 +189,33 @@ const onSubmit = form.handleSubmit((formData) => {
             </FormLabel>
             <FormControl>
               <Input v-bind="componentField" class="border-[#3c83ed] focus:border-[#10a4e9]" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
+        <FormField v-slot="{ componentField }" name="description">
+          <FormItem>
+            <FormLabel class="text-[#3c83ed]">
+              Описание товара
+            </FormLabel>
+            <FormControl>
+              <Textarea
+                class="h-[200px] resize-none border-[#3c83ed] focus-visible:border-[#10a4e9]"
+                v-bind="componentField"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
+        <FormField v-slot="{ componentField }" name="quantity">
+          <FormItem>
+            <FormLabel class="text-[#3c83ed]">
+              Введите количество
+            </FormLabel>
+            <FormControl>
+              <Input v-bind="componentField" type="number" class="border-[#3c83ed] focus:border-[#10a4e9]" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -307,7 +345,6 @@ const onSubmit = form.handleSubmit((formData) => {
                   <span class="">Добавить фото</span>
                 </div>
                 <p v-for="item in value" :key="item.name" class="my-2 text-xs text-[#789DBE]">
-                  {{ console.log(item) }}
                   {{ item.name }}
                 </p>
               </div>

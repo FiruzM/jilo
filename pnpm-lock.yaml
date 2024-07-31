@@ -23,6 +23,9 @@ dependencies:
   '@vueuse/core':
     specifier: ^10.7.2
     version: 10.11.0(vue@3.4.29)
+  '@vueuse/router':
+    specifier: ^10.9.0
+    version: 10.11.0(vue-router@4.3.3)(vue@3.4.29)
   date-fns:
     specifier: ^3.6.0
     version: 3.6.0
@@ -4700,6 +4703,19 @@ packages:
       - supports-color
       - vue
     dev: true
+
+  /@vueuse/router@10.11.0(vue-router@4.3.3)(vue@3.4.29):
+    resolution: {integrity: sha512-1U4DiJuRhe3JeUXxuoKM2wlBslqu5ug8yraluD9bgWDHCRDtY9XUDsjViZufMKjQrddqvv2H6DRSRf9MWO4VSA==}
+    peerDependencies:
+      vue-router: '>=4.0.0-rc.1'
+    dependencies:
+      '@vueuse/shared': 10.11.0(vue@3.4.29)
+      vue-demi: 0.14.8(vue@3.4.29)
+      vue-router: 4.3.3(vue@3.4.29)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
 
   /@vueuse/shared@10.11.0(vue@3.4.29):
     resolution: {integrity: sha512-fyNoIXEq3PfX1L3NkNhtVQUSRtqYwJtJg+Bp9rIzculIZWHTkKSysujrOk2J+NrRulLTQH9+3gGSfYLWSEWU1A==}

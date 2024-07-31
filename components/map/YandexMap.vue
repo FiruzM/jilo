@@ -13,7 +13,7 @@ import {
 // Можно использовать для различных преобразований
 const map = shallowRef<null | YMap>(null)
 const INC_POINT = {
-  coordinates: [68.79294927546309, 38.56338339223135] as LngLat,
+  coordinates: [68.72761897486866, 38.58264746993179] as LngLat,
 }
 </script>
 
@@ -22,7 +22,7 @@ const INC_POINT = {
     v-model="map"
     :settings="{
       location: {
-        center: [68.79294927546309, 38.56338339223135],
+        center: [68.72761897486866, 38.58264746993179],
         zoom: 18,
       },
       showScaleInCopyrights: true,

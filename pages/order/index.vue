@@ -6,41 +6,46 @@ definePageMeta({
   middleware: ['user-only'],
 })
 
+const route = useRoute()
+const pageQuery = useRouteQuery<string | undefined>('page', '1')
+const statusQuery = useRouteQuery<string | undefined>('status_id', '')
+
+const queryParams = refDebounced(computed(() => ({
+  ...route.query,
+})), 400)
+
 const { data: orders, suspense } = useQuery({
-  queryKey: ['orders'],
-  queryFn: () => getOrders(),
+  queryKey: ['orders', queryParams],
+  queryFn: () => getOrders(queryParams.value),
 })
 
-const selected = ref('option-one')
 await suspense()
 </script>
 
 <template>
-  <div class="mx-auto max-w-[1360px] gap-6 px-4 pb-10 pt-8 lg:flex lg:px-10 lg:pb-16 lg:pt-11">
-    <ClientOnly>
-      <AsidebarProfile class="hidden self-start lg:block" />
-    </ClientOnly>
+  <div class="mx-auto max-w-[1360px] gap-6 px-4 pb-2.5 pt-8 lg:flex lg:px-10 lg:pb-5 lg:pt-11">
+    <AsidebarProfile class="hidden self-start lg:block" />
 
     <div class="flex flex-col gap-10">
       <div>
-        <RadioGroup v-model="selected" class="mt-5 flex gap-2 lg:mt-8 lg:gap-4">
+        <RadioGroup v-model="statusQuery" class="mt-5 flex gap-2 lg:mt-8 lg:gap-4">
           <div class="flex items-center space-x-2">
-            <RadioGroupItem id="option-one" value="option-one" class="hidden" />
-            <Label for="option-one" :class="selected === 'option-one' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
+            <RadioGroupItem id="option-one" value="" class="hidden" />
+            <Label for="option-one" :class="statusQuery === '' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
               {{ $t('all_orders') }}
             </Label>
           </div>
 
           <div class="flex items-center space-x-2">
-            <RadioGroupItem id="option-two" value="option-two" class="hidden" />
-            <Label for="option-two" :class="selected === 'option-two' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
+            <RadioGroupItem id="option-two" value="1" class="hidden" />
+            <Label for="option-two" :class="statusQuery === '1' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
               {{ $t('not_paid') }}
             </Label>
           </div>
 
           <div class="flex items-center space-x-2">
-            <RadioGroupItem id="option-three" value="option-three" class="hidden" />
-            <Label for="option-three" :class="selected === 'option-three' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
+            <RadioGroupItem id="option-three" value="2" class="hidden" />
+            <Label for="option-three" :class="statusQuery === '2' ? 'text-[#FFDCCD] transition ease-in rounded-xl border border-primary-foreground bg-primary-foreground px-2.5 py-1 lg:px-5 lg:py-2.5' : 'transition ease-in rounded-xl border border-primary-foreground bg-white lg:px-5 px-2.5 py-1 lg:py-2.5'">
               {{ $t('all_paid') }}
             </Label>
           </div>
@@ -97,5 +102,32 @@ await suspense()
         </div>
       </div>
     </div>
+  </div>
+  <div v-if="orders?.payload" class="mt-5 flex justify-center pb-10 lg:pb-16">
+    <Pagination
+      :total="orders?.total"
+      :sibling-count="1"
+      show-edges
+      :default-page="$route.query.page ? Number($route.query.page) : 1"
+      :page="Number(pageQuery)"
+      @update:page="$router.push({ query: { page: $event } })"
+    >
+      <PaginationList v-slot="{ items }" class="flex items-center gap-1">
+        <PaginationFirst class="border-[#488bee]" />
+        <PaginationPrev class="border-[#488bee]" />
+
+        <template v-for="(item, index) in items">
+          <PaginationListItem v-if="item.type === 'page'" :key="index" :value="item.value" as-child>
+            <Button class="size-10 p-0">
+              {{ item.value }}
+            </Button>
+          </PaginationListItem>
+          <PaginationEllipsis v-else :key="item.type" :index="index" />
+        </template>
+
+        <PaginationNext class="border-[#488bee]" />
+        <PaginationLast class="border-[#488bee]" />
+      </PaginationList>
+    </Pagination>
   </div>
 </template>

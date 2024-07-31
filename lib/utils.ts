@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { camelize, getCurrentInstance, toHandlerKey } from 'vue'
+import qs from 'qs'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -13,4 +13,14 @@ export function getRoleLink(role?: string) {
     return '/admin'
 
   return '/'
+}
+
+export function stringifyQueryObject(query?: Record<string, any>) {
+  return qs.stringify({
+    ...query,
+  }, {
+    skipNulls: true,
+    filter: (_prefix: any, value: any) => value || undefined,
+    addQueryPrefix: true,
+  })
 }

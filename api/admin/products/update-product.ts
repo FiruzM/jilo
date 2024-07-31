@@ -3,6 +3,7 @@ import type { definitions } from '~/api/v1'
 
 export function updateProduct(data: definitions['models.Products'], id: number) {
   const formData = new FormData()
+  console.log(typeof data.quantity)
 
   for (const [key, value] of Object.entries(data)) {
     if (key !== 'file_paths') {
@@ -11,7 +12,7 @@ export function updateProduct(data: definitions['models.Products'], id: number) 
   }
 
   if (data.file_paths) {
-    data.file_paths!.forEach((data) => {
+    data.file_paths!.forEach((data: any) => {
       formData.append('files', data)
     })
   }

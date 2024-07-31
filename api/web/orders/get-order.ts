@@ -4,7 +4,7 @@ interface Order {
   id: number
   total_amount: number
   order_number: string
-  created_at: string
+  created_at: Date
   user_name: string
   user_phone: string
   order_items: {

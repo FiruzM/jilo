@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@nuxtjs/seo',
     'vue-yandex-maps/nuxt',
-    "nuxt-rating"
+    'nuxt-rating',
   ],
 
   yandexMaps: {
@@ -21,6 +21,7 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/admin/**': { ssr: false },
+    '/order/**': { ssr: false },
 
   },
 

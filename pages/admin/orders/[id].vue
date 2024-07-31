@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { format } from 'date-fns'
 import { getOrder } from '~/api/admin/orders/get-order'
 import { type UpdateOrderStatusProps, updateOrderStatus } from '~/api/admin/orders/update-order-status'
 import { useToast } from '~/components/ui/toast'
@@ -66,8 +67,8 @@ const { mutate, isPending } = useMutation({
         </div>
 
         <div class="flex flex-col gap-8">
-          <p class="text-xs font-semibold">
-            Информация о заказе
+          <p v-if="order?.payload.created_at" class="text-xs font-semibold">
+            {{ format(new Date(order.payload.created_at), 'dd.MM.yyyy') }}
           </p>
           <p class="relative mb-10 gap-4 text-xs font-semibold sm:mb-0">
             {{ order?.payload.total_amount }} сомони
@@ -82,13 +83,21 @@ const { mutate, isPending } = useMutation({
             {{ order?.payload.delivery_address }}
           </p>
           <p class="text-xs font-semibold">
-            Фарида Рустамова
+            {{ order?.payload.user_name }}
           </p>
           <p class="text-xs font-semibold">
-            +992 900 98 76 54
+            {{ order?.payload.user_phone }}
           </p>
         </div>
       </div>
+    </div>
+
+    <div v-if="order?.payload.comment">
+      <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
+        Комментарий к заказу
+      </h3>
+
+      <p>{{ order?.payload?.comment }}</p>
     </div>
 
     <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
@@ -113,7 +122,7 @@ const { mutate, isPending } = useMutation({
         <TableBody>
           <TableRow v-for="item in order?.payload.order_items" :key="item.id" class="border-[#D5D5D5]">
             <TableCell class="text-xs sm:text-base">
-              Коробка для торта с окном Гофрокартон 30х40х20 см
+              {{ item.product_name }}
             </TableCell>
             <TableCell class="text-xs sm:text-base">
               {{ item.quantity }}
@@ -124,9 +133,12 @@ const { mutate, isPending } = useMutation({
           </TableRow>
         </TableBody>
       </Table>
-      <div class="flex justify-end border-t py-[11px] pr-3">
+      <div class="flex flex-col items-end justify-end border-t py-[11px] pr-3">
         <p class="text-xs sm:text-base">
           Общая сумма товаров: <span class="text-xs font-semibold sm:text-base">{{ order?.payload.order_items.reduce((acc, item) => acc + item.price * item.quantity, 0) }} с.</span>
+        </p>
+        <p class="text-xs sm:text-base">
+          Доставка: <span class="text-xs font-semibold sm:text-base">20 с.</span>
         </p>
       </div>
     </div>

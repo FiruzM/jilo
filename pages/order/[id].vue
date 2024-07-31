@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Copy } from 'lucide-vue-next'
+import { format } from 'date-fns'
 import { getOrder } from '~/api/web/orders/get-order'
 import { useToast } from '~/components/ui/toast'
 
@@ -62,7 +63,7 @@ function copyToClipboard() {
             {{ $t('delivery_address') }}
           </p>
           <p class="text-xs">
-            {{ $t('recipient') }}
+            {{ $t('recipent') }}
           </p>
           <p class="text-xs">
             {{ $t('phone_number') }}
@@ -70,8 +71,8 @@ function copyToClipboard() {
         </div>
 
         <div class="flex flex-col gap-8">
-          <p class="text-xs font-semibold">
-            {{ $t('order_info') }}
+          <p v-if="order?.payload.created_at" class="text-xs font-semibold">
+            {{ format(new Date(order.payload.created_at), 'dd.MM.yyyy') }}
           </p>
           <p class="relative mb-10 gap-4 text-xs font-semibold sm:mb-0">
             {{ order?.payload.total_amount }} сомони
@@ -134,9 +135,12 @@ function copyToClipboard() {
           </TableRow>
         </TableBody>
       </Table>
-      <div class="flex justify-end border-t py-[11px] pr-3">
+      <div class="flex flex-col items-end justify-end border-t py-[11px] pr-3">
         <p class="text-xs sm:text-base">
           {{ $t('total_amount') }}: <span class="text-xs font-semibold sm:text-base">{{ order?.payload.order_items.reduce((acc, item) => acc + item.price * item.quantity, 0) }} с.</span>
+        </p>
+        <p class="text-xs sm:text-base">
+          Доставка: <span class="text-xs font-semibold sm:text-base">20 с.</span>
         </p>
       </div>
     </div>

@@ -9,11 +9,15 @@ interface Order {
     quantity: number
     id: number
     price: number
+    product_name: string
   }[]
   delivery_method: string
   payment_method: string
   status_id: number
   delivery_address: string
+  user_name: string
+  user_phone: string
+  comment: string
 }
 
 export function getOrder(id: number) {

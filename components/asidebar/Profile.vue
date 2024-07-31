@@ -42,7 +42,7 @@ const { mutate } = useMutation({
 
     <ul>
       <li class="rounded-[8px] p-4 [&.router-link-active]:bg-primary-foreground">
-        <NuxtLink to="/formalization" class="flex items-center gap-2 [&.router-link-active]:text-[#FFDCCD]">
+        <NuxtLink to="/order" class="flex items-center gap-2 [&.router-link-active]:text-[#FFDCCD]">
           <Box class="[&.router-link-active]:stroke-[#FFDCCD]" />
           Заказы
         </NuxtLink>
