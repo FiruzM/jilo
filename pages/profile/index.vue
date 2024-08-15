@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { SquarePen } from 'lucide-vue-next'
+
 definePageMeta({
   middleware: ['user-only'],
 })
@@ -8,34 +10,45 @@ const user = useAuthUser()
 
 <template>
   <ClientOnly>
-    <div class="mx-auto flex max-w-[1360px] flex-col gap-6  px-4 pb-10 pt-8 sm:flex-row lg:gap-10 lg:px-10 lg:pb-16 lg:pt-10 ">
-      <div class="flex justify-center overflow-hidden sm:justify-start">
-        <img :src="user?.file_path" alt="avatar" class="size-[200px] rounded-md">
-      </div>
+    <div class="mx-auto max-w-[1360px] gap-6 px-4 pb-10 pt-8 md:flex lg:gap-10 lg:px-10 lg:pb-16 lg:pt-10 ">
+      <AsidebarProfile class="hidden md:block" />
 
-      <div class="flex flex-col justify-between gap-5">
-        <div class="flex items-center gap-10">
-          <div class="flex flex-col gap-5">
-            <p class="text-lg font-semibold text-[#8CA9AE] md:text-2xl">
-              Имя пользователя
+      <div>
+        <div class="flex items-center gap-3">
+          <Avatar class="size-20">
+            <AvatarImage :src="user?.file_path!" alt="avatar" />
+            <AvatarFallback>{{ user?.full_name!.slice(0, 1) }}</AvatarFallback>
+          </Avatar>
+
+          <p class="text-lg font-semibold text-[#4A5759]">
+            {{ user?.full_name }}
+          </p>
+        </div>
+
+        <div class="mt-8 rounded-md border border-[#EFF2F3] md:w-[360px] lg:w-[529px]">
+          <div class="flex flex-col border-b border-[#EFF2F3] p-3">
+            <p class="text-[10px] text-[#8CA9AE]">
+              {{ $t('full_name') }}
             </p>
-            <p class="text-lg font-semibold text-[#8CA9AE] md:text-2xl">
-              Номер пользователя
-            </p>
-          </div>
-          <div class="flex flex-col gap-5">
-            <p class="text-lg font-medium md:text-2xl ">
+            <p class="text-sm font-semibold text-[#4A5759]">
               {{ user?.full_name }}
             </p>
-            <p class="text-lg font-medium md:text-2xl ">
+          </div>
+
+          <div class="flex flex-col border-b border-[#EFF2F3] p-3">
+            <p class="text-[10px] text-[#8CA9AE]">
+              {{ $t('phone_number') }}
+            </p>
+            <p class="text-sm font-semibold text-[#4A5759]">
               {{ user?.number_phone }}
             </p>
           </div>
         </div>
 
-        <Button @click="$router.push('/profile/update')">
-          Редактировать профиль
-        </Button>
+        <NuxtLink to="/profile/update" class="mt-2 flex items-center gap-1 text-[10px] text-[#8CA9AE] md:hidden">
+          <SquarePen class="size-3" />
+          {{ $t('edit_profile') }}
+        </NuxtLink>
       </div>
     </div>
   </ClientOnly>

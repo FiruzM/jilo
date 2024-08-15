@@ -7,5 +7,10 @@ export interface CommentProps {
 }
 
 export function createComment(data: CommentProps) {
-  return client.post('app/reviews', { json: data }).json()
+  const formData = new FormData()
+
+  for (const [key, value] of Object.entries(data)) {
+    formData.append(key, value as any)
+  }
+  return client.post('app/reviews', { body: formData }).json()
 }

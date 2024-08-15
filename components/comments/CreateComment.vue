@@ -40,14 +40,16 @@ const { mutate, isPending } = useMutation({
     const errorData = await error.response.json()
 
     toast({
-      title: 'Произошла ошибка',
+      title: t('error'),
       description: errorData.message,
       variant: 'destructive',
     })
   },
   onSuccess: () => {
     toast({
-      title: 'Отзыв успешно добавлен',
+      title: t('comment_add_succsessfully'),
+      description: t('comment_moderation'),
+
     })
     open.value = false
   },

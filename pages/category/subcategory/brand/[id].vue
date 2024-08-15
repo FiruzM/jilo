@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { ChevronRight, ListFilter, Loader2, Minus } from 'lucide-vue-next'
+import { ListFilter, Loader2, Minus } from 'lucide-vue-next'
 import { getBrandProducts } from '~/api/web/products/get-brands-products'
 import { getBrand } from '~/api/web/brands/get-brand'
 
-const isOpen = ref(false)
-
 const params: any = useRoute().params
+const route = useRoute()
+
+const minPriceQuery = useRouteQuery<string | undefined>('min_price', '')
+const maxPriceQuery = useRouteQuery<string | undefined>('max_price', '')
+
+const queryParams = refDebounced(computed(() => ({
+  ...route.query,
+})), 400)
 
 const {
   data: products,
@@ -13,8 +19,8 @@ const {
   fetchNextPage: fetchNextProducts,
   isFetchingNextPage: isFetchingNextProducts,
 } = useInfiniteQuery({
-  queryKey: [`brandProducts`, params],
-  queryFn: ({ pageParam }) => getBrandProducts(pageParam, params.id),
+  queryKey: [`brandProducts`, params, queryParams],
+  queryFn: ({ pageParam }) => getBrandProducts(pageParam, params.id, queryParams.value),
   getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
   initialPageParam: 1,
 })
@@ -50,75 +56,15 @@ const { data: brand, isPending: brandPending } = useQuery({
       <div class="mt-11 flex gap-7">
         <div class="hidden max-w-[250px] shrink-0 lg:block">
           <ScrollArea class="h-svh">
-            <Collapsible v-model:open="isOpen">
-              <CollapsibleTrigger class="flex items-center">
-                <ChevronRight :class="isOpen ? 'transition-all ease-in rotate-90' : 'transition-all ease-in'" />
-                <span class="font-semibold">Купить жильё</span>
-              </CollapsibleTrigger>
-              <CollapsibleContent class="ml-6 mt-6 flex flex-col gap-4">
-                <div>Все квартиры</div>
-                <div>Вторичка</div>
-                <div>Вторичка</div>
-                <div>Вторичка</div>
-              </CollapsibleContent>
-            </Collapsible>
-
-            <div class="mt-6">
-              <p class="mb-4 font-semibold">
-                Количество комнат
-              </p>
-              <div class="flex flex-col gap-4">
-                <div class="flex items-center space-x-2">
-                  <Checkbox id="studio" />
-                  <label
-                    for="studio"
-                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Студия
-                  </label>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                  <Checkbox id="studio" />
-                  <label
-                    for="studio"
-                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Студия
-                  </label>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                  <Checkbox id="studio" />
-                  <label
-                    for="studio"
-                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Студия
-                  </label>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                  <Checkbox id="studio" />
-                  <label
-                    for="studio"
-                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Студия
-                  </label>
-                </div>
-              </div>
-            </div>
-
             <div>
               <p class="mt-6 font-semibold">
-                Цена, ₽
+                Цена
               </p>
 
               <div class="mt-4 flex items-center gap-2.5">
-                <Input class="rounded-lg" placeholder="от" />
+                <Input v-model="minPriceQuery" class="rounded-lg" placeholder="от" />
                 <Minus />
-                <Input class="rounded-lg" placeholder="до" />
+                <Input v-model="maxPriceQuery" class="rounded-lg" placeholder="до" />
               </div>
             </div>
           </ScrollArea>
@@ -201,75 +147,15 @@ const { data: brand, isPending: brandPending } = useQuery({
                 </SheetTrigger>
                 <SheetContent side="top">
                   <ScrollArea class="h-svh">
-                    <Collapsible v-model:open="isOpen">
-                      <CollapsibleTrigger class="flex items-center">
-                        <ChevronRight :class="isOpen ? 'transition-all ease-in rotate-90' : 'transition-all ease-in'" />
-                        <span class="font-semibold">Купить жильё</span>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent class="ml-6 mt-6 flex flex-col gap-4">
-                        <div>Все квартиры</div>
-                        <div>Вторичка</div>
-                        <div>Вторичка</div>
-                        <div>Вторичка</div>
-                      </CollapsibleContent>
-                    </Collapsible>
-
-                    <div class="mt-2">
-                      <p class="mb-4 font-semibold">
-                        Количество комнат
-                      </p>
-                      <div class="flex flex-col gap-4">
-                        <div class="flex items-center space-x-2">
-                          <Checkbox id="studio" />
-                          <label
-                            for="studio"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Студия
-                          </label>
-                        </div>
-
-                        <div class="flex items-center space-x-2">
-                          <Checkbox id="studio" />
-                          <label
-                            for="studio"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Студия
-                          </label>
-                        </div>
-
-                        <div class="flex items-center space-x-2">
-                          <Checkbox id="studio" />
-                          <label
-                            for="studio"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Студия
-                          </label>
-                        </div>
-
-                        <div class="flex items-center space-x-2">
-                          <Checkbox id="studio" />
-                          <label
-                            for="studio"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Студия
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
                     <div>
                       <p class="mt-6 font-semibold">
                         Цена, ₽
                       </p>
 
                       <div class="mt-4 flex items-center gap-2.5">
-                        <Input class="rounded-lg" placeholder="от" />
+                        <Input v-model="minPriceQuery" class="rounded-lg" placeholder="от" />
                         <Minus />
-                        <Input class="rounded-lg" placeholder="до" />
+                        <Input v-model="maxPriceQuery" class="rounded-lg" placeholder="до" />
                       </div>
                     </div>
                   </ScrollArea>

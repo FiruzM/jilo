@@ -10,7 +10,7 @@ export function getRoleLink(role?: string) {
   if (role === 'user')
     return '/profile'
   if (role === 'super-admin')
-    return '/admin'
+    return '/admin/categories'
 
   return '/'
 }

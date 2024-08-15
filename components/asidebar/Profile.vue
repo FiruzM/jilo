@@ -21,7 +21,7 @@ const { mutate } = useMutation({
     <ClientOnly>
       <div class="flex flex-col items-center gap-4 rounded-[8px] bg-[#EBF7F4] px-8 py-4">
         <Avatar class="size-20">
-          <AvatarImage :src="user?.file_path" alt="Avatar" />
+          <AvatarImage :src="user?.file_path!" alt="Avatar" />
           <AvatarFallback>{{ user?.full_name?.slice(0, 1) }}</AvatarFallback>
         </Avatar>
 
@@ -34,7 +34,7 @@ const { mutate } = useMutation({
 
           <NuxtLink to="/profile/update" class="mt-2 flex items-center gap-1 text-[10px] text-[#8CA9AE]">
             <SquarePen class="size-3" />
-            Редактировать профиль
+            {{ $t('edit_profile') }}
           </NuxtLink>
         </div>
       </div>
@@ -44,14 +44,14 @@ const { mutate } = useMutation({
       <li class="rounded-[8px] p-4 [&.router-link-active]:bg-primary-foreground">
         <NuxtLink to="/order" class="flex items-center gap-2 [&.router-link-active]:text-[#FFDCCD]">
           <Box class="[&.router-link-active]:stroke-[#FFDCCD]" />
-          Заказы
+          {{ $t('orders') }}
         </NuxtLink>
       </li>
 
       <li class=" ">
         <NuxtLink to="/favorites" class="flex items-center gap-2 rounded-[8px] p-4 [&.router-link-active]:bg-primary-foreground [&.router-link-active]:text-[#FFDCCD]">
           <Heart class="[&.router-link-active]:stroke-[#FFDCCD]" />
-          Избранное
+          {{ $t('favorites') }}
         </NuxtLink>
       </li>
     </ul>
@@ -59,7 +59,7 @@ const { mutate } = useMutation({
     <Button class="mt-[34px] flex gap-3 self-start bg-transparent pl-4 text-[#F76659] hover:bg-transparent" @click="mutate()">
       <LogOut class="stroke-[#FFB5AE]" />
 
-      Выйти
+      {{ $t('logout') }}
     </Button>
   </div>
 </template>

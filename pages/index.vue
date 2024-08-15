@@ -4,6 +4,7 @@ import Autoplay from 'embla-carousel-autoplay'
 import { getInfiniteCategories } from '~/api/admin/categories/get-infinite-categories'
 import { getBanners } from '~/api/admin/banners/get-banners'
 import { getDiscountProducts } from '~/api/web/products/get-discount-products'
+import { getComments } from '~/api/web/comments/get-comments'
 
 const { t } = useI18n()
 
@@ -12,7 +13,7 @@ useHead({
   meta: [
     { name: 'title', content: 'Jilo Exlusive' },
     { name: 'description', content: 'Добро пожаловать в Jilo Exclusive, ваш эксклюзивный интернет-магазин для кондитеров! Мы предлагаем широкий ассортимент высококачественных ингредиентов, инструментов и аксессуаров для кондитерского искусства. От натуральных ароматизаторов и пищевых красителей до профессиональных форм для выпечки и декора, наш ассортимент имеет все, что нужно для создания уникальных и вкусных кондитерских изделий. Мы сотрудничаем только с проверенными поставщиками, чтобы обеспечить вам доступ к лучшим продуктам по конкурентоспособным ценам. Благодаря быстрой доставке и безопасным способам оплаты, покупки в нашем магазине - это простая и приятная процедура. Создавайте свои шедевры с Jilo Exclusive!' },
-    { name: 'keywords', content: 'jilo shop, jilo exclusive, jilo,' },
+    { name: 'keywords', content: 'jilo shop, jilo exclusive, jilo, чило, джило, Кондитерские товары, Товары для кондитеров, Пищевые ингредиенты,Инвентарь для пекаря и кондитера, Кондитерская упаковка, Кондитерские изделия, Профессиональные кондитерские товары, Товары для выпечки, Декоративные кондитерские товары, Кондитерские инструменты' },
   ],
 })
 
@@ -50,23 +51,51 @@ const {
   initialPageParam: 1,
   enabled: false,
   refetchOnWindowFocus: false,
+})
 
+const {
+  data: comments,
+  fetchNextPage: fetchNextComments,
+  isFetchingNextPage: isFetchingNexcommentst,
+  refetch: refetchReviews,
+  isPending: discountReviewsPending,
+
+} = useInfiniteQuery({
+  queryKey: ['webComments'],
+  queryFn: ({ pageParam }) => getComments(pageParam),
+  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
+  initialPageParam: 1,
+  refetchOnWindowFocus: false,
+  enabled: false,
 })
 
 const discountSection = ref()
-const lastDiscountItem = ref()
-const hasTriggered = ref(false)
+const reviewSection = ref()
+const lastDiscountItemLoader = ref()
+const hasTriggeredDiscount = ref(false)
+const hasTriggeredReviews = ref(false)
+const lastCommentLoader = ref()
 
 onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting && !hasTriggered.value) {
+    if (entries[0].isIntersecting && !hasTriggeredDiscount.value) {
       // section is now in view, enable the query
       refetch()
-      hasTriggered.value = true
+      hasTriggeredDiscount.value = true
     }
   }, { threshold: 1.0 })
 
   observer.observe(discountSection.value)
+
+  const reviewObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !hasTriggeredReviews.value) {
+      // section is now in view, enable the query
+      refetchReviews()
+      hasTriggeredReviews.value = true
+    }
+  }, { threshold: 1.0 })
+
+  reviewObserver.observe(reviewSection.value)
 })
 
 onUpdated(() => {
@@ -74,10 +103,20 @@ onUpdated(() => {
     if (entries[0].isIntersecting && !isFetchingNextPage.value && discountProducts.value?.pages[discountProducts.value.pages.length - 1].payload.meta.current_page !== discountProducts.value?.pages[discountProducts.value.pages.length - 1].payload.meta.last_page) {
       fetchNextPage()
     }
-  }, { threshold: 1.0 })
+  }, { threshold: 0.5 })
 
-  if (lastDiscountItem.value) {
-    lastDiscountItemObserver.observe(lastDiscountItem.value)
+  if (lastDiscountItemLoader.value) {
+    lastDiscountItemObserver.observe(lastDiscountItemLoader.value)
+  }
+
+  const lastCommentObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !isFetchingNexcommentst.value && comments.value?.pages[comments.value.pages.length - 1].payload.meta.current_page !== comments.value?.pages[comments.value.pages.length - 1].payload.meta.last_page) {
+      fetchNextComments()
+    }
+  }, { threshold: 0.5 })
+
+  if (lastCommentLoader.value) {
+    lastCommentObserver.observe(lastCommentLoader.value)
   }
 })
 </script>
@@ -182,14 +221,19 @@ onUpdated(() => {
           >
             <CarouselContent>
               <template v-for="(data, index) in discountProducts?.pages" :key="index">
-                <CarouselItem v-for="(product, idx) in data.payload.data" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
-                  <CardsItemCard :ref="(el: any) => { if (idx + 1 === data.payload.data.length - 1) lastDiscountItem = el?.$el }" class="h-full" :product="product" @click="() => $router.push(`/product/${product.id}`)" />
+                <CarouselItem v-for="product in data.payload.data" :key="product.id" class="basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                  <CardsItemCard class="h-full" :product="product" @click="() => $router.push(`/product/${product.id}`)" />
                 </CarouselItem>
               </template>
-              <div v-if="isFetchingNextPage" class="flex justify-center lg:hidden">
-                <Loader2 class="mt-[100px] animate-spin stroke-primary" />
+              <div
+                v-if="discountProducts?.pages[discountProducts.pages.length - 1].payload.meta.current_page !== discountProducts?.pages[discountProducts.pages.length - 1].payload.meta.last_page || isFetchingNextPage"
+                ref="lastDiscountItemLoader"
+                class="ml-2 flex items-center justify-center"
+              >
+                <Loader2 class="animate-spin stroke-primary" />
               </div>
             </CarouselContent>
+
             <div class="lg:hidden">
               <CarouselPrevious class="left-0 border-none bg-primary-foreground stroke-[#FFDCCD]" />
               <CarouselNext class="right-0 border-none bg-primary-foreground" />
@@ -254,18 +298,81 @@ onUpdated(() => {
       </ul>
     </div>
 
-    <div class="my-10 lg:my-[100px]">
-      <CommentsComment />
+    <div ref="reviewSection" class="my-10 lg:my-[100px]">
+      <div v-if="discountReviewsPending" class="flex justify-center">
+        <Loader2 class="animate-spin stroke-primary" />
+      </div>
+
+      <div v-else>
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
+            {{ $t('reviews') }}
+          </h2>
+          <CommentsCreateComment />
+        </div>
+
+        <Carousel class="mt-5 lg:mt-10">
+          <CarouselContent>
+            <template v-for="(data, index) in comments?.pages" :key="index">
+              <CarouselItem v-for="(comment) in data.payload.data" :key="comment.id">
+                <div class="h-full rounded-[12px] bg-[#CCE3DE] p-5 lg:rounded-3xl lg:px-24 lg:py-20">
+                  <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-10">
+                    <Avatar class="size-[83px] border-4 border-primary-foreground sm:size-[103px] lg:size-[166px]">
+                      <AvatarImage :src="comment.file_path" alt="avatar" />
+                      <AvatarFallback>{{ comment.full_name.slice(0, 1) }}</AvatarFallback>
+                    </Avatar>
+                    <div class="flex flex-col gap-2 md:gap-4">
+                      <p class="text-xl font-semibold text-primary-foreground sm:text-3xl lg:text-[40px]">
+                        {{ comment.full_name }}
+                      </p>
+                      <div class="flex items-center">
+                        <span>{{ comment.grade }}</span>
+                        <NuxtRating
+                          class="px-3"
+                          border-color="#db8403"
+                          active-color="#ffa41c"
+                          inactive-color="white"
+                          :rounded-corners="true"
+                          :border-width="5"
+                          :rating-size="10"
+                          :rating-value="comment.grade"
+                        />
+                      </div>
+                      <p class="text-sm text-primary-foreground sm:text-base lg:text-xl">
+                        {{ comment.description }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CarouselItem>
+            </template>
+            <div
+              v-if="comments?.pages[comments.pages.length - 1].payload.meta.current_page !== comments?.pages[comments.pages.length - 1].payload.meta.last_page || isFetchingNexcommentst"
+              ref="lastCommentLoader"
+              class="ml-2 flex w-[100px] items-center justify-center"
+            >
+              <Loader2 class="animate-spin stroke-primary" />
+            </div>
+          </CarouselContent>
+          <div class="absolute right-20 top-10 flex lg:hidden">
+            <CarouselPrevious class="-left-10 border-none bg-primary-foreground stroke-[#FFDCCD]" />
+            <CarouselNext class="border-none bg-primary-foreground " />
+          </div>
+
+          <CarouselPrevious class="left-10 hidden border-none bg-primary-foreground stroke-[#FFDCCD] lg:flex" />
+          <CarouselNext class="right-10 hidden border-none bg-primary-foreground lg:flex" />
+        </Carousel>
+      </div>
     </div>
 
-    <div class="my-10 flex flex-col gap-10 sm:flex-row lg:my-[100px] lg:gap-[214px]">
+    <div class="my-10 flex flex-col gap-10 sm:flex-row lg:my-[100px] lg:justify-between">
       <div class="">
         <h3 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-          {{ $t(' ') }}
+          {{ $t('our_contacts') }}
         </h3>
 
-        <div class="mt-10 flex flex-col gap-2.5 lg:mt-[53px]">
-          <div class="flex min-w-[340px] items-center gap-2.5">
+        <div class="mt-10 flex flex-col gap-2.5 lg:mt-[53px] lg:min-w-[340px]">
+          <div class="flex items-center gap-2.5 ">
             <MapPin />
             <p class="w-full text-base md:text-2xl">
               г. Душанбе, ул. Нусратулло Махсум 12/1
@@ -278,8 +385,8 @@ onUpdated(() => {
         </div>
       </div>
 
-      <div class="relative h-[300px] grow overflow-hidden rounded-3xl border-[3px] border-[#CCE3DE] lg:h-[523px]">
-        <a href="https://yandex.ru/maps/?rtext=~38.56338339223135,68.79294927546309&rtt=mt" target="_blank" class="absolute bottom-3 left-3 z-50 rounded-lg bg-primary p-2 text-xs font-medium">
+      <div class="relative h-[300px] shrink-0 grow overflow-hidden rounded-3xl border-[3px] border-[#CCE3DE] sm:w-[340px] lg:h-[523px] lg:w-[806px]">
+        <a href="https://yandex.ru/maps/?rtext=~38.58264746993179,68.72761897486866&rtt=mt" target="_blank" class="absolute bottom-3 left-3 z-50 rounded-lg bg-primary p-2 text-xs font-medium">
           {{ $t('route') }}
         </a>
         <MapYandexMap />

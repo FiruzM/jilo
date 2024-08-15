@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { ChevronRight, ListFilter, Loader2, Minus } from 'lucide-vue-next'
+import { ListFilter, Loader2, Minus } from 'lucide-vue-next'
 import { getSubcategoryProducts } from '~/api/web/products/get-subcategory-products'
 import { getSubcategory } from '~/api/web/subcategories/get-subcategory'
 import { getBrands } from '~/api/web/brands/get-brands'
 
-const isOpen = ref(false)
-
 const params: any = useRoute().params
+const route = useRoute()
+
+const minPriceQuery = useRouteQuery<string | undefined>('min_price', '')
+const maxPriceQuery = useRouteQuery<string | undefined>('max_price', '')
+
+const queryParams = refDebounced(computed(() => ({
+  ...route.query,
+})), 400)
 
 const {
   data: products,
@@ -14,8 +20,8 @@ const {
   fetchNextPage: fetchNextProducts,
   isFetchingNextPage: isFetchingNextProducts,
 } = useInfiniteQuery({
-  queryKey: [`subcategoryProducts`, params],
-  queryFn: ({ pageParam }) => getSubcategoryProducts(pageParam, params.id),
+  queryKey: [`subcategoryProducts`, params, queryParams],
+  queryFn: ({ pageParam }) => getSubcategoryProducts(pageParam, params.id, queryParams.value),
   getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
   initialPageParam: 1,
 })
@@ -63,75 +69,15 @@ const {
       <div class="mt-11 flex gap-7">
         <div class="hidden max-w-[250px] shrink-0 lg:block">
           <ScrollArea class="h-svh">
-            <Collapsible v-model:open="isOpen">
-              <CollapsibleTrigger class="flex items-center">
-                <ChevronRight :class="isOpen ? 'transition-all ease-in rotate-90' : 'transition-all ease-in'" />
-                <span class="font-semibold">Купить жильё</span>
-              </CollapsibleTrigger>
-              <CollapsibleContent class="ml-6 mt-6 flex flex-col gap-4">
-                <div>Все квартиры</div>
-                <div>Вторичка</div>
-                <div>Вторичка</div>
-                <div>Вторичка</div>
-              </CollapsibleContent>
-            </Collapsible>
-
-            <div class="mt-6">
-              <p class="mb-4 font-semibold">
-                Количество комнат
-              </p>
-              <div class="flex flex-col gap-4">
-                <div class="flex items-center space-x-2">
-                  <Checkbox id="studio" />
-                  <label
-                    for="studio"
-                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Студия
-                  </label>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                  <Checkbox id="studio" />
-                  <label
-                    for="studio"
-                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Студия
-                  </label>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                  <Checkbox id="studio" />
-                  <label
-                    for="studio"
-                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Студия
-                  </label>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                  <Checkbox id="studio" />
-                  <label
-                    for="studio"
-                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Студия
-                  </label>
-                </div>
-              </div>
-            </div>
-
             <div>
               <p class="mt-6 font-semibold">
-                Цена, ₽
+                Цена
               </p>
 
               <div class="mt-4 flex items-center gap-2.5">
-                <Input class="rounded-lg" placeholder="от" />
+                <Input v-model="minPriceQuery" class="rounded-lg" placeholder="от" />
                 <Minus />
-                <Input class="rounded-lg" placeholder="до" />
+                <Input v-model="maxPriceQuery" class="rounded-lg" placeholder="до" />
               </div>
             </div>
           </ScrollArea>
@@ -214,75 +160,15 @@ const {
                 </SheetTrigger>
                 <SheetContent side="top">
                   <ScrollArea class="h-svh">
-                    <Collapsible v-model:open="isOpen">
-                      <CollapsibleTrigger class="flex items-center">
-                        <ChevronRight :class="isOpen ? 'transition-all ease-in rotate-90' : 'transition-all ease-in'" />
-                        <span class="font-semibold">Купить жильё</span>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent class="ml-6 mt-6 flex flex-col gap-4">
-                        <div>Все квартиры</div>
-                        <div>Вторичка</div>
-                        <div>Вторичка</div>
-                        <div>Вторичка</div>
-                      </CollapsibleContent>
-                    </Collapsible>
-
-                    <div class="mt-2">
-                      <p class="mb-4 font-semibold">
-                        Количество комнат
-                      </p>
-                      <div class="flex flex-col gap-4">
-                        <div class="flex items-center space-x-2">
-                          <Checkbox id="studio" />
-                          <label
-                            for="studio"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Студия
-                          </label>
-                        </div>
-
-                        <div class="flex items-center space-x-2">
-                          <Checkbox id="studio" />
-                          <label
-                            for="studio"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Студия
-                          </label>
-                        </div>
-
-                        <div class="flex items-center space-x-2">
-                          <Checkbox id="studio" />
-                          <label
-                            for="studio"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Студия
-                          </label>
-                        </div>
-
-                        <div class="flex items-center space-x-2">
-                          <Checkbox id="studio" />
-                          <label
-                            for="studio"
-                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Студия
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
                     <div>
                       <p class="mt-6 font-semibold">
                         Цена, ₽
                       </p>
 
                       <div class="mt-4 flex items-center gap-2.5">
-                        <Input class="rounded-lg" placeholder="от" />
+                        <Input v-model="minPriceQuery" class="rounded-lg" placeholder="от" />
                         <Minus />
-                        <Input class="rounded-lg" placeholder="до" />
+                        <Input v-model="maxPriceQuery" class="rounded-lg" placeholder="до" />
                       </div>
                     </div>
                   </ScrollArea>
@@ -290,25 +176,26 @@ const {
               </Sheet>
             </div>
           </div>
-
-          <ul class="mt-8 flex flex-wrap gap-x-2 gap-y-2.5 sm:gap-x-5 lg:gap-x-10 lg:gap-y-5">
-            <template v-for="(data, index) in brands?.pages" :key="index">
-              <li v-for="brand in data.payload.data" :key="brand.id" class="rounded-[12px] border border-[#4A5759] px-2.5 py-[5px] text-sm text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0] md:px-5 md:py-2.5 md:text-base">
-                <NuxtLink :to="`/category/subcategory/brand/${brand.id}`">
-                  {{ brand.name }}
-                </NuxtLink>
-              </li>
-            </template>
-          </ul>
-          <div class="flex justify-center">
-            <Button
-              class="mt-5 size-auto bg-transparent p-0 text-[#4A5759] hover:bg-transparent"
-              :disabled="brands?.pages[brands.pages.length - 1].payload.meta.current_page === brands?.pages[brands.pages.length - 1].payload.meta.last_page || isFetchingNextPage"
-              :is-loading="isFetchingNextPage"
-              @click="() => fetchNextPage()"
-            >
-              {{ $t('upload_more') }}
-            </Button>
+          <div v-if="brands?.pages[0].payload.data">
+            <ul class="mt-8 flex flex-wrap gap-x-2 gap-y-2.5 sm:gap-x-5 lg:gap-x-10 lg:gap-y-5">
+              <template v-for="(data, index) in brands?.pages" :key="index">
+                <li v-for="brand in data.payload.data" :key="brand.id" class="rounded-[12px] border border-[#4A5759] px-2.5 py-[5px] text-sm text-[#4A5759] transition-all ease-in hover:bg-[#4A5759] hover:text-[#ffdbd0] md:px-5 md:py-2.5 md:text-base">
+                  <NuxtLink :to="`/category/subcategory/brand/${brand.id}`">
+                    {{ brand.name }}
+                  </NuxtLink>
+                </li>
+              </template>
+            </ul>
+            <div class="flex justify-center">
+              <Button
+                class="mt-5 size-auto bg-transparent p-0 text-[#4A5759] hover:bg-transparent"
+                :disabled="brands?.pages[brands.pages.length - 1].payload.meta.current_page === brands?.pages[brands.pages.length - 1].payload.meta.last_page || isFetchingNextPage"
+                :is-loading="isFetchingNextPage"
+                @click="() => fetchNextPage()"
+              >
+                {{ $t('upload_more') }}
+              </Button>
+            </div>
           </div>
 
           <div class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">

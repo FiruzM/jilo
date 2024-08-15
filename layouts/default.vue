@@ -79,14 +79,18 @@ const { mutate } = useMutation({
                 <NavigationMenu>
                   <NavigationMenuList class="min-h-[536px] flex-col justify-start bg-[#F9F9F9] p-10">
                     <NavigationMenuItem v-for="detail in details?.payload.categories" :key="detail.id">
-                      <NavigationMenuTrigger>{{ detail.name }}</NavigationMenuTrigger>
+                      <NavigationMenuTrigger>
+                        <NuxtLink :to="`/category/${detail.id}`">
+                          {{ detail.name }}
+                        </NuxtLink>
+                      </NavigationMenuTrigger>
                       <NavigationMenuContent>
                         <NavigationMenuLink>
                           <NuxtLink :to="`/category/${detail.id}`" class="mt-10 block pl-6 text-[30px] font-bold">
                             {{ detail.name }}
                           </NuxtLink>
-                          <ul class="flex min-h-[526px] gap-10 p-6 pt-9">
-                            <li v-for="subcategory in detail.subcategories" :key="subcategory.id" class="w-[200px] grow">
+                          <ul class="grid min-h-[505px] w-[1400px] grid-cols-4 gap-x-10 overflow-y-scroll p-6 pt-9">
+                            <li v-for="subcategory in detail.subcategories" :key="subcategory.id">
                               <NavigationMenuLink as-child>
                                 <NuxtLink class="block text-base font-semibold text-[#242424]" :to="`/category/subcategory/${subcategory.id}`">
                                   {{ subcategory.name }}
