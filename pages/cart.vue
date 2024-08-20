@@ -7,6 +7,13 @@ const { toast } = useToast()
 const cart: any = useLocalStorage('cart', [])
 const { t } = useI18n()
 
+useHead({
+  title: t('cart'),
+  meta: [
+    { name: 'title', content: t('cart') },
+  ],
+})
+
 function decrement(id: number) {
   cart.value.forEach((item: any) => {
     if (item.id === id) {

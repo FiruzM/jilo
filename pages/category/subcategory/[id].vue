@@ -26,7 +26,7 @@ const {
   initialPageParam: 1,
 })
 
-const { data: subcategory, isPending: subcategoryPending } = useQuery({
+const { data: subcategory, isPending: subcategoryPending, suspense } = useQuery({
   queryKey: ['subcategory', params],
   queryFn: () => getSubcategory(params.id),
 })
@@ -41,6 +41,16 @@ const {
   queryFn: ({ pageParam }) => getBrands(pageParam, params.id),
   getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
   initialPageParam: 1,
+})
+
+await suspense()
+
+useHead({
+  title: subcategory.value?.payload.name,
+  meta: [
+    { name: 'title', content: subcategory.value?.payload.name },
+    { name: 'keywords', content: subcategory.value?.payload.name },
+  ],
 })
 </script>
 

@@ -73,7 +73,7 @@ const formRegister = useForm({
   keepValuesOnUnmount: true,
 })
 
-const { mutate: sendFormData } = useMutation({
+const { mutate: sendFormData, isPending } = useMutation({
   mutationFn: (data: definitions['models.UserParams']) => register(data),
   onSuccess: async () => {
     await me()
@@ -87,6 +87,13 @@ const { mutate: sendFormData } = useMutation({
 
 const registerSubmit = formRegister.handleSubmit((values) => {
   sendFormData(values)
+})
+
+useHead({
+  title: t('register'),
+  meta: [
+    { name: 'title', content: t('register') },
+  ],
 })
 </script>
 
@@ -144,7 +151,7 @@ const registerSubmit = formRegister.handleSubmit((values) => {
           </FormItem>
         </FormField>
       </div>
-      <Button type="submit">
+      <Button type="submit" :is-loading="isPending">
         {{ $t('register') }}
       </Button>
     </form>

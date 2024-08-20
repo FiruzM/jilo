@@ -25,9 +25,19 @@ const {
   initialPageParam: 1,
 })
 
-const { data: brand, isPending: brandPending } = useQuery({
+const { data: brand, isPending: brandPending, suspense } = useQuery({
   queryKey: ['brand', params],
   queryFn: () => getBrand(params.id),
+})
+
+await suspense()
+
+useHead({
+  title: brand.value?.payload.name,
+  meta: [
+    { name: 'title', content: brand.value?.payload.name },
+    { name: 'keywords', content: brand.value?.payload.name },
+  ],
 })
 </script>
 

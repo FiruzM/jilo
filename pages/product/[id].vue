@@ -5,6 +5,7 @@ import { useToast } from '~/components/ui/toast'
 
 const params: any = useRoute().params
 const { toast } = useToast()
+const { t } = useI18n()
 
 const { data: product, suspense } = useQuery({
   queryKey: ['product', params.id],
@@ -18,15 +19,15 @@ function addToCart() {
   const index = cart.value.findIndex((item: any) => item.id === product.value?.payload.id)
   if (index !== -1) {
     toast({
-      title: 'Товар добавлен',
-      description: 'Товар был добавлен в корзину',
+      title: t('product_add'),
+      description: t('product_add_to_cart'),
     })
     return cart.value[index] = { ...product.value?.payload, quantity: quantity.value }
   }
   else {
     toast({
-      title: 'Товар добавлен',
-      description: 'Товар был добавлен в корзину',
+      title: t('product_add'),
+      description: t('product_add_to_cart'),
     })
     return cart.value.push({ ...product.value?.payload, quantity: quantity.value })
   }
@@ -44,6 +45,15 @@ function increment() {
 }
 
 await suspense()
+
+useHead({
+  title: product.value?.payload.name,
+  meta: [
+    { name: 'title', content: product.value?.payload.name },
+    { name: 'description', content: product.value?.payload.description },
+    { name: 'keywords', content: product.value?.payload.name },
+  ],
+})
 </script>
 
 <template>
@@ -121,7 +131,7 @@ await suspense()
               <Box class="stroke-[#9AA6AC]" />
               <span>
                 {{ $t('availability_in_stock') }}
-                <span class="font-semibold text-[#368C18]">{{ product?.payload.quantity >= 20 ? $t('many') : $t('few') }}</span>
+                <span class="font-semibold text-[#368C18]">{{ product?.payload.quantity! >= 20 ? $t('many') : $t('few') }}</span>
               </span>
             </li>
           </ul>
@@ -129,7 +139,7 @@ await suspense()
       </div>
     </div>
 
-    <div class="mt-5 sm:mt-10">
+    <div v-if="product?.payload.description" class="mt-5 sm:mt-10">
       <h3 class="text-xl font-semibold sm:text-2xl md:text-3xl">
         Описание товара
       </h3>

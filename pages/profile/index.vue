@@ -5,6 +5,15 @@ definePageMeta({
   middleware: ['user-only'],
 })
 
+const { t } = useI18n()
+
+useHead({
+  title: t('profile'),
+  meta: [
+    { name: 'title', content: t('profile') },
+  ],
+})
+
 const user = useAuthUser()
 </script>
 

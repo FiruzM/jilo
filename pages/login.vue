@@ -12,6 +12,13 @@ definePageMeta({
 
 const { t } = useI18n()
 
+useHead({
+  title: t('login'),
+  meta: [
+    { name: 'title', content: t('login') },
+  ],
+})
+
 const { toast } = useToast()
 const router = useRouter()
 const { me, login } = useAuth()

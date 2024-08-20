@@ -57,6 +57,7 @@
   "product_was_deleted_from_cart": "Товар был удален из корзины",
   "empty_trash": "Очистить корзину",
   "product": "товаров",
+  "Product": "Товар",
   "products": "Товары",
   "choose_file": "Выберите файл",
   "supported_only": "Поддерживаются только .jpg, .jpeg, .png and .webp форматы",
@@ -148,5 +149,8 @@
   "apply": "Применить",
   "comment_add_succsessfully": "Отзыв успешно добавлен",
   "comment_moderation": "Ваш отзыв будет опубликован после проверки модератором",
-  "put_to_cart": "В корзину"
+  "put_to_cart": "В корзину",
+  "product_add_to_cart": "Товар добавлен в корзину",
+  "payment": "Оплата",
+  "formalize": "Оформление"
 }

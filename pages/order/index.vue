@@ -6,6 +6,15 @@ definePageMeta({
   middleware: ['user-only'],
 })
 
+const { t } = useI18n()
+
+useHead({
+  title: t('order'),
+  meta: [
+    { name: 'title', content: t('order') },
+  ],
+})
+
 const route = useRoute()
 const pageQuery = useRouteQuery<string | undefined>('page', '1')
 const statusQuery = useRouteQuery<string | undefined>('status_id', '')

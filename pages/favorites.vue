@@ -1,5 +1,13 @@
 <script setup lang="ts">
 const user = useAuthUser()
+const { t } = useI18n()
+
+useHead({
+  title: t('favorites'),
+  meta: [
+    { name: 'title', content: t('favorites') },
+  ],
+})
 
 const favorite: any = useLocalStorage('favorite', [])
 </script>

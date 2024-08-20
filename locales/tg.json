@@ -57,6 +57,7 @@
   "product_was_deleted_from_cart": "Маҳсулот аз сабад хориҷ карда шуд",
   "empty_trash": "Сабадро(қутиро) холӣ кардан",
   "product": "молҳо",
+  "Product": "Молҳо",
   "products": "молҳо",
   "choose_file": "Файлро интихоб кунед",
   "supported_only": "Танҳо форматҳои .jpg, .jpeg, .png and .webp дастгирӣ мешавад",
@@ -148,5 +149,8 @@
   "apply": "Муроҷиат кунед",
   "comment_add_succsessfully": "Барраси бомуваффақият илова карда шуд",
   "comment_moderation": "Баррасии шумо пас аз тасдиқи модератор нашр мешавад",
-  "put_to_cart": "Ба сабат"
+  "put_to_cart": "Ба сабат",
+  "product_add_to_cart": "Маҳсулот ба сабад илова карда шуд",
+  "payment": "Пардохт",
+  "formalize": "Бақайдгирӣ"
 }

@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import { QrCode } from 'lucide-vue-next'
 
+const { t } = useI18n()
+
+useHead({
+  title: t('payment'),
+  meta: [
+    { name: 'title', content: t('payment') },
+  ],
+})
+
 const bankLogo = ref('alif')
 </script>
 

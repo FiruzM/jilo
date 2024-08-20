@@ -12,6 +12,13 @@ const user = useAuthUser()
 const router = useRouter()
 const { t } = useI18n()
 
+useHead({
+  title: t('formalize'),
+  meta: [
+    { name: 'title', content: t('formalize') },
+  ],
+})
+
 const formSchema = toTypedSchema(z.object({
   delivery_address: z.string({
     required_error: t('enter_address'),

@@ -385,7 +385,7 @@ onUpdated(() => {
         </div>
       </div>
 
-      <div class="relative h-[300px] shrink-0 grow overflow-hidden rounded-3xl border-[3px] border-[#CCE3DE] sm:w-[340px] lg:h-[523px] lg:w-[806px]">
+      <div class="relative h-[300px] shrink-0 grow overflow-hidden rounded-3xl border-[3px] border-[#CCE3DE] sm:w-[340px] lg:h-[523px] lg:w-[506px] xl:w-[806px]">
         <a href="https://yandex.ru/maps/?rtext=~38.58264746993179,68.72761897486866&rtt=mt" target="_blank" class="absolute bottom-3 left-3 z-50 rounded-lg bg-primary p-2 text-xs font-medium">
           {{ $t('route') }}
         </a>

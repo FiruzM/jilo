@@ -26,7 +26,7 @@ const {
   initialPageParam: 1,
 })
 
-const { data: category, isPending: categoryPending } = useQuery({
+const { data: category, isPending: categoryPending, suspense } = useQuery({
   queryKey: ['category', params],
   queryFn: () => getCategory(params.id),
 })
@@ -42,6 +42,16 @@ const {
   queryFn: ({ pageParam }) => getSubcategories(pageParam, params.id),
   getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
   initialPageParam: 1,
+})
+
+await suspense()
+
+useHead({
+  title: category.value?.payload.name,
+  meta: [
+    { name: 'title', content: category.value?.payload.name },
+    { name: 'keywords', content: category.value?.payload.name },
+  ],
 })
 </script>
 

@@ -13,6 +13,14 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+
+useHead({
+  title: t('profile'),
+  meta: [
+    { name: 'title', content: t('profile') },
+  ],
+})
+
 const user = useAuthUser()
 const authStor = useAuth()
 const { toast } = useToast()

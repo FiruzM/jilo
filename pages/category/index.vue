@@ -14,6 +14,15 @@ const {
   initialPageParam: 1,
 })
 
+const { t } = useI18n()
+
+useHead({
+  title: t('categories'),
+  meta: [
+    { name: 'title', content: t('categories') },
+  ],
+})
+
 await suspense()
 </script>
 

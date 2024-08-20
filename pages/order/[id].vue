@@ -13,6 +13,13 @@ const params: any = useRoute().params
 const { toast } = useToast()
 const { t } = useI18n()
 
+useHead({
+  title: t('order'),
+  meta: [
+    { name: 'title', content: t('order') },
+  ],
+})
+
 const { data: order } = useQuery({
   queryKey: ['order', params],
   queryFn: () => getOrder(params.id),
