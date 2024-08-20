@@ -1,9 +1,9 @@
-import ky from "ky"
+import ky from 'ky'
 
 const token = useLocalStorage('token', null)
 
-
 export const client = ky.create({
+
   prefixUrl: 'https://f8f726d3171d.vps.myjino.ru/api/marketplace/v0',
   hooks: {
     beforeRequest: [

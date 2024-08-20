@@ -90,7 +90,7 @@ const { mutate, isPending } = useMutation({
 
   onSuccess: async () => {
     const userData = await refetch()
-    authStor.setUser(userData.data.payload[0])
+    authStor.setUser(userData.data?.payload[0])
     toast({
       title: 'Профиль успешно изменен',
     })
