@@ -119,10 +119,6 @@ useHead({
               {{ $t('add_to_cart') }}
             </Button>
           </div>
-
-          <Button class="border border-primary bg-transparent text-sm sm:text-base">
-            {{ $t('buy') }}
-          </Button>
         </div>
 
         <div>
