@@ -139,7 +139,7 @@ onUpdated(() => {
     >
       <CarouselContent>
         <CarouselItem v-for="banner in banners?.payload" :key="banner.id">
-          <div class="relative flex h-[200px] flex-col items-center overflow-hidden rounded-3xl px-[14px] py-5 lg:h-auto lg:items-start lg:py-32 lg:pl-16">
+          <div class="relative flex h-[200px] flex-col items-center overflow-hidden rounded-3xl px-[14px] py-5 lg:h-auto lg:py-32 lg:pl-16">
             <img :src="banner.file_path" alt="Banner" class="absolute left-0 top-0 -z-10 size-full object-cover">
             <h3 class="text-2xl font-semibold text-[#FFDCCD] sm:text-3xl">
               {{ banner.title }}
