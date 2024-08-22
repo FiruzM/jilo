@@ -1,12 +1,11 @@
-
 import { client } from '~/api/client'
 import type { Pagination } from '~/api/types'
 import type { definitions } from '~/api/v1'
 
-export function getInfiniteCategories(pageParam: number) {
+export function getMainCategories() {
   return client.get('app/categories/all', {
     searchParams: {
-      page: pageParam,
+      size: 100,
     },
   }).json<{ payload: { data: definitions['models.Categories'][], meta: Pagination } }>()
 }

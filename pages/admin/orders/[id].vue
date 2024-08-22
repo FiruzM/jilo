@@ -13,6 +13,7 @@ definePageMeta({
 const params: any = useRoute().params
 const router = useRouter()
 const { toast } = useToast()
+const queryClient = useQueryClient()
 
 const { data: order } = useQuery({
   queryKey: ['order', params],
@@ -23,6 +24,7 @@ const { mutate, isPending } = useMutation({
   mutationFn: (data: UpdateOrderStatusProps) => updateOrderStatus(data),
   onSuccess: () => {
     router.push('/admin/orders')
+    queryClient.invalidateQueries({ queryKey: ['unpaidOrders'] })
 
     toast({
       title: 'Статус заказа успешно изменен',

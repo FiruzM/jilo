@@ -1,5 +1,6 @@
 /* eslint-disable node/prefer-global/process */
 export default defineNuxtConfig({
+
   modules: [
     '@vueuse/nuxt',
     '@pinia/nuxt',

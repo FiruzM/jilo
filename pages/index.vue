@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Loader2, MapPin, Phone, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
 import Autoplay from 'embla-carousel-autoplay'
-import { getInfiniteCategories } from '~/api/admin/categories/get-infinite-categories'
+import { getMainCategories } from '~/api/web/categories/get-main-categories'
 import { getBanners } from '~/api/admin/banners/get-banners'
 import { getDiscountProducts } from '~/api/web/products/get-discount-products'
 import { getComments } from '~/api/web/comments/get-comments'
@@ -26,15 +26,11 @@ const { data: banners, isPending: isBannersPending } = useQuery({
 
 const {
   data: categories,
-  fetchNextPage: fetchNextCategories,
-  isFetchingNextPage: isFetchingNextCategories,
   isPending: isCategoriesPending,
 
-} = useInfiniteQuery({
+} = useQuery({
   queryKey: ['categories'],
-  queryFn: ({ pageParam }) => getInfiniteCategories(pageParam),
-  getNextPageParam: lastPage => lastPage.payload.meta.current_page + 1,
-  initialPageParam: 1,
+  queryFn: () => getMainCategories(),
   refetchOnWindowFocus: false,
 })
 
@@ -174,30 +170,18 @@ onUpdated(() => {
       </ul>
 
       <ul class="mt-5 flex flex-wrap gap-2.5 lg:mt-10 lg:gap-6 xl:grid xl:grid-cols-5">
-        <template v-for="(data, index) in categories?.pages" :key="index">
-          <li
-            v-for="category in data.payload.data"
-            :key="category.id"
-            class="relative h-[127px] grow overflow-hidden rounded-[12px] border-4 border-white bg-[#F1F4FA] p-5 transition-all ease-in hover:border-[#CCE3DE] md:h-[253px] lg:rounded-3xl"
-            @click="$router.push(`/category/${category.id}`)"
-          >
-            <p class="w-[105px] text-xs font-semibold text-primary-foreground sm:w-[205px] sm:text-base md:text-[18px] xl:w-auto">
-              {{ category.name }}
-            </p>
-            <img :src="category.file_path" class="absolute bottom-0 right-0 size-[76px] sm:size-[96px] lg:size-[160px]" alt="Item">
-          </li>
-        </template>
-      </ul>
-      <div class="flex justify-center">
-        <Button
-          class="mt-16 rounded-xl border border-primary bg-transparent"
-          :disabled="categories?.pages[categories.pages.length - 1].payload.meta.current_page === categories?.pages[categories.pages.length - 1].payload.meta.last_page || isFetchingNextCategories"
-          :is-loading="isFetchingNextCategories"
-          @click="() => fetchNextCategories()"
+        <li
+          v-for="category in categories?.payload.data"
+          :key="category.id"
+          class="relative h-[127px] grow overflow-hidden rounded-[12px] border-4 border-white bg-[#F1F4FA] p-5 transition-all ease-in hover:border-[#CCE3DE] md:h-[253px] lg:rounded-3xl"
+          @click="$router.push(`/category/${category.id}`)"
         >
-          {{ $t('show_more') }}
-        </Button>
-      </div>
+          <p class="w-[105px] text-xs font-semibold text-primary-foreground sm:w-[205px] sm:text-base md:text-[18px] xl:w-auto">
+            {{ category.name }}
+          </p>
+          <img :src="category.file_path" class="absolute bottom-0 right-0 size-[76px] sm:size-[96px] lg:size-[160px]" alt="Item">
+        </li>
+      </ul>
     </div>
 
     <div ref="discountSection" class="mt-10 lg:mt-[100px]">
