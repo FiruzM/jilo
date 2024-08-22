@@ -17,10 +17,10 @@ const router = useRouter()
           На главную
         </Button>
       </div>
-
+      <!--
       <div>
         <img src="~/assets/img/error.png" alt="404 image" class="max-h-[346px] object-contain">
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

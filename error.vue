@@ -18,9 +18,9 @@ const router = useRouter()
         </Button>
       </div>
 
-      <div>
+      <!-- <div>
         <img src="~/assets/img/lock.png" alt="404 image" class="max-h-[346px] object-contain">
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
