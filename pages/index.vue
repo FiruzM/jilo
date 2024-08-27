@@ -17,6 +17,8 @@ useHead({
   ],
 })
 
+const user = useAuthUser()
+
 const { data: banners, isPending: isBannersPending } = useQuery({
   queryKey: ['banners'],
   queryFn: getBanners,
@@ -292,7 +294,7 @@ onUpdated(() => {
           <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
             {{ $t('reviews') }}
           </h2>
-          <CommentsCreateComment />
+          <CommentsCreateComment v-if="user" />
         </div>
 
         <Carousel class="mt-5 lg:mt-10">

@@ -77,19 +77,19 @@ const { mutate } = useMutation({
               </PopoverTrigger>
               <PopoverContent class="mt-5 w-screen border-none p-0">
                 <NavigationMenu>
-                  <NavigationMenuList class="min-h-[536px] flex-col justify-start bg-[#F9F9F9] p-10">
+                  <NavigationMenuList class="scrollbar h-[536px] flex-col justify-start overflow-auto bg-[#F9F9F9] p-10">
                     <NavigationMenuItem v-for="detail in details?.payload.categories" :key="detail.id">
                       <NavigationMenuTrigger>
-                        <NuxtLink :to="`/category/${detail.id}`">
+                        <NuxtLink>
                           {{ detail.name }}
                         </NuxtLink>
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <NavigationMenuLink>
+                        <div class="scrollbar h-[530px] w-[1200px] overflow-auto">
                           <NuxtLink :to="`/category/${detail.id}`" class="mt-10 block pl-6 text-[30px] font-bold">
                             {{ detail.name }}
                           </NuxtLink>
-                          <ul class="grid min-h-[505px] w-[1400px] grid-cols-4 gap-x-10 overflow-y-scroll p-6 pt-9">
+                          <ul class="grid grid-cols-5 gap-x-10 gap-y-5 p-6 pt-9">
                             <li v-for="subcategory in detail.subcategories" :key="subcategory.id">
                               <NavigationMenuLink as-child>
                                 <NuxtLink class="block text-base font-semibold text-[#242424]" :to="`/category/subcategory/${subcategory.id}`">
@@ -107,7 +107,7 @@ const { mutate } = useMutation({
                               </NavigationMenuLink>
                             </li>
                           </ul>
-                        </NavigationMenuLink>
+                        </div>
                       </NavigationMenuContent>
                     </NavigationMenuItem>
                   </NavigationMenuList>
@@ -193,7 +193,7 @@ const { mutate } = useMutation({
               </ul>
             </nav>
 
-            <Select :model-value="locale" @update:model-value="(code) => setLocale(code)">
+            <Select :model-value="locale" @update:model-value="(code: any) => setLocale(code)">
               <SelectTrigger class="max-w-[40px] justify-normal border-0 bg-transparent p-0 text-[10px] font-semibold text-black md:text-xs">
                 <SelectValue />
               </SelectTrigger>

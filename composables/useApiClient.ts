@@ -8,7 +8,7 @@ export function useApiClient() {
   const token = useCookie('token')
 
   return ky.create({
-    prefixUrl: `${runtimeConfig.public.apiBase}/api`,
+    prefixUrl: runtimeConfig.public.apiBase,
 
     headers: {
       ...(!!token.value) && { Authorization: `Bearer ${token.value}` },

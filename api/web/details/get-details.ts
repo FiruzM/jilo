@@ -1,6 +1,6 @@
 import { client } from '~/api/client'
 
-interface Categories {
+export interface Categories {
   name: string
   id: number
   subcategories: {
