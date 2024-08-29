@@ -2,6 +2,7 @@ import { client } from '~/api/client'
 import type { definitions } from '~/api/v1'
 
 export function updateBrand(id: number, data: definitions['models.Brands']) {
+  const client = useApiClient()
   const formData = new FormData()
 
   for (const [key, value] of Object.entries(data)) {

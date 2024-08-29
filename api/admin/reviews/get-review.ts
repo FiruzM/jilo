@@ -1,5 +1,3 @@
-import { client } from '~/api/client'
-
 interface Review {
   full_name: string
   grade: number
@@ -10,5 +8,6 @@ interface Review {
 }
 
 export function getReview(id: number) {
+  const client = useApiClient()
   return client.get(`app/reviews/by/${id}`).json<{ payload: Review }>()
 }

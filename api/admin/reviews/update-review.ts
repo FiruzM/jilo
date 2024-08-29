@@ -1,5 +1,3 @@
-import { client } from '~/api/client'
-
 export interface ReviewProps {
   full_name?: string | undefined
   grade?: number
@@ -9,10 +7,11 @@ export interface ReviewProps {
   id?: number | undefined
 }
 export function updateReview(data: ReviewProps) {
+  const client = useApiClient()
   const formData = new FormData()
 
   formData.append('status', data.status)
-  formData.append('id', data.id!.toString() )
+  formData.append('id', data.id!.toString())
   formData.append('grade', data.grade as any)
   formData.append('description', data.description!)
 

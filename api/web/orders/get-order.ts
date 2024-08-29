@@ -1,5 +1,3 @@
-import { client } from '~/api/client'
-
 interface Order {
   id: number
   total_amount: number
@@ -20,5 +18,6 @@ interface Order {
 }
 
 export function getOrder(id: number) {
+  const client = useApiClient()
   return client.get(`order/${id}`).json<{ payload: Order }>()
 }

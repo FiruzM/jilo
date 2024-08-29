@@ -1,5 +1,3 @@
-import { client } from '~/api/client'
-
 export interface Categories {
   name: string
   id: number
@@ -14,5 +12,6 @@ export interface Categories {
 
 }
 export function getDetails() {
+  const client = useApiClient()
   return client.get('app/details/all').json<{ payload: { categories: Categories[] } }>()
 }

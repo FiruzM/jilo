@@ -1,7 +1,7 @@
 import type { BannerProps } from './create-banner'
-import { client } from '~/api/client'
 
 export function updateBanner(data: BannerProps, id: string) {
+  const client = useApiClient()
   const formData = new FormData()
 
   for (const [key, value] of Object.entries(data)) {

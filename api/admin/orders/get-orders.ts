@@ -1,5 +1,4 @@
 import qs from 'qs'
-import { client } from '~/api/client'
 
 interface Orders {
   id: number
@@ -16,6 +15,7 @@ interface Orders {
 }
 
 export function getAdminOrders() {
+  const client = useApiClient()
   const route = useRoute()
   const searchParams = qs.stringify(route.query, { skipNulls: true })
 

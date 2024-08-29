@@ -1,5 +1,3 @@
-import { client } from '~/api/client'
-
 export interface BannerProps {
   title?: string
   subtitle?: string
@@ -8,6 +6,7 @@ export interface BannerProps {
 }
 
 export function createBanner(data: BannerProps) {
+  const client = useApiClient()
   const formData = new FormData()
 
   for (const [key, value] of Object.entries(data)) {

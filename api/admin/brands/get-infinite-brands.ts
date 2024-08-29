@@ -3,6 +3,7 @@ import type { Pagination } from '~/api/types'
 import type { definitions } from '~/api/v1'
 
 export function getInfiniteBrands(pageParam: number) {
+  const client = useApiClient()
   return client.get('app/brands/all', {
     searchParams: {
       page: pageParam,

@@ -1,5 +1,4 @@
 import qs from 'qs'
-import { client } from '~/api/client'
 
 export interface Banners {
   id: number
@@ -10,6 +9,7 @@ export interface Banners {
 }
 
 export function getBanners() {
+  const client = useApiClient()
   const route = useRoute()
   const searchParams = qs.stringify(route.query, { skipNulls: true })
   return client.get('app/banners/all', {

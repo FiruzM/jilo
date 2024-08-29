@@ -1,4 +1,3 @@
-import { client } from '~/api/client'
 import type { Pagination } from '~/api/types'
 
 interface Comments {
@@ -10,6 +9,7 @@ interface Comments {
 }
 
 export function getComments(pageParam: number) {
+  const client = useApiClient()
   return client.get('app/reviews/filter', {
     searchParams: {
       status: 'accepted',

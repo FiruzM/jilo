@@ -1,7 +1,7 @@
-import { client } from '~/api/client'
 import type { definitions } from '~/api/v1'
 
 export function updateSubcategory(data: definitions['models.Subcategories'], id: string) {
+  const client = useApiClient()
   const formData = new FormData()
 
   formData.append('id', id)

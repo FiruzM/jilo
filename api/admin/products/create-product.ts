@@ -1,7 +1,7 @@
-import { client } from '~/api/client'
 import type { definitions } from '~/api/v1'
 
 export function createProduct(data: definitions['models.Products']) {
+  const client = useApiClient()
   const formData = new FormData()
 
   for (const [key, value] of Object.entries(data)) {

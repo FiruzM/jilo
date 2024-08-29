@@ -1,4 +1,3 @@
-import { client } from '~/api/client'
 import { stringifyQueryObject } from '~/lib/utils'
 
 interface Orders {
@@ -15,6 +14,7 @@ interface Orders {
 }
 
 export function getOrders(data: { page?: number, status_id?: number }) {
+  const client = useApiClient()
   const queryParams = stringifyQueryObject(data)
 
   return client.get(`app/orders/customer${queryParams}`).json<{ payload: Orders[], total: number }>()

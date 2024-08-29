@@ -1,5 +1,3 @@
-import { client } from '~/api/client'
-
 interface Orders {
   id: number
   total_amount: number
@@ -16,6 +14,7 @@ interface Orders {
 }
 
 export function getUnpaidOrders() {
+  const client = useApiClient()
   return client.get('admin/orders', {
     searchParams: {
       status_id: 1,

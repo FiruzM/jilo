@@ -7,7 +7,7 @@ import type { definitions } from '~/api/v1'
 
 export function useAuth() {
   const authUser = useAuthUser()
-  const token = useLocalStorage('token', null)
+  const token = useCookie('token')
 
   const setUser = (user: definitions['models.AddUserParams'] | null) => {
     authUser.value = user

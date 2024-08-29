@@ -1,9 +1,8 @@
-import { client } from '~/api/client'
 import type { definitions } from '~/api/v1'
 
 export function updateProduct(data: definitions['models.Products'], id: number) {
+  const client = useApiClient()
   const formData = new FormData()
-  console.log(typeof data.quantity)
 
   for (const [key, value] of Object.entries(data)) {
     if (key !== 'file_paths') {
