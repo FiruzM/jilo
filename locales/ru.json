@@ -152,5 +152,6 @@
   "put_to_cart": "В корзину",
   "product_add_to_cart": "Товар добавлен в корзину",
   "payment": "Оплата",
-  "formalize": "Оформление"
+  "formalize": "Оформление",
+  "cost": "Цена"
 }

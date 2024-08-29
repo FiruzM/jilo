@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { Loader2, MapPin, Phone, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
-import Autoplay from 'embla-carousel-autoplay'
-import { getMainCategories } from '~/api/web/categories/get-main-categories'
-import { getBanners } from '~/api/admin/banners/get-banners'
 import { getDiscountProducts } from '~/api/web/products/get-discount-products'
 import { getComments } from '~/api/web/comments/get-comments'
 
@@ -18,23 +15,6 @@ useHead({
 })
 
 const user = useAuthUser()
-
-const { data: banners, isPending: isBannersPending } = useQuery({
-  queryKey: ['banners'],
-  queryFn: getBanners,
-  refetchOnWindowFocus: false,
-
-})
-
-const {
-  data: categories,
-  isPending: isCategoriesPending,
-
-} = useQuery({
-  queryKey: ['categories'],
-  queryFn: () => getMainCategories(),
-  refetchOnWindowFocus: false,
-})
 
 const {
   data: discountProducts,
@@ -121,40 +101,7 @@ onUpdated(() => {
 
 <template>
   <div class="mx-auto mt-5 max-w-[1360px] px-4 lg:mt-10 lg:px-10">
-    <div v-if="isBannersPending" class="flex justify-center">
-      <Loader2 class="mt-[100px] animate-spin stroke-primary" />
-    </div>
-    <Carousel
-      v-else
-      class="relative w-full"
-      :opts="{
-        align: 'center',
-
-      }"
-      :plugins="[Autoplay({
-        delay: 3000,
-      })]"
-    >
-      <CarouselContent>
-        <CarouselItem v-for="banner in banners?.payload" :key="banner.id">
-          <div class="relative flex h-[200px] flex-col items-center overflow-hidden rounded-3xl px-[14px] py-5 lg:h-auto lg:py-32 lg:pl-16">
-            <img :src="banner.file_path" alt="Banner" class="absolute left-0 top-0 -z-10 size-full object-cover">
-            <h3 class="text-2xl font-semibold text-[#FFDCCD] sm:text-3xl">
-              {{ banner.title }}
-            </h3>
-            <p class="mt-[6px] max-w-[265px] text-center text-xs text-[#FFDCCD] sm:mt-3 sm:max-w-[527px] sm:text-base md:text-lg lg:text-left lg:text-xl">
-              {{ banner.subtitle }}
-            </p>
-            <NuxtLink :to="banner.banner_link" target="_blank" class="mt-2.5 rounded-md bg-[#FFDCCD] p-2 hover:cursor-pointer">
-              {{ $t('cross') }}
-            </NuxtLink>
-          </div>
-        </CarouselItem>
-      </CarouselContent>
-
-      <CarouselPrevious class="left-5 hidden border-none bg-primary-foreground stroke-[#FFDCCD] lg:flex" />
-      <CarouselNext class="right-5 hidden border-none bg-primary-foreground lg:flex" />
-    </Carousel>
+    <Banners />
   </div>
 
   <div class="mx-auto max-w-[1360px] px-4 lg:px-10">
@@ -165,25 +112,7 @@ onUpdated(() => {
         </h2>
       </div>
 
-      <ul v-if="isCategoriesPending" class="mt-5 flex flex-wrap gap-2.5 lg:mt-10 lg:gap-6 xl:grid xl:grid-cols-5">
-        <li v-for="i in 5" :key="i" class="relative h-[127px] grow overflow-hidden rounded-[12px] border-4 border-white bg-[#F1F4FA] p-5 transition-all ease-in hover:border-[#CCE3DE] md:h-[253px] lg:rounded-3xl">
-          <Skeleton class="size-full w-[118px]" />
-        </li>
-      </ul>
-
-      <ul class="mt-5 flex flex-wrap gap-2.5 lg:mt-10 lg:gap-6 xl:grid xl:grid-cols-5">
-        <li
-          v-for="category in categories?.payload.data"
-          :key="category.id"
-          class="relative h-[127px] grow overflow-hidden rounded-[12px] border-4 border-white bg-[#F1F4FA] p-5 transition-all ease-in hover:border-[#CCE3DE] md:h-[253px] lg:rounded-3xl"
-          @click="$router.push(`/category/${category.id}`)"
-        >
-          <p class="w-[105px] text-xs font-semibold text-primary-foreground sm:w-[205px] sm:text-base md:text-[18px] xl:w-auto">
-            {{ category.name }}
-          </p>
-          <img :src="category.file_path" class="absolute bottom-0 right-0 size-[76px] sm:size-[96px] lg:size-[160px]" alt="Item">
-        </li>
-      </ul>
+      <CategoryList />
     </div>
 
     <div ref="discountSection" class="mt-10 lg:mt-[100px]">
