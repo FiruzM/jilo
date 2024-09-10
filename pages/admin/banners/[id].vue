@@ -99,7 +99,7 @@ const { mutate, isPending } = useMutation({
   mutationFn: (data: BannerProps) => updateBanner(data, params.id),
 
   onError: async (error: HTTPError) => {
-    const errorData = await error.response.json()
+    const errorData: any = await error.response.json()
 
     toast({
       title: 'Произошла ошибка',

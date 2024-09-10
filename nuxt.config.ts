@@ -1,16 +1,9 @@
 /* eslint-disable node/prefer-global/process */
 export default defineNuxtConfig({
 
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-     cssnano:
-       process.env.NODE_ENV === 'production'
-         ? { preset: ['default', { discardComments: { removeAll: true } }] }
-         : false, // disable cssnano when not in production
-    },
- },
+  build: {
+    transpile: false,
+  },
 
   modules: [
     '@vueuse/nuxt',

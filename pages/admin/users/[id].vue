@@ -94,14 +94,10 @@ const form = useForm({
 watch([isSuccess, isRefetching], () => {
   if (isSuccess.value) {
     form.setValues({
-      // @ts-expect-error: arr might be empty
       full_name: user.value?.payload[0].full_name,
-      // @ts-expect-error: arr might be empty
       number_phone: user.value?.payload[0].number_phone,
-      // @ts-expect-error: arr might be empty
       email: user.value?.payload[0].email,
-      // @ts-expect-error: arr might be empty
-      role: user.value?.payload[0].role.id.toString(),
+      role: user.value?.payload[0]?.role?.id?.toString(),
       password: '',
       repeat_password: '',
     })
@@ -110,7 +106,6 @@ watch([isSuccess, isRefetching], () => {
 
 const posterPreview = computed(() => {
   const poster: File = form.values?.avatar
-  // @ts-expect-error: arr might be empty
   const categoryPreview = user.value?.payload[0].file_path
 
   return poster
@@ -131,8 +126,6 @@ const { mutate, isPending } = useMutation({
 
 const onSubmit = form.handleSubmit((values) => {
   mutate(values as any)
-  // eslint-disable-next-line no-console
-  console.log('Form submitted!', values)
 })
 </script>
 

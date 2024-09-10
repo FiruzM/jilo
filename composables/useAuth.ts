@@ -1,6 +1,5 @@
 import { useAuthUser } from './useAuthUser'
 import { login as loginFunc } from '~/api/auth/login'
-import { logout as logoutFunc } from '~/api/auth/logout'
 import { currentUser } from '~/api/auth/current-user'
 import { sendRegisterForm } from '~/api/auth/register'
 import type { definitions } from '~/api/v1'
@@ -16,10 +15,10 @@ export function useAuth() {
   const me = async () => {
     if (!authUser.value) {
       try {
-        const data = await currentUser()
+        const data: any = await currentUser()
         setUser(data?.payload[0])
       }
-      catch (error) {
+      catch {
         setUser(null)
       }
     }
@@ -28,14 +27,14 @@ export function useAuth() {
   }
 
   const register = async (registerData: definitions['models.UserParams']) => {
-    const data = await sendRegisterForm(registerData)
+    const data: any = await sendRegisterForm(registerData)
     token.value = data?.payload?.token
 
     return data
   }
 
   const login = async (loginData: definitions['models.UserLogin']) => {
-    const data = await loginFunc(loginData)
+    const data: any = await loginFunc(loginData)
 
     token.value = data?.payload?.token
 

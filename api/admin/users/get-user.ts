@@ -6,5 +6,5 @@ export function getUser(id: number) {
     searchParams: {
       id,
     },
-  }).json<{ payload: definitions['models.AddUserParams'] }>()
+  }).json<{ payload: definitions['models.AddUserParams'][] }>()
 }
