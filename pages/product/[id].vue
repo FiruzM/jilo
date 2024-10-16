@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Box, Minus, Plus, ShoppingCart } from 'lucide-vue-next'
+import { Minus, Plus, ShoppingCart } from 'lucide-vue-next'
 import { getProduct } from '~/api/web/products/get-product'
 import { useToast } from '~/components/ui/toast'
 
@@ -123,13 +123,13 @@ useHead({
 
         <div>
           <ul>
-            <li class="flex gap-2 text-sm">
+            <!-- <li class="flex gap-2 text-sm">
               <Box class="stroke-[#9AA6AC]" />
               <span>
                 {{ $t('availability_in_stock') }}
                 <span class="font-semibold text-[#368C18]">{{ product?.payload.quantity! >= 20 ? $t('many') : $t('few') }}</span>
               </span>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>

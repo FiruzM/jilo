@@ -1,10 +1,6 @@
 /* eslint-disable node/prefer-global/process */
 export default defineNuxtConfig({
 
-  build: {
-    transpile: false,
-  },
-
   modules: [
     '@vueuse/nuxt',
     '@pinia/nuxt',

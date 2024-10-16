@@ -125,7 +125,7 @@ const onSubmit = form.handleSubmit((formData) => {
   <div>
     <form class="flex max-w-[720px] justify-between gap-5" @submit="onSubmit">
       <div class="grow">
-        <div class="flex justify-between gap-5">
+        <div class="flex flex-col gap-5 md:flex-row md:justify-between md:gap-5">
           <div class="flex grow flex-col gap-5">
             <FormField v-slot="{ componentField }" name="title">
               <FormItem>

@@ -81,7 +81,7 @@ const onSubmit = form.handleSubmit((formData) => {
   <div>
     <form class="flex max-w-[900px] justify-between gap-5" @submit="onSubmit">
       <div class="grow">
-        <div class="flex justify-between gap-5">
+        <div class="flex flex-col gap-5 md:flex-row md:justify-between">
           <div class="flex grow flex-col gap-5">
             <FormField v-slot="{ componentField }" name="name">
               <FormItem>
@@ -128,7 +128,7 @@ const onSubmit = form.handleSubmit((formData) => {
           </div>
         </div>
 
-        <Button class="self-start bg-[#3c83ed] text-white hover:bg-[#10a4e9]" type="submit" :is-loading="isPending">
+        <Button class="mt-5 self-start  bg-[#3c83ed] text-white hover:bg-[#10a4e9]" type="submit" :is-loading="isPending">
           Добавить
         </Button>
       </div>

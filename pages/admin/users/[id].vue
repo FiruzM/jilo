@@ -130,7 +130,7 @@ const onSubmit = form.handleSubmit((values) => {
 </script>
 
 <template>
-  <form class="flex max-w-[720px] gap-10" @submit="onSubmit">
+  <form class="flex max-w-[720px] flex-col gap-10 md:flex-row" @submit="onSubmit">
     <div class="flex grow flex-col gap-4">
       <FormField v-slot="{ componentField }" name="full_name">
         <FormItem>

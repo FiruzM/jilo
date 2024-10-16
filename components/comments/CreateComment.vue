@@ -10,7 +10,6 @@ import { createComment } from '~/api/web/comments/create-comments'
 
 const { t } = useI18n()
 const { toast } = useToast()
-// const user = useAuthUser()
 
 const rating = ref(0)
 

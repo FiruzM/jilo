@@ -38,14 +38,15 @@ const { mutate } = useMutation({
       <Skeleton v-for="(_, index) in 6" :key="index" class="h-[350px] w-[263px] rounded-md" />
     </div>
 
-    <div v-else class="grid grid-cols-2 gap-5">
+    <div v-else class="grid grid-cols-1 gap-5 md:grid-cols-2">
       <div v-if="banners?.payload.length === 0" class="col-span-2 flex justify-center">
         <p class="text-2xl font-semibold text-[#488bee]">
           Добавьте баннер
         </p>
       </div>
+
       <div v-for="banner in banners?.payload" :key="banner.id" class="flex flex-col gap-4 rounded-md border p-4">
-        <img :src="banner.file_path" alt="Banner" class="h-[300px]">
+        <img :src="banner.file_path" alt="Banner" class="h-[200px] md:h-[300px]">
 
         <div>
           <p>Титул: {{ banner.title }}</p>

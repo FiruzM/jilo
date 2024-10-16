@@ -122,7 +122,7 @@ watch([params], () => setSearchParams())
               <div class="flex justify-center">
                 <Button
                   class="size-auto bg-transparent p-0 pt-2 text-[#3c83ed] hover:bg-transparent"
-                  :disabled="categories?.pages[categories.pages.length - 1].payload.meta.current_page === categories?.pages[categories.pages.length - 1].payload.meta.last_page || isFetchingNextCategories"
+                  :disabled="categories?.pages[categories?.pages.length - 1].payload.meta.current_page === categories?.pages[categories?.pages.length - 1].payload.meta.last_page || isFetchingNextCategories"
                   :is-loading="isFetchingNextCategories"
                   @click="() => fetchNextCategories()"
                 >
