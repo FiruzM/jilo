@@ -88,7 +88,9 @@ function addToCart(e: Event, id: number) {
           {{ data.product?.name }}
         </p>
         <!-- <span class="text-[10px] text-[#8CA9AE]">На складе {{ data.product?.quantity }} шт.</span> -->
+
         <span class="font-semibold text-[#809A9E]">{{ data.product?.price }} с.</span>
+        <span class="font-semibold text-[#809A9E]">Артикул: {{ data.product?.inventory_number }} с.</span>
       </div>
     </div>
     <Button class="mt-4 text-sm transition-all ease-in-out md:mt-6 xl:opacity-0 xl:group-hover:opacity-100" @click="addToCart($event, data.product?.id!)">

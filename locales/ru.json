@@ -27,7 +27,7 @@
   "maximum": "Максимум",
   "symbols": "символа",
   "enter_your_phone": "Укажите номер телефона",
-  "enter_your_email": "Укажите email",
+  "enter_your_email": "Укажите email или номер телефона",
   "invalid_email": "Неверный формат email",
   "incorect_password": "Неверный логин или пароль",
   "enter_your_password": "Укажите пароль",
@@ -154,5 +154,7 @@
   "product_add_to_cart": "Товар добавлен в корзину",
   "payment": "Оплата",
   "formalize": "Оформление",
-  "cost": "Цена"
+  "cost": "Цена",
+  "working_hours": "c 08:00 до 19:00 каждый день. Без выходных",
+  "phone_or_email": "Введите номер телефона или email"
 }

@@ -27,7 +27,7 @@ const user = useAuthUser()
 const formLoginSchema = toTypedSchema(z.object({
   login: z.string({
     required_error: t('enter_your_email'),
-  }).email({ message: t('invalid_email') }),
+  }),
   password: z.string({
     required_error: t('enter_your_password'),
   }),
@@ -71,7 +71,7 @@ const formLoginSubmit = formLogin.handleSubmit((values) => {
         <form class="mt-6 flex flex-col gap-4 md:gap-6" @submit="formLoginSubmit">
           <FormField v-slot="{ componentField }" name="login">
             <FormItem class="w-full">
-              <Label>Логин</Label>
+              <Label>{{ $t('phone_or_email') }}</Label>
               <FormControl>
                 <Input v-bind="componentField" class="h-[48px] rounded-[12px] border-[#ADADAD] font-semibold" />
               </FormControl>

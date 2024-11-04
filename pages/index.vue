@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Loader2, MapPin, Phone, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
+import { Clock12, Loader2, MapPin, Phone, ShoppingCart, ThumbsUp, Truck } from 'lucide-vue-next'
 import { getDiscountProducts } from '~/api/web/products/get-discount-products'
 import { getComments } from '~/api/web/comments/get-comments'
 
@@ -296,6 +296,12 @@ onUpdated(() => {
           <div class="flex items-center gap-2.5">
             <Phone />
             <a href="tel:+ +992900509090" class="text-base md:text-2xl">+992 900 50 9090</a>
+          </div>
+          <div class="flex items-center gap-2.5 ">
+            <Clock12 />
+            <p class="w-full text-base md:text-2xl">
+              {{ $t('working_hours') }}
+            </p>
           </div>
         </div>
       </div>

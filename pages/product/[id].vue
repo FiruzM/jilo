@@ -101,6 +101,10 @@ useHead({
           <p class="mt-2 font-semibold text-[#9AA6AC] sm:text-2xl md:text-3xl lg:text-4xl">
             {{ product?.payload.price }} с
           </p>
+
+          <p class="mt-4 text-sm font-semibold text-[#6E7C87] lg:mt-6">
+            Артикул {{ product?.payload.inventory_number }}
+          </p>
         </div>
 
         <div class="flex max-w-96 flex-col gap-6">

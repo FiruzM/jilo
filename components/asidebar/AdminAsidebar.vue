@@ -69,12 +69,12 @@ const links = [
         class="my-12 flex flex-col items-start gap-5"
       >
         <Sheet v-model:open="isNotificationMenuOpen">
-          <SheetTrigger class="flex w-full items-center justify-between gap-10 border-b border-[#3c83ed] p-2.5 pb-5 pl-8">
+          <SheetTrigger v-if="data?.payload" class="flex w-full items-center justify-between gap-10 border-b border-[#3c83ed] p-2.5 pb-5 pl-8">
             <div class="flex items-center gap-3">
               <Bell class="stroke-[#FF4747]" />
               <span class=" text-sm text-white">Уведомления</span>
             </div>
-            <span class="rounded-[8px] bg-[#FF4747] px-2 text-white">{{ data?.payload.length }}</span>
+            <span class="rounded-[8px] bg-[#FF4747] px-2 text-white">{{ data?.payload?.length }}</span>
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
