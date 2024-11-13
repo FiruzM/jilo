@@ -13,21 +13,21 @@ const cart = useLocalStorage('cart', [])
 
 const searchInput = ref(false)
 
-const name = ref('')
+const search = ref('')
 
 const { data: products, refetch, isPending } = useQuery({
-  queryKey: ['products', name.value],
-  queryFn: () => getSearchProduct(name.value),
+  queryKey: ['products', search.value],
+  queryFn: () => getSearchProduct(search.value),
   enabled: false,
 })
 
 const getInputValue = useDebounceFn(() => {
-  if (name.value)
+  if (search.value)
     refetch()
 }, 200)
 
-watch(name, () => {
-  if (name.value)
+watch(search, () => {
+  if (search.value)
     getInputValue()
 })
 
@@ -59,12 +59,12 @@ const { mutate } = useMutation({
 
             <Popover v-model:open="searchInput" class="min-w-[208px] shrink-0 grow xl:shrink">
               <PopoverTrigger class="relative w-full">
-                <Input v-model="name" class="h-[34px] w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" :placeholder="$t('find_product_here')" />
+                <Input v-model="search" class="h-[34px] w-full rounded-[8px] xl:h-12 xl:rounded-[12px]" :placeholder="$t('find_product_here')" />
                 <span class="absolute right-[3px] top-[2px] rounded-[6px] bg-primary p-[3px] xl:right-[5px] xl:top-[4px] xl:p-[8px]"> <Search /></span>
               </PopoverTrigger>
               <PopoverContent class="w-[290px] grow border-input px-2.5 sm:w-[450px] sm:px-5 md:w-[600px] lg:w-[720px] xl:w-[480px]">
                 <div class="flex flex-col gap-5">
-                  <div v-if="isPending && !!name" class="flex justify-center">
+                  <div v-if="isPending && !!search" class="flex justify-center">
                     <Loader2 class="animate-spin stroke-primary" />
                   </div>
 

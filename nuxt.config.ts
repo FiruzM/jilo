@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@hebilicious/vue-query-nuxt',
-    '@formkit/auto-animate/nuxt',
     '@nuxtjs/google-fonts',
     'dayjs-nuxt',
     '@nuxtjs/i18n',

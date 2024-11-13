@@ -15,7 +15,6 @@
     "swagger:generate": "pnpm openapi-typescript https://f8f726d3171d.vps.myjino.ru/api/marketplace/v0/swagger/doc.json -o ./api/v1.d.ts"
   },
   "dependencies": {
-    "@formkit/auto-animate": "^0.8.1",
     "@hebilicious/vue-query-nuxt": "^0.3.0",
     "@tanstack/vue-query": "^5.17.11",
     "@vee-validate/zod": "^4.12.4",

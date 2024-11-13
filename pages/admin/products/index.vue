@@ -94,7 +94,7 @@ watch([params], () => setSearchParams())
   <div class="mb-5 flex justify-end gap-5">
     <div class="relative shrink">
       <Input
-        v-model="params.name" type="search" class="h-[40px] border-[#3c83ed] pl-10 placeholder:font-medium placeholder:text-[#3c83ed] placeholder:opacity-25 focus:border-[#10a4e9]"
+        v-model="params.search" type="search" class="h-[40px] border-[#3c83ed] pl-10 placeholder:font-medium placeholder:text-[#3c83ed] placeholder:opacity-25 focus:border-[#10a4e9]"
         placeholder="Поиск"
       />
       <Search class="absolute left-3 top-2 stroke-[#3c83ed] opacity-25" />
@@ -167,7 +167,7 @@ watch([params], () => setSearchParams())
             Object.assign(params, {
               subcategory_id: undefined,
               category_id: undefined,
-              name: null,
+              search: null,
             })
             isPopoverOpen = false
           }"
