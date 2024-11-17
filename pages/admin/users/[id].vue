@@ -61,16 +61,6 @@ const formSchema = computed(() => toTypedSchema(z.object({
     .min(9, {
       message: 'Минимум 9 символа',
     }),
-  email: z
-    .string({
-      required_error: 'Укажите email',
-    })
-    .min(2, {
-      message: 'Минимум 2 символа',
-    })
-    .max(50, {
-      message: 'Максимум 50 символов',
-    }).email(),
 
   password: z.string().optional(),
 
@@ -96,7 +86,6 @@ watch([isSuccess, isRefetching], () => {
     form.setValues({
       full_name: user.value?.payload[0].full_name,
       number_phone: user.value?.payload[0].number_phone,
-      email: user.value?.payload[0].email,
       role: user.value?.payload[0]?.role?.id?.toString(),
       password: '',
       repeat_password: '',
@@ -136,18 +125,6 @@ const onSubmit = form.handleSubmit((values) => {
         <FormItem>
           <FormLabel class="text-[#3c83ed]">
             ФИО
-          </FormLabel>
-          <FormControl>
-            <Input v-bind="componentField" class="border-[#3c83ed] focus:border-[#10a4e9]" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-
-      <FormField v-slot="{ componentField }" name="email">
-        <FormItem>
-          <FormLabel class="text-[#3c83ed]">
-            Почта
           </FormLabel>
           <FormControl>
             <Input v-bind="componentField" class="border-[#3c83ed] focus:border-[#10a4e9]" />

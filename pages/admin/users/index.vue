@@ -76,7 +76,6 @@ watch([params], () => setSearchParams())
           №
         </TableHead>
         <TableHead>Полное имя</TableHead>
-        <TableHead>Email</TableHead>
         <TableHead>Номер телефона</TableHead>
         <TableHead>Действия</TableHead>
       </TableRow>
@@ -93,7 +92,6 @@ watch([params], () => setSearchParams())
           {{ index + 1 }}
         </TableCell>
         <TableCell>{{ user.full_name }}</TableCell>
-        <TableCell>{{ user.email }}</TableCell>
         <TableCell>{{ user.number_phone }}</TableCell>
 
         <TableCell>

@@ -25,16 +25,6 @@ const formRegisterSchema = toTypedSchema(z.object({
     .max(50, {
       message: `${t('maximum')} 50 ${t('symbols')}`,
     }),
-  email: z
-    .string({
-      required_error: t('enter_your_email'),
-    })
-    .min(2, {
-      message: `${t('minimum')} 2 ${t('symbols')}`,
-    })
-    .max(50, {
-      message: `${t('maximum')} 50 ${t('symbols')}`,
-    }).email(),
   number_phone: z
     .string({
       required_error: t('enter_your_phone'),
@@ -112,16 +102,6 @@ useHead({
 
       <FormField v-slot="{ componentField }" name="number_phone">
         <Label>{{ $t('phone_number') }}</Label>
-        <FormItem class="w-full">
-          <FormControl>
-            <Input v-bind="componentField" class="h-[48px] rounded-[12px] border-[#ADADAD] font-semibold" />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      </FormField>
-
-      <FormField v-slot="{ componentField }" name="email">
-        <Label>{{ $t('enter_email') }}</Label>
         <FormItem class="w-full">
           <FormControl>
             <Input v-bind="componentField" class="h-[48px] rounded-[12px] border-[#ADADAD] font-semibold" />
