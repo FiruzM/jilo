@@ -11,6 +11,7 @@ const cart: any = useLocalStorage('cart', [])
 const user = useAuthUser()
 const router = useRouter()
 const { t } = useI18n()
+const deliveryMethod = ref('current-adres')
 
 useHead({
   title: t('formalize'),
@@ -69,7 +70,7 @@ const { mutate, isPending } = useMutation({
 const delivery = ref(20)
 
 const onSubmit = handleSubmit((values) => {
-  mutate({ ...values, order_items: cart.value.map((item: any) => ({ price: item.price, quantity: item.quantity, product_id: item.id, product_name: item.name })), total_amount: `${total.value + delivery.value}` })
+  mutate({ ...values, order_items: cart.value.map((item: any) => ({ price: item.price, quantity: item.quantity, product_id: item.id, product_name: item.name })), total_amount: deliveryMethod.value === 'current-adres' ? total.value + delivery.value : total.value })
 })
 </script>
 
@@ -117,8 +118,9 @@ const onSubmit = handleSubmit((values) => {
             <FormItem class="space-y-3">
               <FormControl>
                 <RadioGroup
-                  class="flex gap-6"
                   v-bind="componentField"
+                  v-model="deliveryMethod"
+                  class="flex gap-6"
                 >
                   <FormItem class="flex items-center gap-x-3 space-y-0">
                     <FormControl>
@@ -246,7 +248,7 @@ const onSubmit = handleSubmit((values) => {
             </p>
             <span class="text-sm font-semibold md:text-base lg:text-xl">{{ total }} с.</span>
           </div>
-          <div class="flex justify-between">
+          <div v-if="deliveryMethod === 'current-adres' " class="flex justify-between">
             <p class="text-sm md:text-base lg:text-xl">
               {{ $t('delivery_price') }}
             </p>
@@ -258,7 +260,7 @@ const onSubmit = handleSubmit((values) => {
           <p class="text-base md:text-base lg:text-xl">
             {{ $t('total') }}
           </p>
-          <span class="text-sm font-semibold md:text-base lg:text-xl">{{ total + delivery }} с.</span>
+          <span class="text-sm font-semibold md:text-base lg:text-xl">{{ deliveryMethod === 'current-adres' ? total + delivery : total }} с.</span>
         </div>
       </div>
     </div>

@@ -32,7 +32,7 @@ const bankLogo = ref('alif')
         </TabsList>
         <TabsContent value="alif" class="flex flex-col">
           <div class="mt-10 flex flex-col gap-5 sm:flex-row lg:mt-[111px] lg:gap-[92px]">
-            <img src="~/assets/img/alifQr.jpg" alt="Alif QR" class="h-[300px] w-full rounded-[12px] border border-primary md:h-[518px] lg:w-[512px]">
+            <img src="~/assets/img/alifQr.jpg" alt="Alif QR" class="mx-auto size-[200px] rounded-[12px] border border-primary sm:size-[300px] md:h-[518px] lg:w-[512px]">
             <div class="md:mt-[33px]">
               <QrCode class="hidden size-[83px] stroke-primary md:block" />
               <p class="mt-2.5 text-xl font-semibold lg:mt-[27px] lg:text-6xl">

@@ -25,12 +25,21 @@ const { data: order } = useQuery({
   queryFn: () => getOrder(params.id),
 })
 
-function copyToClipboard() {
-  navigator.clipboard.writeText(order.value!.payload.order_number)
-  toast({
-    title: t('copied'),
-    description: t('order_number_copied'),
-  })
+async function copyToClipboard() {
+  try {
+    await navigator.clipboard.writeText(order.value!.payload.order_number)
+    toast({
+      title: t('copied'),
+      description: t('order_number_copied'),
+    })
+  }
+  catch (error: any) {
+    toast({
+      title: t('error'),
+      description: error.message,
+      variant: 'destructive',
+    })
+  }
 }
 </script>
 
@@ -146,7 +155,7 @@ function copyToClipboard() {
         <p class="text-xs sm:text-base">
           {{ $t('total_amount') }}: <span class="text-xs font-semibold sm:text-base">{{ order?.payload.order_items.reduce((acc, item) => acc + item.price * item.quantity, 0) }} с.</span>
         </p>
-        <p class="text-xs sm:text-base">
+        <p v-if="order?.payload.delivery_method === 'current-adres' " class="text-xs sm:text-base">
           Доставка: <span class="text-xs font-semibold sm:text-base">20 с.</span>
         </p>
       </div>

@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@hebilicious/vue-query-nuxt',
     '@nuxtjs/google-fonts',
-    'dayjs-nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/seo',
     'vue-yandex-maps/nuxt',
@@ -79,13 +78,6 @@ export default defineNuxtConfig({
       Inter: [400, 500, 600, 700],
       Raleway: [400, 500, 600, 700],
     },
-  },
-
-  dayjs: {
-    locales: ['ru'],
-    defaultLocale: 'ru',
-    plugins: ['timezone'],
-    defaultTimezone: 'Tajikistan/Dushanbe',
   },
 
   site: {
