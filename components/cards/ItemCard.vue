@@ -88,7 +88,10 @@ function addToCart(e: Event, id: number) {
           {{ data.product?.name }}
         </p>
 
-        <span class="font-semibold text-[#809A9E]">{{ data.product?.price }} с.</span>
+        <div class="flex items-end gap-5">
+          <span class="text-xl font-bold text-[#809A9E]">{{ data.product?.price }} с.</span>
+          <span v-if="data.product?.old_price" class="font-semibold text-[#c6cccd] line-through">{{ data.product?.old_price }} с.</span>
+        </div>
       </div>
     </div>
     <Button class="mt-4 text-sm transition-all ease-in-out md:mt-6 xl:opacity-0 xl:group-hover:opacity-100" @click="addToCart($event, data.product?.id!)">
