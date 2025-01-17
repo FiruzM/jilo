@@ -102,7 +102,7 @@ export default defineNuxtConfig({
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
       ],
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'viewport', content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",  },
         { name: 'description', content: 'Добро пожаловать в Jilo Exclusive, ваш эксклюзивный интернет-магазин для кондитеров! Мы предлагаем широкий ассортимент высококачественных ингредиентов, инструментов и аксессуаров для кондитерского искусства. От натуральных ароматизаторов и пищевых красителей до профессиональных форм для выпечки и декора, наш ассортимент имеет все, что нужно для создания уникальных и вкусных кондитерских изделий. Мы сотрудничаем только с проверенными поставщиками, чтобы обеспечить вам доступ к лучшим продуктам по конкурентоспособным ценам. Благодаря быстрой доставке и безопасным способам оплаты, покупки в нашем магазине - это простая и приятная процедура. Создавайте свои шедевры с Jilo Exclusive!' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
       ],
