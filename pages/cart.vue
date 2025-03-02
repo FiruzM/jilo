@@ -79,13 +79,13 @@ const total = computed(() => {
 
                 <div class="flex justify-between">
                   <div class="flex items-center gap-2">
-                    <button class="rounded-full bg-[#F7F8F9] p-1">
-                      <Plus class="size-4 stroke-[#64748B] hover:cursor-pointer sm:size-6" @click="increment(item.id)" />
-                    </button>
-                    <span class="font-semibold">{{ item.quantity }}</span>
                     <Button :disabled="item.quantity === 1" class="size-auto rounded-full bg-[#F7F8F9] p-1 hover:bg-[#F7F8F9] ">
                       <Minus class="size-4 stroke-[#64748B] hover:cursor-pointer sm:size-6" @click="decrement(item.id)" />
                     </Button>
+                    <span class="font-semibold">{{ item.quantity }}</span>
+                    <button class="rounded-full bg-[#F7F8F9] p-1">
+                      <Plus class="size-4 stroke-[#64748B] hover:cursor-pointer sm:size-6" @click="increment(item.id)" />
+                    </button>
                   </div>
 
                   <Trash2 class="stroke-[#7a7a7a] hover:cursor-pointer" @click="remove(item.id)" />

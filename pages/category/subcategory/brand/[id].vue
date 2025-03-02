@@ -63,7 +63,100 @@ useHead({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div class="mt-11 flex gap-7">
+      <div class="mt-5 flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+        <div class="flex gap-5">
+          <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
+            {{ brand?.payload.name }}
+          </h2>
+          <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.pages[products.pages.length - 1].payload.meta.total }} {{ $t('products') }}</span>
+        </div>
+
+        <div class="hidden items-center gap-4 lg:flex">
+          <div>
+            <p class="text-sm">
+              {{ $t('sort_by') }}:
+            </p>
+          </div>
+
+          <div>
+            <Select>
+              <SelectTrigger class="h-9 w-[180px] rounded-[12px] border-[#D5D5D5] text-black">
+                <SelectValue placeholder="Выберите параметр" />
+              </SelectTrigger>
+              <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
+                <SelectGroup>
+                  <SelectItem value="popular">
+                    {{ $t('popular') }}
+                  </SelectItem>
+
+                  <SelectItem value="cheap">
+                    {{ $t('cheaper_first') }}
+                  </SelectItem>
+
+                  <SelectItem value="expensive">
+                    {{ $t('expensive_first') }}
+                  </SelectItem>
+
+                  <SelectItem value="new">
+                    {{ $t('new') }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <div class="flex lg:hidden">
+          <Select>
+            <SelectTrigger class="h-9 w-[172px] rounded-[12px] rounded-r-none border-[#D5D5D5] text-xs text-primary-foreground">
+              <SelectValue placeholder="Выберите параметр" />
+            </SelectTrigger>
+            <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
+              <SelectGroup>
+                <SelectItem value="popular">
+                  {{ $t('popular') }}
+                </SelectItem>
+
+                <SelectItem value="cheap">
+                  {{ $t('cheaper_first') }}
+                </SelectItem>
+
+                <SelectItem value="expensive">
+                  {{ $t('expensive_first') }}
+                </SelectItem>
+
+                <SelectItem value="new">
+                  {{ $t('new') }}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
+          <Sheet>
+            <SheetTrigger class="flex items-center gap-2 rounded-[12px] rounded-l-none border border-l-0 border-[#D5D5D5] px-11 text-xs text-primary-foreground">
+              <ListFilter />
+              {{ $t('filters') }}
+            </SheetTrigger>
+            <SheetContent side="top">
+              <ScrollArea class="h-svh">
+                <div>
+                  <p class="mt-6 font-semibold">
+                    Цена, ₽
+                  </p>
+
+                  <div class="mt-4 flex items-center gap-2.5">
+                    <Input v-model="minPriceQuery" class="rounded-lg" placeholder="от" />
+                    <Minus />
+                    <Input v-model="maxPriceQuery" class="rounded-lg" placeholder="до" />
+                  </div>
+                </div>
+              </ScrollArea>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+
+      <div class="mt-5 flex gap-7">
         <div class="hidden max-w-[250px] shrink-0 lg:block">
           <ScrollArea class="h-svh">
             <div>
@@ -81,99 +174,6 @@ useHead({
         </div>
 
         <div class="grow">
-          <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-            <div class="flex gap-5">
-              <h2 class="text-xl font-semibold md:text-2xl lg:text-3xl">
-                {{ brand?.payload.name }}
-              </h2>
-              <span class="hidden self-end text-sm font-semibold text-[#7a7a7a] lg:block">{{ products?.pages[products.pages.length - 1].payload.meta.total }} {{ $t('products') }}</span>
-            </div>
-
-            <div class="hidden items-center gap-4 lg:flex">
-              <div>
-                <p class="text-sm">
-                  {{ $t('sort_by') }}:
-                </p>
-              </div>
-
-              <div>
-                <Select>
-                  <SelectTrigger class="h-9 w-[180px] rounded-[12px] border-[#D5D5D5] text-black">
-                    <SelectValue placeholder="Выберите параметр" />
-                  </SelectTrigger>
-                  <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
-                    <SelectGroup>
-                      <SelectItem value="popular">
-                        {{ $t('popular') }}
-                      </SelectItem>
-
-                      <SelectItem value="cheap">
-                        {{ $t('cheaper_first') }}
-                      </SelectItem>
-
-                      <SelectItem value="expensive">
-                        {{ $t('expensive_first') }}
-                      </SelectItem>
-
-                      <SelectItem value="new">
-                        {{ $t('new') }}
-                      </SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div class="flex lg:hidden">
-              <Select>
-                <SelectTrigger class="h-9 w-[172px] rounded-[12px] rounded-r-none border-[#D5D5D5] text-xs text-primary-foreground">
-                  <SelectValue placeholder="Выберите параметр" />
-                </SelectTrigger>
-                <SelectContent class="w-[180px] rounded-[12px] border-[#D5D5D5]">
-                  <SelectGroup>
-                    <SelectItem value="popular">
-                      {{ $t('popular') }}
-                    </SelectItem>
-
-                    <SelectItem value="cheap">
-                      {{ $t('cheaper_first') }}
-                    </SelectItem>
-
-                    <SelectItem value="expensive">
-                      {{ $t('expensive_first') }}
-                    </SelectItem>
-
-                    <SelectItem value="new">
-                      {{ $t('new') }}
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-
-              <Sheet>
-                <SheetTrigger class="flex items-center gap-2 rounded-[12px] rounded-l-none border border-l-0 border-[#D5D5D5] px-11 text-xs text-primary-foreground">
-                  <ListFilter />
-                  {{ $t('filters') }}
-                </SheetTrigger>
-                <SheetContent side="top">
-                  <ScrollArea class="h-svh">
-                    <div>
-                      <p class="mt-6 font-semibold">
-                        Цена, ₽
-                      </p>
-
-                      <div class="mt-4 flex items-center gap-2.5">
-                        <Input v-model="minPriceQuery" class="rounded-lg" placeholder="от" />
-                        <Minus />
-                        <Input v-model="maxPriceQuery" class="rounded-lg" placeholder="до" />
-                      </div>
-                    </div>
-                  </ScrollArea>
-                </SheetContent>
-              </Sheet>
-            </div>
-          </div>
-
           <div class="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 md:gap-x-6 lg:mt-14 xl:grid-cols-4 xl:gap-x-0 xl:gap-y-5">
             <template v-for="(data, index) in products?.pages" :key="index">
               <CardsItemCard v-for="product in data?.payload.data" :key="product.id" :product="product" @click="() => $router.push(`/product/${product.id}`)" />

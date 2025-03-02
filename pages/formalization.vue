@@ -13,6 +13,9 @@ const router = useRouter()
 const { t } = useI18n()
 const deliveryMethod = ref('current-adres')
 
+const TELEGRAM_BOT_TOKEN = '8049236773:AAEnWxfctJDtD-1GgB3ts3H3IC-NvtuvuSU'
+const TELEGRAM_CHAT_ID = '@jiloshop_orders'
+
 useHead({
   title: t('formalize'),
   meta: [
@@ -48,6 +51,35 @@ const total = computed(() => {
   return cart.value.reduce((acc: any, item: any) => acc + (item.price * item.quantity), 0)
 })
 
+async function sendTelegramMessage(message: string) {
+  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`
+  const params = {
+    chat_id: TELEGRAM_CHAT_ID,
+    text: message,
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to send message to Telegram')
+    }
+
+    const data = await response.json()
+    return data
+  }
+  catch (error) {
+    console.error('Error sending message to Telegram:', error)
+    throw error
+  }
+}
+
 const { mutate, isPending } = useMutation({
   mutationFn: (data: any) => postOrder(data),
   onError(error: any) {
@@ -57,7 +89,30 @@ const { mutate, isPending } = useMutation({
       variant: 'destructive',
     })
   },
-  onSuccess() {
+  onSuccess(response: any) {
+    const order = response.payload
+
+    // Формируем сообщение для Telegram
+    const message = `
+Новый заказ: ${order.order_number}
+Сумма: ${order.total_amount}
+Метод оплаты: ${order.payment_method === 'card' ? 'Оплата картой онлайн' : 'Оплата наличными при получении'}
+Адрес доставки: ${order.delivery_address ? order.delivery_address : 'Самовывоз'}
+Комментарий к заказу: ${order.comment ? order.comment : 'Нет'}
+Товары:
+${cart.value.map((item: any) => `
+  - ${item.name}: ${item.quantity} x ${item.price} c.
+`).join('')}
+`
+
+    sendTelegramMessage(message)
+      .then(() => {
+        console.log('Message sent to Telegram successfully')
+      })
+      .catch((error) => {
+        console.error('Failed to send message to Telegram:', error)
+      })
+
     cart.value = []
     router.push('/order?status_id=1')
     toast({
